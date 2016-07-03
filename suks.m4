@@ -19,7 +19,8 @@ rule Answerer_RecvOfferSendAnswer:
 
 rule Offerer_RecvAnswerSendHs:
    [ Offer(orand, opub), Answer(arand, apub) ]
-   --[ AnswerReceived(orand, arand, apub) ]->
+   --[ AnswerReceived(arand, apub),
+       Closed(orand) ]->
    [ ]
 
 /* Explicit equality checking */
@@ -29,10 +30,11 @@ axiom Neq_check_succeed: "All x y #i. Neq(x,y) @ i ==> not (x = y)"
 
 lemma FullCall:
    exists-trace
-   " Ex OR OP AR AP #j #k #l.
+   " Ex OR OP AR AP X #j #k #l #m.
         Offered(OR, OP) @ #j &
         Answered(OR, OP, AR, AP) @ #k &
-        AnswerReceived(OR, AR, AP) @ #l &
+        AnswerReceived(AR, AP) @ #l &
+        Closed(X) @ #m &
         #j < #k &
         #k < #l
    "
