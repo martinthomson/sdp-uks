@@ -42,11 +42,14 @@ rule Answerer_RecvOfferSendAnswer:
    let HsParams = <orand,opub,~arand,apub> in
    [ !AnswererKeyPair(priv, apub),
      AnswerInitiated(callId),
-     Offer(callId, orands, opub),
+     Offer(callId, orand_s, opub),
      Fr(~arand),
      In(orand)
      ]
-   --[ Answered(callId, opub, apub) ]->
+   --[
+       ifdef(`randomsinsignaling',`Eq(orand_s,orand),')
+       Answered(callId, opub, apub)
+     ]->
    [
      Answer(callId, ~arand, apub),
      SavedAnswer(callId, orand, opub, ~arand, apub),
@@ -58,11 +61,12 @@ rule Answerer_RecvOfferSendAnswer:
 rule Offerer_RecvAnswerAndClientHello:
    let HsParams = <orand,opub,arand,apub> in
    [ !OffererKeyPair(priv, opub),
-     SavedOffer(callId, orand, opub), Answer(callId, aranda, apub),
+     SavedOffer(callId, orand, opub), Answer(callId, arand_s, apub),
      In(<'clienthello',
           HsParams,
           signature>)]
    --[
+       ifdef(`randomsinsignaling',`Eq(arand_s, arand),')
        Eq(verify(signature,
                  <'clienthello', HsParams>, apub), true),
        AnswerReceived(callId, opub, apub),
