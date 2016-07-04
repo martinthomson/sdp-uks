@@ -5,6 +5,22 @@ builtins: hashing, symmetric-encryption, asymmetric-encryption, signing
 functions: h/1, pk/1
 
 
+/* This is a simple model capturing the essential features of DTLS-SRTP.
+ *
+ * The central server supplies a CallId to Offerer and Answerer,
+ * each of whom have a long-term key pair.
+ *
+ * O -> A: Offer  [CallId, ORandom, K_pub_O]  // over secure signaling channel 
+ * A -> O: Answer [CallId, ARandom, K_pub_A]  // over secure signaling channel
+ * A -> O: clienthello [Sign(K_priv_A, (ORandom, K_pub_O, ARandom, K_pub_A))
+ * O -> A: serverhello [Sign(K_priv_O, (ORandom, K_pub_O, ARandom, K_pub_A))
+ *
+ * The subtle point here is that in RFC 5763/5764, the randoms and the
+ * CallId are *not* carried in the signaling, which allows for a UKS,
+ * thus falsifying Lemma NoUKS.
+ *
+ */
+
 rule SetupOfferer:
    [ Fr(~oPriv) ] --> [ !OffererKeyPair(~oPriv, pk(~oPriv)) ]
 
