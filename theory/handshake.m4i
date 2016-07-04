@@ -1,4 +1,3 @@
-theory Suks
 begin
 
 builtins: hashing, symmetric-encryption, asymmetric-encryption, signing
