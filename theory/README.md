@@ -30,8 +30,8 @@ This directory contains two models:
 
 These models share the same common core and message flow and are
 wrappers around the same file (handshake.m4i). The only difference
-is that the draft-thomson model actually checks the random values on both
-sides.
+is that the draft-thomson model sets a flag which causes the handshake
+to check the random values on both sides.
 
 
 
