@@ -35,8 +35,17 @@ rule Offeror_SendOffer:
    --[ Offered(callId, opub) ]->
    [ Offer(callId, ~orand, opub),
      SavedOffer(callId, ~orand, opub),
-     Out(~orand)]
+     Out(~orand), Out(opub)]
 
+rule Attacker_SendAnswer:
+   [ In(rand), In(pub),
+     AnswerInitiated(callId),
+     Offer(callId, orand_s, opub)]
+   -->
+   [ 
+     Answer(callId, rand, pub)
+   ]
+   
 rule Answerer_RecvOfferSendAnswer:
    let HsParams = <orand,opub,~arand,apub> in
    [ !AnswererKeyPair(priv, apub),
