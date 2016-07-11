@@ -18,6 +18,11 @@ functions: h/1, pk/1
  * CallId are *not* carried in the signaling, which allows for a UKS,
  * thus falsifying Lemma NoUKS.
  *
+ * IMPORTANT: This model allows the answerer to do multiple calls and the
+ * attacker can simply swap them two good calls in the RFC 5763 model, however,
+ * the Attacker_SendAnswer rule also allows the more powerful UKS, which
+ * Tamarin finds.
+ * 
  */
 
 rule SetupOfferer:
