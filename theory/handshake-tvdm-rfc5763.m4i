@@ -1,0 +1,155 @@
+begin
+
+builtins: hashing, symmetric-encryption, asymmetric-encryption, signing
+functions: h/1, pk/1
+
+
+/* This is a simple model capturing the essential features of DTLS-SRTP.
+ *
+ * The central server supplies a CallId to Offerer and Answerer,
+ * each of whom have a long-term key pair.
+ *
+ * O -> A: Offer  [CallId, ORandom, K_pub_O]  // over secure signaling channel 
+ * A -> O: Answer [CallId, ARandom, K_pub_A]  // over secure signaling channel
+ * A -> O: clienthello [Sign(K_priv_A, (ORandom, K_pub_O, ARandom, K_pub_A))
+ * O -> A: serverhello [Sign(K_priv_O, (ORandom, K_pub_O, ARandom, K_pub_A))
+ *
+ * The subtle point here is that in RFC 5763/5764, the randoms and the
+ * CallId are *not* carried in the signaling, which allows for a UKS,
+ * thus falsifying Lemma NoUKS.
+ *
+ * IMPORTANT: This model allows the answerer to do multiple calls and the
+ * attacker can simply swap them two good calls in the RFC 5763 model, however,
+ * the Attacker_SendAnswer rule also allows the more powerful UKS, which
+ * Tamarin finds. TVDM: This model does not use this rule. 
+ * 
+ */
+
+/*rule SetupEntity:
+   [ Fr(~ePriv) ] --> [ !KeyPair(~ePriv, pk(~ePriv)) ]*/
+
+rule SetupEntity:
+  [ Fr(~ltkA) ]--[ GenLtk($A, ~ltkA)
+  ]->
+  [ !Ltk($A, ~ltkA), !Pk($A, pk(~ltkA)) ]
+
+rule InitiateCall:
+   [ Fr(~callID) ] --[ Initiated(~callID) ]->
+   [ OfferInitiated(~callID), AnswerInitiated(~callID) ]
+
+rule O_SendOffer:
+let
+   O = $O
+   callID = ~callID
+   orand = ~orand
+   opub = pk(~ltkO)
+   opriv = ~ltkO
+   
+   A = $A
+in
+   [ OfferInitiated(callID), Fr(orand), !Ltk(O,~ltkO),!Pk(O, pk(~ltkO)) ]
+   --[  UsePK(O, opub),
+	InitiatorOffer(O, A, callID, opub, orand) ]->
+   [ St_init(O,1, O, A, callID, orand, opub, opriv),
+     Out(<orand, opub>)]
+
+rule A_SendOfferAndHello: 
+let
+   A = $A
+   callID = ~callID
+   arand = ~arand
+   apub = pk(~ltkA)
+   apriv = ~ltkA
+   
+   O = $O
+in
+   [ AnswerInitiated(callID), In(<orand, opub>), Fr(arand), !Ltk(A, ~ltkA), !Pk(A, pk(~ltkA))]
+   --[ InitiatorOfferReceived(A, O, callID, opub, orand),
+       UsePK(A, apub), 
+       ResponderOffer(A, O, callID, apub, arand),
+       ResopnderHello(A, O, sign{<orand, opub, arand, apub>}apriv)]->
+   [ St_init(A,1, A, O, callID, orand, opub, arand, apub, apriv), 
+     Out(<arand, apub, sign{<orand, opub, arand, apub>}apriv>)]
+
+rule O_SendHelloAndCheck: 
+let
+   O = $O
+   orand = ~orand
+
+   A = $A
+in
+   [ St_init(O,1, O, A, callID, orand, opub, opriv), In(<arand, apub, signature>)]
+   --[ ResponderOfferReceived(O, A, callID, apub, arand), 
+       Eq(verify(signature, <orand, opub, arand, apub>, apub), true),
+       ResponderHelloChecked(O, A, orand, opub, arand, apub),
+       InitiatorHello(sign{<orand, opub, arand, apub>}opriv),
+       InitiatorConnected(O, A, callID, orand, opub, arand, apub)]->
+   [ St_init(O,2, O, A, callID, orand, opub, opriv, arand, apub),
+     Out(<sign{<orand, opub, arand, apub>}opriv>)]
+
+rule A_Check: 
+let
+   A = $A
+   arand = ~arand
+ 
+   O = $O
+in
+   [ St_init(A,1, A, O, callID, orand, opub, arand, apub, apriv), 
+     In(<signature>)]
+   --[ Eq(verify(signature, <orand, opub, arand, apub>, opub), true),
+       InitiatorHelloChecked(A, O, orand, opub, arand, apub),
+       ResponderConnected(A, O, callID, orand, opub, arand, apub) ]->
+   [ St_init(A,2, A, O, callID, orand, opub, arand, apub)]
+
+
+/* Explicit equality checking */
+axiom Eq_check_succeed: "All x y #i. Eq(x,y) @ i ==> x = y"
+axiom Neq_check_succeed: "All x y #i. Neq(x,y) @ i ==> not (x = y)"
+
+/* Don't be offerer and answerer for the same call. */
+axiom One_role:
+   " All O A CI OP OR  #i #j.
+        InitiatorOffer(O, A, CI, OP, OR) @i & InitiatorOfferReceived(A, O, CI, OP, OR) @j 
+         ==> not(O = A)" 
+
+axiom role_misuse:
+   " All O A CI OP OR  #i.
+        InitiatorOffer(O, A, CI, OP, OR) @i 
+         ==> not(O = A)" 
+
+/*rule in_out:
+[MessageOut(m)]-->[MessageIn(m)]*/
+
+lemma pk_origin [reuse]:
+  "All actor ltk #i. UsePK(actor, pk(ltk))@i ==> 
+    Ex #j. GenLtk(actor, ltk)@j & #j < #i"
+
+lemma one_pk [reuse]:
+  " All actor actor2 ltk #i #j. GenLtk(actor,ltk) @i & GenLtk(actor2,ltk) @j
+    ==> actor = actor2"  
+
+lemma pk_misuse [reuse]: 
+   " All actor actor2 ltk #i #j. UsePK(actor, pk(ltk)) @i & UsePK(actor2,pk(ltk)) @j
+    ==> actor = actor2"
+
+lemma FullCall:
+   exists-trace
+   " Ex O A CI OP AP OR AR #i #j #k #l.
+        InitiatorOffer(O, A, CI, OP, OR) @ i &
+	ResponderOffer(A, O, CI, AP, AR) @ j &
+        InitiatorConnected(O, A,CI, OR, OP, AR, AP) @ k &
+	ResponderConnected(A, O, CI, OR, OP, AR, AP)  @ l & 
+        #i < #j &
+        #j < #k &
+        #k < #l 
+   "
+
+lemma NoUKS:
+   " All O A CIO CIA OP AP OR AR #i #j #m #n.
+        Initiated(CIO) @ #i &
+        Initiated(CIA) @ #j &
+        InitiatorConnected(O,A,CIO, OP, AP, OR, AR) @ #m &
+        ResponderConnected(A,O,CIA, OP, AP, OR, AR) @ #n ==>
+        CIO = CIA
+   "
+end
