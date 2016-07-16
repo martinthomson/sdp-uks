@@ -51,7 +51,7 @@ in
    --[  UsePK(O, opub),
 	InitiatorOffer(O, A, callID, opub, orand) ]->
    [ St_init(O,1, O, A, callID, orand, opub, opriv),
-     Offer(<callID, h(opub)>),
+     Offer(<callID, orand, h(opub)>),
      Out(<orand, opub>)]
 
 rule A_SendOfferAndHello: 
@@ -65,14 +65,15 @@ let
    O = $O
    
 in
-   [ AnswerInitiated(callID), In(<orand, opub>), Offer(<callID, pubdigest>), Fr(arand), !Ltk(A, ~ltkA), !Pk(A, pk(~ltkA))]
+   [ AnswerInitiated(callID), In(<orand, opub>), Offer(<callID, rand_o, pubdigest>), Fr(arand), !Ltk(A, ~ltkA), !Pk(A, pk(~ltkA))]
    --[ InitiatorOfferReceived(A, O, callID, opub, orand),
        Eq(h(opub), pubdigest), 
+       Eq(orand, rand_o),
        UsePK(A, apub), 
        ResponderOffer(A, O, callID, apub, arand),
        ResopnderHello(A, O, sign{<orand, opub, arand, apub>}apriv)]->
    [ St_init(A,1, A, O, callID, orand, opub, arand, apub, apriv), 
-     ResponderOfferSent(callID, h(apub)),
+     ResponderOfferSent(callID, arand, h(apub)),
      Out(<arand, apub, sign{<orand, opub, arand, apub>}apriv>)]
 
 rule O_SendHelloAndCheck: 
@@ -82,9 +83,10 @@ let
 
    A = $A
 in
-   [ St_init(O,1, O, A, callID, orand, opub, opriv), ResponderOfferSent(callID, apubdigest) , In(<arand, apub, signature>)]
+   [ St_init(O,1, O, A, callID, orand, opub, opriv), ResponderOfferSent(callID, rand_a, apubdigest) , In(<arand, apub, signature>)]
    --[ ResponderOfferReceived(O, A, callID, apub, arand), 
        Eq(h(apub), apubdigest),
+       Eq(arand, rand_a),
        Eq(verify(signature, <orand, opub, arand, apub>, apub), true),
        ResponderHelloChecked(O, A, orand, opub, arand, apub),
        InitiatorHello(sign{<orand, opub, arand, apub>}opriv),
