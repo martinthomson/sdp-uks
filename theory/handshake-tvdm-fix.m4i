@@ -65,7 +65,7 @@ let
    O = $O
    
 in
-   [ AnswerInitiated(callID), In(<orand, opub>), Offer(<callID, rand_o, pubdigest>), Fr(arand), !Ltk(A, ~ltkA), !Pk(A, pk(~ltkA))]
+   [ AnswerInitiated(callID), In(<rand_o, opub>), Offer(<callID, orand, pubdigest>), Fr(arand), !Ltk(A, ~ltkA), !Pk(A, pk(~ltkA))]
    --[ InitiatorOfferReceived(A, O, callID, opub, orand),
        Eq(h(opub), pubdigest), 
        Eq(orand, rand_o),
@@ -83,7 +83,7 @@ let
 
    A = $A
 in
-   [ St_init(O,1, O, A, callID, orand, opub, opriv), ResponderOfferSent(callID, rand_a, apubdigest) , In(<arand, apub, signature>)]
+   [ St_init(O,1, O, A, callID, orand, opub, opriv), ResponderOfferSent(callID, arand, apubdigest) , In(<rand_a, apub, signature>)]
    --[ ResponderOfferReceived(O, A, callID, apub, arand), 
        Eq(h(apub), apubdigest),
        Eq(arand, rand_a),
