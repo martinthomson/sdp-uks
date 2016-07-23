@@ -1,7 +1,7 @@
 ---
 title: "Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)"
 abbrev: "SDP UKS"
-docname: draft-thomson-avtcore-dtls-srtp-uks-latest
+docname: draft-thomson-avtcore-sdp-uks-latest
 date: 2016
 category: info
 ipr: trust200902
@@ -106,16 +106,16 @@ entity.  By advertising that fingerprint in place of one of its own, the
 malicious endpoint can cause its peer to communicate with a different peer, even
 though it believes that it is communicating with the malicious endpoint.
 
-Since the identity of communicating peers is established by higher-layer
+When the identity of communicating peers is established by higher-layer
 signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
 {{!I-D.ietf-rtcweb-security-arch}}, this allows an attacker to bind their own
 identity to a session with any other entity.
 
-By switching the fingerprint of one peer, an attacker is able to cause a session
-to be established where one endpoint has an incorrect value for the identity of
-its peer.  However, the peer does not suffer any such confusion, resulting in
-each peer involved in the session having a different view of the nature of the
-session.
+By substituting the the fingerprint of one peer for its own, an attacker is able
+to cause a session to be established where one endpoint has an incorrect value
+for the identity of its peer.  However, the peer does not suffer any such
+confusion, resulting in each peer involved in the session having a different
+view of the nature of the session.
 
 This attack applies to any communications established based on the
 `a=fingerprint` SDP attribute {{!RFC4572}}.
@@ -128,11 +128,9 @@ there is confusion about the communicating endpoints.
 
 A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can
 be attacked if it is willing to conduct two concurrent calls, one of which is
-with an attacker.
-
-The attacker can arrange for the victim to incorrectly believe that is calling
-the attacker, when it is in fact calling a second party.  The second party
-correctly believes that it is talking to the victim.
+with an attacker.  The attacker can arrange for the victim to incorrectly
+believe that is calling the attacker when it is in fact calling a second party.
+The second party correctly believes that it is talking to the victim.
 
 In a related attack, a single call using WebRTC identity can be attacked so that
 it produces the same outcome.  This attack does not require a concurrent call.
@@ -140,8 +138,8 @@ it produces the same outcome.  This attack does not require a concurrent call.
 
 ## Limits on Attack Feasibility
 
-DTLS-SRTP depends on the integrity of session signaling.  Assuming signaling
-integrity limits the capabilities of an attacker in several ways.  In
+The use of TLS with SDP depends on the integrity of session signaling.  Assuming
+signaling integrity limits the capabilities of an attacker in several ways.  In
 particular:
 
 1. An attacker can only modify the parts of the session signaling for a session
@@ -155,11 +153,14 @@ quite limited.  An attacker is only able to switch its own certificate
 fingerprint for a valid certificate that is acceptable to its peer.  Attacks
 therefore rely on joining two separate sessions into a single session.
 
-The second condition is not possible with WebRTC identity if the victim has or
+The second condition is not necessary with WebRTC identity if the victim has or
 is configured with a target peer identity (this is defined in {{WEBRTC}}).
+Furthermore, any identity displayed by a browser could be different to the
+identity used by the application, since the attack affects the browser's
+understanding of the peer's identity.
 
 
-## Session Subversion Attack Example
+## Example
 
 In this example, two outgoing sessions are created by the same endpoint.  One of
 those sessions is initiated with the attacker, another session is created toward
@@ -180,7 +181,7 @@ has completed, and that the session with the other endpoint has succeeded.
     |======Media1===>(Forward)====Media1===>|
     |<=====Media2====(Forward)<===Media2====|
     |                    |                  |
-    |======DTLS2=====>(Drop)                |
+    |======DTLS2===========>(Drop)          |
     |                    |                  |
 ~~~
 
@@ -190,22 +191,23 @@ fingerprint.  A second session is initiated between Norma and Patsy.  Signaling
 for both sessions is permitted to complete.
 
 Once complete, the session that is ostensibly between Mallory and Norma is
-completed by forwarding packets between Norma and Patsy.  Unlike the previous
-example, this requires that Mallory is able to intercept DTLS and media packets
-from Patsy so that they can be forwarded to Norma at the transport addresses
-that Norma associates with the first session.
+completed by forwarding packets between Norma and Patsy.  This requires that
+Mallory is able to intercept DTLS and media packets from Patsy so that they can
+be forwarded to Norma at the transport addresses that Norma associates with the
+first session.
 
-The second session between Norma is permitted to continue to the point where
-Patsy believes that it has succeeded.  This ensures that Patsy believes that she
-is communicating with Norma.  In the end, Norma believes that she is
-communicating with Mallory, when she is actually communicating with Patsy.
+The second session - between Norma and Patsy - is permitted to continue to the
+point where Patsy believes that it has succeeded.  This ensures that Patsy
+believes that she is communicating with Norma.  In the end, Norma believes that
+she is communicating with Mallory, when she is actually communicating with
+Patsy.
 
 Though Patsy needs to believe that the second session is successful, Mallory has
 no real interest in seeing that session complete.  Mallory only needs to ensure
 that Patsy does not abandon the session prematurely.  For this reason, it might
 be necessary to permit the answer from Patsy to reach Norma to allow Patsy to
 receive a call completion signal, such as a SIP ACK.  Once the second session
-completes, Mallory causes DTLS packets sent by Norma to be dropped.
+completes, Mallory causes any DTLS packets sent by Norma to Patsy to be dropped.
 
 For the attacked session to be sustained beyond the point that Norma detects
 errors in the second session, Mallory also needs to block any signaling that
@@ -279,7 +281,7 @@ connections that are established as part of the same call or real-time session.
 
 The `sdp_session_id` TLS extension carries the unique identifier that an
 endpoint selects.  The value includes the `sess-id` field from the SDP that the
-endpoint generates when negotiating the session.
+endpoint generated when negotiating the session.
 
 The `extension_data` for the `sdp_session_id` extension contains a SdpSessionId
 struct, described below using the syntax defined in {{!RFC5246}}:
@@ -306,7 +308,7 @@ separate DTLS connections carrying RTP and RTCP can be switched.  This is
 considered benign since these protocols are often distinguishable.  RTP/RTCP
 multiplexing is advised to address this problem.
 
-The `peer_session_id` extension is included in a ClientHello and either ServerHello
+The `sdp_session_id` extension is included in a ClientHello and either ServerHello
 (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
 In TLS 1.3, the extension MUST NOT be included in a ServerHello.
 
