@@ -434,7 +434,8 @@ signaling peer.
 It is important to note that multiple connections can be created within the same
 signaling session.  An attacker can concatenate only part of a session, choosing
 to terminate some connections (and optionally forward data) while arranging to
-have peers interact directly for other connections.  This means that the actual
+have peers interact directly for other connections.  It is even possible to have
+different peers interact for each connection.  This means that the actual
 identity of the peer for one connection might differ from the peer on another
 connection.
 
