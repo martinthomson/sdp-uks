@@ -331,9 +331,9 @@ EncryptedExtensions message.
 
 # WebRTC Identity Binding {#webrtc}
 
-The identity assertion used for WebRTC is bound only to the certificate
-fingerprint of an endpoint and can therefore be copied by an attacker along with
-the `a=fingerprint` attributes.
+The identity assertion used for WebRTC {{!I-D.ietf-rtcweb-security-arch}} is
+bound only to the certificate fingerprint of an endpoint and can therefore be
+copied by an attacker along with the `a=fingerprint` attributes.
 
 The problem is compounded by the fact that an identity provider is not required
 to verify that the entity requesting an identity assertion controls the keys.
@@ -403,6 +403,46 @@ document will not support these extensions for some time.
 
 In TLS 1.3, the `webrtc_id_hash` extension MUST be sent in the
 EncryptedExtensions message.
+
+
+# Session Concatenation
+
+Use of session identifiers do not prevent an attacker from establishing two
+concurrent sessions with different peers and forwarding signaling from those
+peers to each other.  Concatenating two signaling sessions creates a situation
+where both peers believe that they are talking to the attacker when they are
+talking to each other.
+
+Session concatention is possible at higher layers: an attacker can establish two
+independent sessions and simply forward any data it receives from one into the
+other.  This kind of attack is exactly the sort of attack that identity systems
+such as the WebRTC identity {{!I-D.ietf-rtcweb-security-arch}} or SIP identity
+{{?RFC4474}} prevent.
+
+In the absence of any higher-level concept of peer identity, the use of session
+identifiers does not prevent session concatenation.  The value to an attacker is
+limited unless information from the TLS connection is extracted and used with
+the signaling.  For instance, a key exporter {{?RFC5705}} might be used to
+create a shared secret or unique identifier that is used in a secondary
+protocol.
+
+If a secondary protocol uses the signaling channel then that protocol is
+vulnerable to attack if it bases anything on the TLS connection.  The identity
+of the peer at the TLS layer is not necessarily the same as the identity of the
+signaling peer.
+
+It is important to note that multiple connections can be created within the same
+signaling session.  An attacker can concatenate only part of a session, choosing
+to terminate some connections (and optionally forward data) while arranging to
+have peers interact directly for other connections.  This means that the actual
+identity of the peer for one connection might differ from the peer on another
+connection.
+
+Information extracted from a TLS connection MUST NOT be used in a secondary
+protocol outside of that connection, which includes the signaling protocol.
+Similarly, data from one TLS connection MUST NOT be used in other TLS
+connections even if they are established as a result of the same signaling
+session.
 
 
 # Security Considerations
