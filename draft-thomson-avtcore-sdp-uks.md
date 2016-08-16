@@ -468,6 +468,7 @@ established in {{!RFC5246}}:
 # Acknowledgements
 
 This problem would not have been discovered if it weren't for discussions with
-Sam Scott, Hugo Krawczyk, and Richard Barnes.  A solution similar to the one presented here
-was first proposed by Karthik Bhargavan.  Thyla van der Merwe assisted with
-a formal model of the solution.  Adam Roach provided useful input.
+Sam Scott, Hugo Krawczyk, and Richard Barnes.  A solution similar to the one
+presented here was first proposed by Karthik Bhargavan who provided valuable
+input on this document.  Thyla van der Merwe assisted with a formal model of the
+solution.  Adam Roach provided useful input.
