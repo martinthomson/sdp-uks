@@ -407,7 +407,7 @@ EncryptedExtensions message.
 
 # Session Concatenation
 
-Use of session identifiers do not prevent an attacker from establishing two
+Use of session identifiers does not prevent an attacker from establishing two
 concurrent sessions with different peers and forwarding signaling from those
 peers to each other.  Concatenating two signaling sessions creates a situation
 where both peers believe that they are talking to the attacker when they are
@@ -415,9 +415,9 @@ talking to each other.
 
 Session concatention is possible at higher layers: an attacker can establish two
 independent sessions and simply forward any data it receives from one into the
-other.  This kind of attack is exactly the sort of attack that identity systems
-such as the WebRTC identity {{!I-D.ietf-rtcweb-security-arch}} or SIP identity
-{{?RFC4474}} prevent.
+other.  This kind of attack is prevented by systems that enable peer
+authentication such as the WebRTC identity {{!I-D.ietf-rtcweb-security-arch}}
+or SIP identity {{?RFC4474}}.
 
 In the absence of any higher-level concept of peer identity, the use of session
 identifiers does not prevent session concatenation.  The value to an attacker is
