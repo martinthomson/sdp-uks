@@ -416,8 +416,8 @@ talking to each other.
 Session concatention is possible at higher layers: an attacker can establish two
 independent sessions and simply forward any data it receives from one into the
 other.  This kind of attack is prevented by systems that enable peer
-authentication such as the WebRTC identity {{!I-D.ietf-rtcweb-security-arch}}
-or SIP identity {{?RFC4474}}.
+authentication such as WebRTC identity {{!I-D.ietf-rtcweb-security-arch}} or
+SIP identity {{?RFC4474}}.
 
 In the absence of any higher-level concept of peer identity, the use of session
 identifiers does not prevent session concatenation.  The value to an attacker is
@@ -426,10 +426,10 @@ the signaling.  For instance, a key exporter {{?RFC5705}} might be used to
 create a shared secret or unique identifier that is used in a secondary
 protocol.
 
-If a secondary protocol uses the signaling channel then that protocol is
-vulnerable to attack if it bases anything on the TLS connection.  The identity
-of the peer at the TLS layer is not necessarily the same as the identity of the
-signaling peer.
+If a secondary protocol uses the signaling channel with the assumption that the
+signaling and TLS peers are the same then that protocol is vulnerable to attack.
+The identity of the peer at the TLS layer is not guranteed to be the same as the
+identity of the signaling peer.
 
 It is important to note that multiple connections can be created within the same
 signaling session.  An attacker can concatenate only part of a session, choosing
@@ -439,11 +439,11 @@ different peers interact for each connection.  This means that the actual
 identity of the peer for one connection might differ from the peer on another
 connection.
 
-Information extracted from a TLS connection MUST NOT be used in a secondary
-protocol outside of that connection, which includes the signaling protocol.
-Similarly, data from one TLS connection MUST NOT be used in other TLS
-connections even if they are established as a result of the same signaling
-session.
+Information extracted from a TLS connection therefore MUST NOT be used in a
+secondary protocol outside of that connection if that protocol relies on the
+signaling protocol having the same peers.  Similarly, data from one TLS
+connection MUST NOT be used in other TLS connections even if they are
+established as a result of the same signaling session.
 
 
 # Security Considerations
