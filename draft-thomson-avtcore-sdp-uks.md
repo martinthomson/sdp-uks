@@ -256,8 +256,9 @@ identifier then means that the session is established between the correct two
 endpoints.
 
 This solution relies on the unique identifier given to DTLS sessions using the
-SDP `dtls-id` attribute.  This field is already required to be unique, thus, no
-two offers or answers from the same client will have the same value.
+SDP `dtls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
+required to be unique.  Thus, no two offers or answers from the same client will
+have the same value.
 
 A new `sdp_session_id` extension is added to the TLS or DTLS handshake for
 connections that are established as part of the same call or real-time session.
