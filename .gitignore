@@ -9,4 +9,5 @@
 venv/
 issues.json
 lib
+.targets.mk
 draft-thomson-avtcore-dtls-srtp-uks.md
