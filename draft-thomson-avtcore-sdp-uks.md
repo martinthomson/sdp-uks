@@ -2,7 +2,6 @@
 title: "Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)"
 abbrev: "SDP UKS"
 docname: draft-thomson-avtcore-sdp-uks-latest
-date: 2016
 category: info
 ipr: trust200902
 
@@ -117,8 +116,8 @@ for the identity of its peer.  However, the peer does not suffer any such
 confusion, resulting in each peer involved in the session having a different
 view of the nature of the session.
 
-This attack applies to any communications established based on the
-`a=fingerprint` SDP attribute {{!RFC4572}}.
+This attack applies to any communications established based on the SDP
+`fingerprint` attribute {{!RFC4572}}.
 
 
 ## Attack Overview
@@ -217,7 +216,7 @@ might receive a notice that the call is failed and thereby abort the call.
 This attack creates an asymmetry in the beliefs about the identity of peers.
 However, this attack is only possible if the victim (Norma) is willing to
 conduct two sessions concurrently, and if the same certificate - and therefore
-`a=fingerprint` value - is used in both sessions.
+SDP `fingerprint` attribute value - is used in both sessions.
 
 
 ## Interactions with Key Continuity {#continuity}
@@ -256,25 +255,14 @@ authenticate it (see {{SIGMA}}).  Validating that peers use the correct
 identifier then means that the session is established between the correct two
 endpoints.
 
-Rather than define a new identifier and means for signaling it, the `sess-id`
-field of the o= line in the SDP is used.  This field is already required to be
-unique, thus, no two offers or answers from the same client will have the same
-value.
-
-The `sess-id` is defined as a decimal sequence {{!RFC4566}}.  {{!RFC3264}}
-subsequently limits `sess-id` to a 63-bit value.  Endpoints MUST include a
-unique 63-bit value in every session description (offer or answer) they
-generate.  Endpoints SHOULD generate this value using a cryptographically-secure
-random process {{!RFC4086}}.
-
-Note:
-
-: We could define a new attribute for this purpose, but that just makes things
-  harder to deploy.  This design limits the protocol changes to the TLS
-  extension and its validation.
+This solution relies on the unique identifier given to DTLS sessions using the
+SDP `dtls-id` attribute.  This field is already required to be unique, thus, no
+two offers or answers from the same client will have the same value.
 
 A new `sdp_session_id` extension is added to the TLS or DTLS handshake for
 connections that are established as part of the same call or real-time session.
+This carries the value of the `dtls-id` attribute and provides integrity
+protection for its exchange as part of the TLS or DTLS handshake.
 
 
 ## The sdp_session_id TLS Extension {#sdp_session_id}
@@ -288,20 +276,14 @@ struct, described below using the syntax defined in {{!RFC5246}}:
 
 ~~~
    struct {
-      uint64 sess_id;
-      uint16 m_line;
+      opaque dtls_id<1..255>;
    } SdpSessionId;
 ~~~
 
-The `sess_id` field of the extension includes the value of the `sess-id` field
-from the `o=` line of the SDP offer or answer that the endpoint generates.
-
-The `m_line` field of the extension includes the index of the `m=` section of
-the session description that the TLS connection is generated for, starting at
-index 0.  Bundled media sections {{!I-D.ietf-mmusic-sdp-bundle-negotiation}} are
-identified by the index of the `m=` section associated with the Answerer
-BUNDLE-tag.  This prevents an attacker from rearranging `m=` sections within the
-same session.
+The `sess_id` field of the extension includes the value of the `dtls-id` SDP
+attribute as defined in {{!I-D.ietf-mmusic-dtls-sdp}} (that is, the
+`dtls-id-value` ABNF production).  The value of the `dtls-id` attribute is
+encoded using ASCII {{!RFC0020}}.
 
 Where RTP and RTCP {{?RFC3550}} are not multiplexed, it is possible that the two
 separate DTLS connections carrying RTP and RTCP can be switched.  This is
@@ -312,12 +294,12 @@ The `sdp_session_id` extension is included in a ClientHello and either ServerHel
 (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
 In TLS 1.3, the extension MUST NOT be included in a ServerHello.
 
-Endpoints MUST check that the `sess_id` parameter in the extension that they
-receive includes the `sess-id` value that they received in their peer's session
-description.  Endpoints MUST also check that the `m_line` parameter matches
-their expectations.  An endpoint that has receives a `sdp_session_id` extension
-that is not identical to the value that it expects MUST abort the connection
-with a fatal `handshake_failure` alert.
+Endpoints MUST check that the `dtls_id` parameter in the extension that they
+receive includes the `dtls-id` attribute value that they received in their
+peer's session description.  Comparison can be performed with either the decoded
+ASCII string or the encoded octets.  An endpoint that receives a
+`sdp_session_id` extension that is not identical to the value that it expects
+MUST abort the connection with a fatal `handshake_failure` alert.
 
 An endpoint that is communicating with a peer that does not support this
 extension will receive a ClientHello, ServerHello or EncryptedExtensions that
@@ -333,7 +315,7 @@ EncryptedExtensions message.
 
 The identity assertion used for WebRTC {{!I-D.ietf-rtcweb-security-arch}} is
 bound only to the certificate fingerprint of an endpoint and can therefore be
-copied by an attacker along with the `a=fingerprint` attributes.
+copied by an attacker along with any SDP `fingerprint` attributes.
 
 The problem is compounded by the fact that an identity provider is not required
 to verify that the entity requesting an identity assertion controls the keys.
@@ -348,10 +330,11 @@ peer has provided an identity that matches their expectations.
 
 In TLS, the Finished message provides a MAC over the entire handshake, so that
 including the identity in a TLS extension is sufficient to implement this
-solution.  Rather than include a complete identity assertion, a hash of the
-identity assertion is included in a TLS extension.  Peers then need only
-validate that the extension contains a hash of the identity assertion they
-received in signaling in addition to validating the identity assertion.
+solution.  Rather than include a complete identity assertion, a
+collision-resistant hash of the identity assertion is included in a TLS
+extension.  Peers then need only validate that the extension contains a hash of
+the identity assertion they received in signaling in addition to validating the
+identity assertion.
 
 Endpoints MAY use the `sdp_session_id` extension in addition to this so that two
 calls between the same parties can't be altered by an attacker.
@@ -379,11 +362,11 @@ hashing the resulting octets with SHA-256 {{FIPS180-2}}.  This produces the 32
 octets of the assertion_hash parameter, which is the sole contents of the
 extension.
 
-The `a=identity` attribute includes the base64 {{?RFC4648}} encoding of the same
-octets that were input to the hash.  The `webrtc_id_hash` extension is validated
-by performing base64 decoding on the value of the `a=identity` attribute,
-hashing the resulting octets using SHA-256, and comparing the results with the
-content of the extension.
+The SDP `identity` attribute includes the base64 {{?RFC4648}} encoding of the
+same octets that were input to the hash.  The `webrtc_id_hash` extension is
+validated by performing base64 decoding on the value of the SDP `identity`
+attribute, hashing the resulting octets using SHA-256, and comparing the results
+with the content of the extension.
 
 Identity assertions might be provided by only one peer.  An endpoint that does
 not produce an identity assertion MUST generate an empty `webrtc_id_hash`
