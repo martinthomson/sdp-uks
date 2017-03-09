@@ -281,7 +281,7 @@ struct, described below using the syntax defined in {{!RFC5246}}:
    } SdpSessionId;
 ~~~
 
-The `sess_id` field of the extension includes the value of the `dtls-id` SDP
+The `dtls_id` field of the extension includes the value of the `dtls-id` SDP
 attribute as defined in {{!I-D.ietf-mmusic-dtls-sdp}} (that is, the
 `dtls-id-value` ABNF production).  The value of the `dtls-id` attribute is
 encoded using ASCII {{!RFC0020}}.
