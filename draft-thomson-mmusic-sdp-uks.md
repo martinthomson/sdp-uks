@@ -1,7 +1,7 @@
 ---
 title: "Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)"
 abbrev: "SDP UKS"
-docname: draft-thomson-avtcore-sdp-uks-latest
+docname: draft-thomson-mmusic-sdp-uks-latest
 category: info
 ipr: trust200902
 
