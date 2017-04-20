@@ -72,14 +72,13 @@ with Datagram Transport Layer Security (DTLS) {{!RFC6347}} and the Secure
 Real-time Transport Protocol (SRTP) {{!RFC3711}} is defined as DTLS-SRTP
 {{!RFC5763}}.
 
-In these specifications, key agreement is performed using the TLS or DTLS
-handshaking protocol, with authentication being tied back to the session
-description (or SDP) through the use of certificate fingerprints.
-Communication peers check that a hash, or fingerprint, provided in the SDP
-matches the certificate that is used in the TLS (or DTLS) handshake.  This
-is defined in {{!RFC4572}}.
+In these specifications, key agreement is performed using TLS or DTLS, with
+authentication being tied back to the session description (or SDP) through the
+use of certificate fingerprints.  Communication peers check that a hash, or
+fingerprint, provided in the SDP matches the certificate that is used in the TLS
+or DTLS handshake.  This is defined in {{!RFC4572}}.
 
-The design of DTLS-SRTP relies on the integrity of the signaling channel.
+The design in RFC 4572 relies on the integrity of the signaling channel.
 Certificate fingerprints are assumed to be provided by the communicating peers
 and carried by the signaling channel without being subject to modification.
 However, this design is vulnerable to an unknown key-share (UKS) attack where a
@@ -100,10 +99,11 @@ In an unknown key-share attack {{UKS}}, a malicious participant in a protocol
 claims to control a key that is in reality controlled by some other actor.  This
 arises when the identity associated with a key is not properly bound to the key.
 
-In DTLS-SRTP, an endpoint is able to acquire the certificate fingerprint another
-entity.  By advertising that fingerprint in place of one of its own, the
-malicious endpoint can cause its peer to communicate with a different peer, even
-though it believes that it is communicating with the malicious endpoint.
+In usages of TLS and DTLS that use SDP for negotiation, an endpoint is able to
+acquire the certificate fingerprint another entity.  By advertising that
+fingerprint in place of one of its own, the malicious endpoint can cause its
+peer to communicate with a different peer, even though it believes that it is
+communicating with the malicious endpoint.
 
 When the identity of communicating peers is established by higher-layer
 signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
@@ -122,8 +122,8 @@ This attack applies to any communications established based on the SDP
 
 ## Attack Overview
 
-This vulnerability can be used by an attacker to create a call where
-there is confusion about the communicating endpoints.
+This vulnerability can be used by an attacker to create a session where there is
+confusion about the communicating endpoints.
 
 A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can
 be attacked if it is willing to conduct two concurrent calls, one of which is
@@ -256,49 +256,49 @@ identifier then means that the session is established between the correct two
 endpoints.
 
 This solution relies on the unique identifier given to DTLS sessions using the
-SDP `dtls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
+SDP `tls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
 required to be unique.  Thus, no two offers or answers from the same client will
 have the same value.
 
-A new `sdp_dtls_id` extension is added to the TLS or DTLS handshake for
+A new `sdp_tls_id` extension is added to the TLS or DTLS handshake for
 connections that are established as part of the same call or real-time session.
-This carries the value of the `dtls-id` attribute and provides integrity
+This carries the value of the `tls-id` attribute and provides integrity
 protection for its exchange as part of the TLS or DTLS handshake.
 
 
-## The sdp_dtls_id TLS Extension {#sdp_dtls_id}
+## The sdp_tls_id TLS Extension {#sdp_tls_id}
 
-The `sdp_dtls_id` TLS extension carries the unique identifier that an
-endpoint selects.  The value includes the `sess-id` field from the SDP that the
+The `sdp_tls_id` TLS extension carries the unique identifier that an endpoint
+selects.  The value includes the `tls-id` attribute from the SDP that the
 endpoint generated when negotiating the session.
 
-The `extension_data` for the `sdp_dtls_id` extension contains a SdpDtlsId
+The `extension_data` for the `sdp_tls_id` extension contains a SdpTlsId
 struct, described below using the syntax defined in {{!RFC5246}}:
 
 ~~~
    struct {
-      opaque dtls_id<1..255>;
-   } SdpDtlsId;
+      opaque tls_id<20..255>;
+   } SdpTlsId;
 ~~~
 
-The `dtls_id` field of the extension includes the value of the `dtls-id` SDP
+The `tls_id` field of the extension includes the value of the `tls-id` SDP
 attribute as defined in {{!I-D.ietf-mmusic-dtls-sdp}} (that is, the
-`dtls-id-value` ABNF production).  The value of the `dtls-id` attribute is
-encoded using ASCII {{!RFC0020}}.
+`tls-id-value` ABNF production).  The value of the `tls-id` attribute is encoded
+using ASCII {{!RFC0020}}.
 
 Where RTP and RTCP {{?RFC3550}} are not multiplexed, it is possible that the two
 separate DTLS connections carrying RTP and RTCP can be switched.  This is
-considered benign since these protocols are often distinguishable.  RTP/RTCP
+considered benign since these protocols are usually distinguishable.  RTP/RTCP
 multiplexing is advised to address this problem.
 
-The `sdp_dtls_id` extension is included in a ClientHello and either ServerHello
+The `sdp_tls_id` extension is included in a ClientHello and either ServerHello
 (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
-In TLS 1.3, the extension MUST NOT be included in a ServerHello.
+In TLS 1.3, the `sdp_tls_id` extension MUST NOT be included in a ServerHello.
 
-Endpoints MUST check that the `dtls_id` parameter in the extension that they
-receive includes the `dtls-id` attribute value that they received in their
-peer's session description.  Comparison can be performed with either the decoded
-ASCII string or the encoded octets.  An endpoint that receives a `sdp_dtls_id`
+Endpoints MUST check that the `tls_id` parameter in the extension that they
+receive includes the `tls-id` attribute value that they received in their peer's
+session description.  Comparison can be performed with either the decoded ASCII
+string or the encoded octets.  An endpoint that receives a `sdp_tls_id`
 extension that is not identical to the value that it expects MUST abort the
 connection with a fatal `handshake_failure` alert.
 
@@ -308,7 +308,7 @@ does not include this extension.  An endpoint MAY choose to continue a session
 without this extension in order to interoperate with peers that do not implement
 this specification.
 
-In TLS 1.3, the `sdp_dtls_id` extension MUST be sent in the EncryptedExtensions
+In TLS 1.3, the `sdp_tls_id` extension MUST be sent in the EncryptedExtensions
 message.
 
 
@@ -320,9 +320,9 @@ copied by an attacker along with any SDP `fingerprint` attributes.
 
 The problem is compounded by the fact that an identity provider is not required
 to verify that the entity requesting an identity assertion controls the keys.
-Nor is it currently able to perform this validation.  Note however that this
-verification is not a necessary condition for a secure protocol, as established
-in {{SIGMA}}.
+Nor is it currently able to perform this validation.  This is not an issue
+because verification is not a necessary condition for a secure protocol, nor
+would it be sufficient as established in {{SIGMA}}.
 
 A simple solution to this problem is suggested by {{SIGMA}}.  The identity of
 endpoints is included under a message authentication code (MAC) during the
@@ -331,13 +331,13 @@ peer has provided an identity that matches their expectations.
 
 In TLS, the Finished message provides a MAC over the entire handshake, so that
 including the identity in a TLS extension is sufficient to implement this
-solution.  Rather than include a complete identity assertion, a
-collision-resistant hash of the identity assertion is included in a TLS
-extension.  Peers then need only validate that the extension contains a hash of
-the identity assertion they received in signaling in addition to validating the
-identity assertion.
+solution.  Rather than include a complete identity assertion - which could be
+sizeable - a collision-resistant hash of the identity assertion is included in a
+TLS extension.  Peers then need only validate that the extension contains a hash
+of the identity assertion they received in signaling in addition to validating
+the identity assertion.
 
-Endpoints MAY use the `sdp_dtls_id` extension in addition to this so that two
+Endpoints MAY use the `sdp_tls_id` extension in addition to this so that two
 calls between the same parties can't be altered by an attacker.
 
 
@@ -352,7 +352,7 @@ WebrtcIdentityHash struct, described below using the syntax defined in
 
 ~~~
    struct {
-      opaque assertion_hash[32];
+      opaque assertion_hash<0..32>;
    } WebrtcIdentityHash;
 ~~~
 
@@ -377,8 +377,11 @@ identity assertion.  An endpoint without an identity assertion MUST omit the
 
 A peer that receives a `webrtc_id_hash` extension that is not equal to the value
 of the identity assertion from its peer MUST immediately fail the TLS handshake
-with an error.  This includes cases where the `a=identity` attribute is not
+with an error.  This includes cases where the `identity` attribute is not
 present in the SDP.
+
+A `webrtc_id_hash` extension that is any length other than 0 or 32 is invalid
+and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
 
 A peer that receives an identity assertion, but does not receive a
 `webrtc_id_hash` extension MAY choose to fail the connection, though it is
@@ -412,16 +415,16 @@ protocol.
 
 If a secondary protocol uses the signaling channel with the assumption that the
 signaling and TLS peers are the same then that protocol is vulnerable to attack.
-The identity of the peer at the TLS layer is not guranteed to be the same as the
-identity of the signaling peer.
+The identity of the peer at the TLS layer is not guaranteed to be the same as
+the identity of the signaling peer.
 
 It is important to note that multiple connections can be created within the same
-signaling session.  An attacker can concatenate only part of a session, choosing
-to terminate some connections (and optionally forward data) while arranging to
-have peers interact directly for other connections.  It is even possible to have
-different peers interact for each connection.  This means that the actual
-identity of the peer for one connection might differ from the peer on another
-connection.
+signaling session.  An attacker might concatenate only part of a session,
+choosing to terminate some connections (and optionally forward data) while
+arranging to have peers interact directly for other connections.  It is even
+possible to have different peers interact for each connection.  This means that
+the actual identity of the peer for one connection might differ from the peer on
+another connection.
 
 Information extracted from a TLS connection therefore MUST NOT be used in a
 secondary protocol outside of that connection if that protocol relies on the
@@ -440,7 +443,7 @@ This entire document contains security considerations.
 This document registers two extensions in the TLS "ExtensionType Values" registry
 established in {{!RFC5246}}:
 
-* The `sdp_dtls_id` extension has been assigned a code point of TBD; it is
+* The `sdp_tls_id` extension has been assigned a code point of TBD; it is
   recommended and is marked as "Encrypted" in TLS 1.3.
 
 * The `webrtc_id_hash` extension has been assigned a code point of TBD; it is
@@ -455,4 +458,4 @@ This problem would not have been discovered if it weren't for discussions with
 Sam Scott, Hugo Krawczyk, and Richard Barnes.  A solution similar to the one
 presented here was first proposed by Karthik Bhargavan who provided valuable
 input on this document.  Thyla van der Merwe assisted with a formal model of the
-solution.  Adam Roach and Paul E. Jones provided useful input.
+solution.  Adam Roach and Paul E. Jones provided useful review and input.
