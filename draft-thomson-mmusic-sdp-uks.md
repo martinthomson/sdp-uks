@@ -67,7 +67,7 @@ mitigation techniques are defined.
 # Introduction
 
 The use of Transport Layer Security (TLS) {{!RFC5246}} with the Session
-Description Protocol (SDP) {{!RFC4566}} is defined in {{!RFC4572}}.  Further use
+Description Protocol (SDP) {{!RFC4566}} is defined in {{!RFC8122}}.  Further use
 with Datagram Transport Layer Security (DTLS) {{!RFC6347}} and the Secure
 Real-time Transport Protocol (SRTP) {{!RFC3711}} is defined as DTLS-SRTP
 {{!RFC5763}}.
@@ -76,9 +76,9 @@ In these specifications, key agreement is performed using TLS or DTLS, with
 authentication being tied back to the session description (or SDP) through the
 use of certificate fingerprints.  Communication peers check that a hash, or
 fingerprint, provided in the SDP matches the certificate that is used in the TLS
-or DTLS handshake.  This is defined in {{!RFC4572}}.
+or DTLS handshake.  This is defined in {{!RFC8122}}.
 
-The design in RFC 4572 relies on the integrity of the signaling channel.
+The design in RFC 8122 relies on the integrity of the signaling channel.
 Certificate fingerprints are assumed to be provided by the communicating peers
 and carried by the signaling channel without being subject to modification.
 However, this design is vulnerable to an unknown key-share (UKS) attack where a
@@ -117,7 +117,7 @@ confusion, resulting in each peer involved in the session having a different
 view of the nature of the session.
 
 This attack applies to any communications established based on the SDP
-`fingerprint` attribute {{!RFC4572}}.
+`fingerprint` attribute {{!RFC8122}}.
 
 
 ## Attack Overview
