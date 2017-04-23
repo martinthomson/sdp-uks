@@ -260,28 +260,32 @@ SDP `tls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
 required to be unique.  Thus, no two offers or answers from the same client will
 have the same value.
 
-A new `sdp_tls_id` extension is added to the TLS or DTLS handshake for
-connections that are established as part of the same call or real-time session.
-This carries the value of the `tls-id` attribute and provides integrity
-protection for its exchange as part of the TLS or DTLS handshake.
+A new `external_session_id` extension is added to the TLS or DTLS handshake for connections
+that are established as part of the same call or real-time session.  This
+carries the value of the `tls-id` attribute and provides integrity protection
+for its exchange as part of the TLS or DTLS handshake.
 
 
-## The sdp_tls_id TLS Extension {#sdp_tls_id}
+## The external_session_id TLS Extension {#ext_sess_id}
 
-The `sdp_tls_id` TLS extension carries the unique identifier that an endpoint
-selects.  The value includes the `tls-id` attribute from the SDP that the
-endpoint generated when negotiating the session.
+The `external_session_id` TLS extension carries the unique identifier that an
+endpoint selects.  When used with SDP, the value includes the `tls-id` attribute
+from the SDP that the endpoint generated when negotiating the session.  This
+document only defines use of this extensions for SDP; other methods of external
+session negotiation can use this extension to include a unique session
+identifier.
 
-The `extension_data` for the `sdp_tls_id` extension contains a SdpTlsId
-struct, described below using the syntax defined in {{!RFC5246}}:
+The `extension_data` for the `external_session_id` extension contains a
+ExternalSessionId struct, described below using the syntax defined in
+{{!RFC5246}}:
 
 ~~~
    struct {
-      opaque tls_id<20..255>;
-   } SdpTlsId;
+      opaque id<20..255>;
+   } ExternalSessionId;
 ~~~
 
-The `tls_id` field of the extension includes the value of the `tls-id` SDP
+For SDP, the `id` field of the extension includes the value of the `tls-id` SDP
 attribute as defined in {{!I-D.ietf-mmusic-dtls-sdp}} (that is, the
 `tls-id-value` ABNF production).  The value of the `tls-id` attribute is encoded
 using ASCII {{!RFC0020}}.
@@ -291,14 +295,14 @@ separate DTLS connections carrying RTP and RTCP can be switched.  This is
 considered benign since these protocols are usually distinguishable.  RTP/RTCP
 multiplexing is advised to address this problem.
 
-The `sdp_tls_id` extension is included in a ClientHello and either ServerHello
+The `external_session_id` extension is included in a ClientHello and either ServerHello
 (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
-In TLS 1.3, the `sdp_tls_id` extension MUST NOT be included in a ServerHello.
+In TLS 1.3, the `external_session_id` extension MUST NOT be included in a ServerHello.
 
-Endpoints MUST check that the `tls_id` parameter in the extension that they
-receive includes the `tls-id` attribute value that they received in their peer's
-session description.  Comparison can be performed with either the decoded ASCII
-string or the encoded octets.  An endpoint that receives a `sdp_tls_id`
+Endpoints MUST check that the `id` parameter in the extension that they receive
+includes the `tls-id` attribute value that they received in their peer's session
+description.  Comparison can be performed with either the decoded ASCII string
+or the encoded octets.  An endpoint that receives a `external_session_id`
 extension that is not identical to the value that it expects MUST abort the
 connection with a fatal `handshake_failure` alert.
 
@@ -308,8 +312,8 @@ does not include this extension.  An endpoint MAY choose to continue a session
 without this extension in order to interoperate with peers that do not implement
 this specification.
 
-In TLS 1.3, the `sdp_tls_id` extension MUST be sent in the EncryptedExtensions
-message.
+In TLS 1.3, the `external_session_id` extension MUST be sent in the
+EncryptedExtensions message.
 
 
 # WebRTC Identity Binding {#webrtc}
@@ -337,8 +341,8 @@ TLS extension.  Peers then need only validate that the extension contains a hash
 of the identity assertion they received in signaling in addition to validating
 the identity assertion.
 
-Endpoints MAY use the `sdp_tls_id` extension in addition to this so that two
-calls between the same parties can't be altered by an attacker.
+Endpoints MAY use the `external_session_id` extension in addition to this so
+that two calls between the same parties can't be altered by an attacker.
 
 
 ## The webrtc_id_hash TLS Extension {#webrtc_id_hash}
@@ -443,8 +447,8 @@ This entire document contains security considerations.
 This document registers two extensions in the TLS "ExtensionType Values" registry
 established in {{!RFC5246}}:
 
-* The `sdp_tls_id` extension has been assigned a code point of TBD; it is
-  recommended and is marked as "Encrypted" in TLS 1.3.
+* The `external_session_id` extension has been assigned a code point of TBD; it
+  is recommended and is marked as "Encrypted" in TLS 1.3.
 
 * The `webrtc_id_hash` extension has been assigned a code point of TBD; it is
   recommended and is marked as "Encrypted" in TLS 1.3.
