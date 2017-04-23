@@ -100,7 +100,7 @@ claims to control a key that is in reality controlled by some other actor.  This
 arises when the identity associated with a key is not properly bound to the key.
 
 In usages of TLS and DTLS that use SDP for negotiation, an endpoint is able to
-acquire the certificate fingerprint another entity.  By advertising that
+acquire the certificate fingerprint of another entity.  By advertising that
 fingerprint in place of one of its own, the malicious endpoint can cause its
 peer to communicate with a different peer, even though it believes that it is
 communicating with the malicious endpoint.
@@ -110,11 +110,11 @@ signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
 {{!I-D.ietf-rtcweb-security-arch}}, this allows an attacker to bind their own
 identity to a session with any other entity.
 
-By substituting the the fingerprint of one peer for its own, an attacker is able
-to cause a session to be established where one endpoint has an incorrect value
-for the identity of its peer.  However, the peer does not suffer any such
-confusion, resulting in each peer involved in the session having a different
-view of the nature of the session.
+By substituting the fingerprint of one peer for its own, an attacker is able to
+cause a session to be established where one endpoint has an incorrect value for
+the identity of its peer.  However, the peer does not suffer any such confusion,
+resulting in each peer involved in the session having a different view of the
+nature of the session.
 
 This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
