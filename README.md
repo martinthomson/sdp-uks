@@ -3,7 +3,7 @@
 This is the working area for the Individual internet-draft, "Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)".
 
 * [Editor's copy](https://ekr.github.io/sdp-suks/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-thomson-avtcore-sdp-uks)
+* [Individual Draft](https://tools.ietf.org/html/draft-ietf-mmusic-sdp-uks)
 
 
 ## Building the Draft
