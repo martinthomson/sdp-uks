@@ -19,20 +19,25 @@
 }
 
 @media screen and (min-width: 1024px) {
-  ul.toc, #rfc\.toc {
+  body>ul.toc, body>#rfc\.toc {
     position: fixed;
     bottom: 0;
     right: 0;
-    right: calc(50vw - 525px);
+    right: calc(50vw - 550px);
     width: 300px;
     z-index: 1;
   }
   #rfc\.toc {
-    top: 15px;
-  }
-  ul.toc {
-    top: 80px;
+    top: 55px;
     overflow: auto;
+    overscroll-behavior: contain;
+  }
+  ul.toc, #rfc\.toc {
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>ul.toc {
+    top: 140px;
   }
 
   body {
@@ -41,11 +46,11 @@
 }
 
 body {
-  font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font: 16px "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #333;
   font-size-adjust: 0.5;
-  line-height: 130%;
-  margin: 25px auto;
+  line-height: 24px;
+  margin: 75px auto;
   max-width: 724px;
 }
 
@@ -58,7 +63,7 @@ body {
   margin: 0.8em 0 0.3em;
 }
 .title { font-size: 36px; }
-h1 { font-size: 30px; }
+h1 { font-size: 36px; }
 h2 { font-size: 24px; }
 h3, h4 { font-size: 18px; }
 h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
@@ -121,10 +126,9 @@ table.header td {
   height: auto;
   line-height: 100%;
 }
-#rfc\.abstract+p {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 130%;
+#rfc\.abstract+p, #rfc\.abstract p {
+  font-size: 18px;
+  line-height: 27px%;
 }
 
 samp, tt, code, pre {
@@ -192,6 +196,9 @@ ul.empty li {
 hr {
   border: 0;
   border-top: 1px solid #eee;
+}
+hr.noprint {
+  display: none;
 }
 
 a {
@@ -295,12 +302,12 @@ address {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.8.2 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.8.5 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-9-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-1-31" />
   <meta name="dct.abstract" content="Unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP) and its use with Web Real-Time Communications (WebRTC) identity assertions are described.  Simple mitigation techniques are defined." />
   <meta name="description" content="Unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP) and its use with Web Real-Time Communications (WebRTC) identity assertions are described.  Simple mitigation techniques are defined." />
 
@@ -324,8 +331,8 @@ address {
 <td class="right">Mozilla</td>
 </tr>
 <tr>
-<td class="left">Expires: March 29, 2018</td>
-<td class="right">September 25, 2017</td>
+<td class="left">Expires: August 4, 2018</td>
+<td class="right">January 31, 2018</td>
 </tr>
 
     	
@@ -341,9 +348,9 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 29, 2018.</p>
+<p>This Internet-Draft will expire on August 4, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2017 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
@@ -499,7 +506,7 @@ address {
       opaque assertion_hash&lt;0..32&gt;;
    } WebrtcIdentityHash;
 </pre>
-<p id="rfc.section.4.1.p.3">A WebRTC identity assertion is provided as a JSON <a href="#RFC7159" class="xref">[RFC7159]</a> object that is encoded into a JSON text.  The resulting string is then encoded using UTF-8 <a href="#RFC3629" class="xref">[RFC3629]</a>.  The content of the <samp>webrtc_id_hash</samp> extension are produced by hashing the resulting octets with SHA-256 <a href="#FIPS180-2" class="xref">[FIPS180-2]</a>.  This produces the 32 octets of the assertion_hash parameter, which is the sole contents of the extension.</p>
+<p id="rfc.section.4.1.p.3">A WebRTC identity assertion is provided as a JSON <a href="#RFC7159" class="xref">[RFC7159]</a> object that is encoded into a JSON text.  The resulting string is then encoded using UTF-8 <a href="#RFC3629" class="xref">[RFC3629]</a>.  The content of the <samp>webrtc_id_hash</samp> extension are produced by hashing the resulting octets with SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  This produces the 32 octets of the assertion_hash parameter, which is the sole contents of the extension.</p>
 <p id="rfc.section.4.1.p.4">The SDP <samp>identity</samp> attribute includes the base64 <a href="#RFC4648" class="xref">[RFC4648]</a> encoding of the same octets that were input to the hash.  The <samp>webrtc_id_hash</samp> extension is validated by performing base64 decoding on the value of the SDP <samp>identity</samp> attribute, hashing the resulting octets using SHA-256, and comparing the results with the content of the extension.</p>
 <p id="rfc.section.4.1.p.5">Identity assertions might be provided by only one peer.  An endpoint that does not produce an identity assertion MUST generate an empty <samp>webrtc_id_hash</samp> extension in its ClientHello.  This allows its peer to include a hash of its identity assertion.  An endpoint without an identity assertion MUST omit the <samp>webrtc_id_hash</samp> extension from its ServerHello or EncryptedExtensions message.</p>
 <p id="rfc.section.4.1.p.6">A peer that receives a <samp>webrtc_id_hash</samp> extension that is not equal to the value of the identity assertion from its peer MUST immediately fail the TLS handshake with an error.  This includes cases where the <samp>identity</samp> attribute is not present in the SDP.</p>
@@ -535,19 +542,14 @@ address {
 <a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
-<td class="reference"><b id="FIPS180-2">[FIPS180-2]</b></td>
-<td class="top">
-<a>Department of Commerce, National.</a>, "<a>NIST FIPS 180-2, Secure Hash Standard</a>", August 2002.</td>
-</tr>
-<tr>
 <td class="reference"><b id="I-D.ietf-mmusic-dtls-sdp">[I-D.ietf-mmusic-dtls-sdp]</b></td>
 <td class="top">
-<a>Holmberg, C.</a> and <a>R. Shpount</a>, "<a href="https://tools.ietf.org/html/draft-ietf-mmusic-dtls-sdp-30">Session Description Protocol (SDP) Offer/Answer Considerations for Datagram Transport Layer Security (DTLS) and Transport Layer Security (TLS)</a>", Internet-Draft draft-ietf-mmusic-dtls-sdp-30, September 2017.</td>
+<a>Holmberg, C.</a> and <a>R. Shpount</a>, "<a href="https://tools.ietf.org/html/draft-ietf-mmusic-dtls-sdp-32">Session Description Protocol (SDP) Offer/Answer Considerations for Datagram Transport Layer Security (DTLS) and Transport Layer Security (TLS)</a>", Internet-Draft draft-ietf-mmusic-dtls-sdp-32, October 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-rtcweb-security-arch">[I-D.ietf-rtcweb-security-arch]</b></td>
 <td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-rtcweb-security-arch-12">WebRTC Security Architecture</a>", Internet-Draft draft-ietf-rtcweb-security-arch-12, June 2016.</td>
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-rtcweb-security-arch-13">WebRTC Security Architecture</a>", Internet-Draft draft-ietf-rtcweb-security-arch-13, October 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC0020">[RFC0020]</b></td>
@@ -588,6 +590,11 @@ address {
 <td class="reference"><b id="RFC8122">[RFC8122]</b></td>
 <td class="top">
 <a>Lennox, J.</a> and <a>C. Holmberg</a>, "<a href="https://tools.ietf.org/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>", RFC 8122, DOI 10.17487/RFC8122, March 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="SHA">[SHA]</b></td>
+<td class="top">
+<a>Dang, Q.</a>, "<a>Secure Hash Standard</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.fips.180-4, July 2015.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
@@ -683,6 +690,5 @@ address {
   </address>
 </div>
 
-  <div class="github-fork-ribbon-wrapper"><div class="github-fork-ribbon"><a href="https://github.com/martinthomson/sdp-uks">Fork me on GitHub</a></div></div>
 </body>
 </html>

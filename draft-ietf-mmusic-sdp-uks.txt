@@ -5,7 +5,7 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Intended status: Standards Track                                 Mozilla
-Expires: March 29, 2018                               September 25, 2017
+Expires: August 4, 2018                                 January 31, 2018
 
 
  Unknown Key Share Attacks on uses of Transport Layer Security with the
@@ -34,11 +34,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 29, 2018.
+   This Internet-Draft will expire on August 4, 2018.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 1]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 1]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 2]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 2]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    A similar attack is possible with sessions that use WebRTC identity
@@ -165,9 +165,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 3]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 3]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
 2.2.  Limits on Attack Feasibility
@@ -221,9 +221,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 4]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 4]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
      Norma               Mallory             Patsy
@@ -277,9 +277,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 5]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 5]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    This attack creates an asymmetry in the beliefs about the identity of
@@ -333,9 +333,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 6]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 6]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    A new "external_session_id" extension is added to the TLS or DTLS
@@ -389,9 +389,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 7]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 7]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    An endpoint that is communicating with a peer that does not support
@@ -445,9 +445,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 8]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 8]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    The "extension_data" for the "webrtc_id_hash" extension contains a
@@ -462,8 +462,8 @@ Internet-Draft                   SDP UKS                  September 2017
    that is encoded into a JSON text.  The resulting string is then
    encoded using UTF-8 [RFC3629].  The content of the "webrtc_id_hash"
    extension are produced by hashing the resulting octets with SHA-256
-   [FIPS180-2].  This produces the 32 octets of the assertion_hash
-   parameter, which is the sole contents of the extension.
+   [SHA].  This produces the 32 octets of the assertion_hash parameter,
+   which is the sole contents of the extension.
 
    The SDP "identity" attribute includes the base64 [RFC4648] encoding
    of the same octets that were input to the hash.  The "webrtc_id_hash"
@@ -501,9 +501,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                 [Page 9]
+Thomson & Rescorla       Expires August 4, 2018                 [Page 9]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
 5.  Session Concatenation
@@ -557,9 +557,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                [Page 10]
+Thomson & Rescorla       Expires August 4, 2018                [Page 10]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
 6.  Security Considerations
@@ -581,20 +581,16 @@ Internet-Draft                   SDP UKS                  September 2017
 
 8.1.  Normative References
 
-   [FIPS180-2]
-              Department of Commerce, National., "NIST FIPS 180-2,
-              Secure Hash Standard", August 2002.
-
    [I-D.ietf-mmusic-dtls-sdp]
               Holmberg, C. and R. Shpount, "Session Description Protocol
               (SDP) Offer/Answer Considerations for Datagram Transport
               Layer Security (DTLS) and Transport Layer Security (TLS)",
-              draft-ietf-mmusic-dtls-sdp-30 (work in progress),
-              September 2017.
+              draft-ietf-mmusic-dtls-sdp-32 (work in progress), October
+              2017.
 
    [I-D.ietf-rtcweb-security-arch]
               Rescorla, E., "WebRTC Security Architecture", draft-ietf-
-              rtcweb-security-arch-12 (work in progress), June 2016.
+              rtcweb-security-arch-13 (work in progress), October 2017.
 
    [RFC0020]  Cerf, V., "ASCII format for network interchange", STD 80,
               RFC 20, DOI 10.17487/RFC0020, October 1969,
@@ -609,18 +605,18 @@ Internet-Draft                   SDP UKS                  September 2017
               RFC 3711, DOI 10.17487/RFC3711, March 2004,
               <https://www.rfc-editor.org/info/rfc3711>.
 
-
-
-
-
-Thomson & Rescorla       Expires March 29, 2018                [Page 11]
-
-Internet-Draft                   SDP UKS                  September 2017
-
-
    [RFC4566]  Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
               Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
               July 2006, <https://www.rfc-editor.org/info/rfc4566>.
+
+
+
+
+
+Thomson & Rescorla       Expires August 4, 2018                [Page 11]
+
+Internet-Draft                   SDP UKS                    January 2018
+
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
@@ -642,6 +638,10 @@ Internet-Draft                   SDP UKS                  September 2017
               in the Session Description Protocol (SDP)", RFC 8122,
               DOI 10.17487/RFC8122, March 2017,
               <https://www.rfc-editor.org/info/rfc8122>.
+
+   [SHA]      Dang, Q., "Secure Hash Standard", National Institute of
+              Standards and Technology report,
+              DOI 10.6028/nist.fips.180-4, July 2015.
 
 8.2.  Informative References
 
@@ -669,9 +669,9 @@ Internet-Draft                   SDP UKS                  September 2017
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                [Page 12]
+Thomson & Rescorla       Expires August 4, 2018                [Page 12]
 
-Internet-Draft                   SDP UKS                  September 2017
+Internet-Draft                   SDP UKS                    January 2018
 
 
    [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
@@ -725,4 +725,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla       Expires March 29, 2018                [Page 13]
+Thomson & Rescorla       Expires August 4, 2018                [Page 13]
