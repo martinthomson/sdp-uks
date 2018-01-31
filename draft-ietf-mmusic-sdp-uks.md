@@ -21,12 +21,6 @@ author:
     email: ekr@rftm.com
 
 normative:
-  FIPS180-2:
-    title: NIST FIPS 180-2, Secure Hash Standard
-    author:
-      name: NIST
-      ins: National Institute of Standards and Technology, U.S. Department of Commerce
-    date: 2002-08
 
 informative:
   UKS:
@@ -363,9 +357,9 @@ WebrtcIdentityHash struct, described below using the syntax defined in
 A WebRTC identity assertion is provided as a JSON {{?RFC7159}} object that is
 encoded into a JSON text.  The resulting string is then encoded using UTF-8
 {{!RFC3629}}.  The content of the `webrtc_id_hash` extension are produced by
-hashing the resulting octets with SHA-256 {{FIPS180-2}}.  This produces the 32
-octets of the assertion_hash parameter, which is the sole contents of the
-extension.
+hashing the resulting octets with SHA-256 {{!SHA=DOI.10.6028/NIST.FIPS.180-4}}.
+This produces the 32 octets of the assertion_hash parameter, which is the sole
+contents of the extension.
 
 The SDP `identity` attribute includes the base64 {{?RFC4648}} encoding of the
 same octets that were input to the hash.  The `webrtc_id_hash` extension is
