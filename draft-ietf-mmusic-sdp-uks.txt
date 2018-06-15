@@ -5,7 +5,7 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Intended status: Standards Track                                 Mozilla
-Expires: August 4, 2018                                 January 31, 2018
+Expires: December 17, 2018                                 June 15, 2018
 
 
  Unknown Key Share Attacks on uses of Transport Layer Security with the
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 4, 2018.
+   This Internet-Draft will expire on December 17, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Rescorla       Expires August 4, 2018                 [Page 1]
+Thomson & Rescorla      Expires December 17, 2018               [Page 1]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
 Table of Contents
@@ -69,8 +69,8 @@ Table of Contents
    3.  Adding a Session Identifier . . . . . . . . . . . . . . . . .   6
      3.1.  The external_session_id TLS Extension . . . . . . . . . .   7
    4.  WebRTC Identity Binding . . . . . . . . . . . . . . . . . . .   8
-     4.1.  The webrtc_id_hash TLS Extension  . . . . . . . . . . . .   8
-   5.  Session Concatenation . . . . . . . . . . . . . . . . . . . .  10
+     4.1.  The webrtc_id_hash TLS Extension  . . . . . . . . . . . .   9
+   5.  Consequences of Session Concatenation . . . . . . . . . . . .  10
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson & Rescorla       Expires August 4, 2018                 [Page 2]
+Thomson & Rescorla      Expires December 17, 2018               [Page 2]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
    A similar attack is possible with sessions that use WebRTC identity
@@ -158,17 +158,21 @@ Internet-Draft                   SDP UKS                    January 2018
    attacker when it is in fact calling a second party.  The second party
    correctly believes that it is talking to the victim.
 
+   The same technique can be used to cause two victims to both believe
+   they are talking to the attacker when they are talking to each other.
+
+
+
+
+
+Thomson & Rescorla      Expires December 17, 2018               [Page 3]
+
+Internet-Draft                   SDP UKS                       June 2018
+
+
    In a related attack, a single call using WebRTC identity can be
    attacked so that it produces the same outcome.  This attack does not
    require a concurrent call.
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 3]
-
-Internet-Draft                   SDP UKS                    January 2018
-
 
 2.2.  Limits on Attack Feasibility
 
@@ -198,9 +202,9 @@ Internet-Draft                   SDP UKS                    January 2018
 
 2.3.  Example
 
-   In this example, two outgoing sessions are created by the same
-   endpoint.  One of those sessions is initiated with the attacker,
-   another session is created toward another honest endpoint.  The
+   In this example, two sessions are created with the same endpoint
+   concurrently.  One of those sessions is initiated with the attacker,
+   the second session is created toward another honest endpoint.  The
    attacker convinces the endpoint that their session has completed, and
    that the session with the other endpoint has succeeded.
 
@@ -217,13 +221,9 @@ Internet-Draft                   SDP UKS                    January 2018
 
 
 
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 4]
+Thomson & Rescorla      Expires December 17, 2018               [Page 4]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
      Norma               Mallory             Patsy
@@ -248,23 +248,23 @@ Internet-Draft                   SDP UKS                    January 2018
    between Norma and Patsy.  Signaling for both sessions is permitted to
    complete.
 
-   Once complete, the session that is ostensibly between Mallory and
-   Norma is completed by forwarding packets between Norma and Patsy.
-   This requires that Mallory is able to intercept DTLS and media
-   packets from Patsy so that they can be forwarded to Norma at the
-   transport addresses that Norma associates with the first session.
+   Once signaling is complete on the session that is ostensibly between
+   Mallory and Norma is complete.  Mallory begins forwarding DTLS and
+   media packets sent to her by Norma to Patsy.  Mallory also intercepts
+   packets from Patsy and forwards those to Norma at the transport
+   address that Norma associates with Mallory.
 
    The second session - between Norma and Patsy - is permitted to
    continue to the point where Patsy believes that it has succeeded.
    This ensures that Patsy believes that she is communicating with
    Norma.  In the end, Norma believes that she is communicating with
-   Mallory, when she is actually communicating with Patsy.
+   Mallory, when she is really communicating with Patsy.
 
    Though Patsy needs to believe that the second session is successful,
    Mallory has no real interest in seeing that session complete.
    Mallory only needs to ensure that Patsy does not abandon the session
    prematurely.  For this reason, it might be necessary to permit the
-   answer from Patsy to reach Norma to allow Patsy to receive a call
+   signaling from Patsy to reach Norma to allow Patsy to receive a call
    completion signal, such as a SIP ACK.  Once the second session
    completes, Mallory causes any DTLS packets sent by Norma to Patsy to
    be dropped.
@@ -277,16 +277,21 @@ Internet-Draft                   SDP UKS                    January 2018
 
 
 
-Thomson & Rescorla       Expires August 4, 2018                 [Page 5]
+Thomson & Rescorla      Expires December 17, 2018               [Page 5]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
    This attack creates an asymmetry in the beliefs about the identity of
    peers.  However, this attack is only possible if the victim (Norma)
-   is willing to conduct two sessions concurrently, and if the same
+   is willing to conduct two sessions concurrently, if the attacker
+   (Mallory) is on the network path between the victims, and if the same
    certificate - and therefore SDP "fingerprint" attribute value - is
    used in both sessions.
+
+   Where ICE [ICE] is used, Mallory also needs to ensure that
+   connectivity between Patsy and Norma succeed, either by forwarding
+   checks or answering and generating the necessary messages.
 
 2.4.  Interactions with Key Continuity
 
@@ -326,17 +331,17 @@ Internet-Draft                   SDP UKS                    January 2018
    means that the session is established between the correct two
    endpoints.
 
+
+
+Thomson & Rescorla      Expires December 17, 2018               [Page 6]
+
+Internet-Draft                   SDP UKS                       June 2018
+
+
    This solution relies on the unique identifier given to DTLS sessions
    using the SDP "tls-id" attribute [I-D.ietf-mmusic-dtls-sdp].  This
    field is already required to be unique.  Thus, no two offers or
    answers from the same client will have the same value.
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 6]
-
-Internet-Draft                   SDP UKS                    January 2018
-
 
    A new "external_session_id" extension is added to the TLS or DTLS
    handshake for connections that are established as part of the same
@@ -381,18 +386,18 @@ Internet-Draft                   SDP UKS                    January 2018
    Endpoints MUST check that the "id" parameter in the extension that
    they receive includes the "tls-id" attribute value that they received
    in their peer's session description.  Comparison can be performed
+
+
+
+Thomson & Rescorla      Expires December 17, 2018               [Page 7]
+
+Internet-Draft                   SDP UKS                       June 2018
+
+
    with either the decoded ASCII string or the encoded octets.  An
    endpoint that receives a "external_session_id" extension that is not
    identical to the value that it expects MUST abort the connection with
    a fatal "handshake_failure" alert.
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 7]
-
-Internet-Draft                   SDP UKS                    January 2018
-
 
    An endpoint that is communicating with a peer that does not support
    this extension will receive a ClientHello, ServerHello or
@@ -437,18 +442,18 @@ Internet-Draft                   SDP UKS                    January 2018
    this so that two calls between the same parties can't be altered by
    an attacker.
 
+
+
+
+Thomson & Rescorla      Expires December 17, 2018               [Page 8]
+
+Internet-Draft                   SDP UKS                       June 2018
+
+
 4.1.  The webrtc_id_hash TLS Extension
 
    The "webrtc_id_hash" TLS extension carries a hash of the identity
    assertion that communicating peers have exchanged.
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 8]
-
-Internet-Draft                   SDP UKS                    January 2018
-
 
    The "extension_data" for the "webrtc_id_hash" extension contains a
    WebrtcIdentityHash struct, described below using the syntax defined
@@ -489,24 +494,22 @@ Internet-Draft                   SDP UKS                    January 2018
 
    A peer that receives an identity assertion, but does not receive a
    "webrtc_id_hash" extension MAY choose to fail the connection, though
-   it is expected that implementations that were written prior to the
-   existence of this document will not support these extensions for some
+   it is expected that implementations written prior to the definition
+   of the extensions in this document will not support both for some
    time.
+
+
+
+
+Thomson & Rescorla      Expires December 17, 2018               [Page 9]
+
+Internet-Draft                   SDP UKS                       June 2018
+
 
    In TLS 1.3, the "webrtc_id_hash" extension MUST be sent in the
    EncryptedExtensions message.
 
-
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                 [Page 9]
-
-Internet-Draft                   SDP UKS                    January 2018
-
-
-5.  Session Concatenation
+5.  Consequences of Session Concatenation
 
    Use of session identifiers does not prevent an attacker from
    establishing two concurrent sessions with different peers and
@@ -554,12 +557,9 @@ Internet-Draft                   SDP UKS                    January 2018
 
 
 
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                [Page 10]
+Thomson & Rescorla      Expires December 17, 2018              [Page 10]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
 6.  Security Considerations
@@ -613,9 +613,9 @@ Internet-Draft                   SDP UKS                    January 2018
 
 
 
-Thomson & Rescorla       Expires August 4, 2018                [Page 11]
+Thomson & Rescorla      Expires December 17, 2018              [Page 11]
 
-Internet-Draft                   SDP UKS                    January 2018
+Internet-Draft                   SDP UKS                       June 2018
 
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
@@ -645,6 +645,11 @@ Internet-Draft                   SDP UKS                    January 2018
 
 8.2.  Informative References
 
+   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", draft-ietf-ice-
+              rfc5245bis-20 (work in progress), March 2018.
+
    [RFC3550]  Schulzrinne, H., Casner, S., Frederick, R., and V.
               Jacobson, "RTP: A Transport Protocol for Real-Time
               Applications", STD 64, RFC 3550, DOI 10.17487/RFC3550,
@@ -660,19 +665,18 @@ Internet-Draft                   SDP UKS                    January 2018
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
+
+
+
+
+Thomson & Rescorla      Expires December 17, 2018              [Page 12]
+
+Internet-Draft                   SDP UKS                       June 2018
+
+
    [RFC5705]  Rescorla, E., "Keying Material Exporters for Transport
               Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
               March 2010, <https://www.rfc-editor.org/info/rfc5705>.
-
-
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                [Page 12]
-
-Internet-Draft                   SDP UKS                    January 2018
-
 
    [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
@@ -721,8 +725,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Thomson & Rescorla       Expires August 4, 2018                [Page 13]
+Thomson & Rescorla      Expires December 17, 2018              [Page 13]
