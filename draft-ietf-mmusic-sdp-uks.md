@@ -125,6 +125,9 @@ with an attacker.  The attacker can arrange for the victim to incorrectly
 believe that is calling the attacker when it is in fact calling a second party.
 The second party correctly believes that it is talking to the victim.
 
+The same technique can be used to cause two victims to both believe they are
+talking to the attacker when they are talking to each other.
+
 In a related attack, a single call using WebRTC identity can be attacked so that
 it produces the same outcome.  This attack does not require a concurrent call.
 
@@ -155,10 +158,11 @@ understanding of the peer's identity.
 
 ## Example
 
-In this example, two outgoing sessions are created by the same endpoint.  One of
-those sessions is initiated with the attacker, another session is created toward
-another honest endpoint.  The attacker convinces the endpoint that their session
-has completed, and that the session with the other endpoint has succeeded.
+In this example, two sessions are created with the same endpoint concurrently.
+One of those sessions is initiated with the attacker, the second session is
+created toward another honest endpoint.  The attacker convinces the endpoint
+that their session has completed, and that the session with the other endpoint
+has succeeded.
 
 ~~~
   Norma               Mallory             Patsy
@@ -183,22 +187,20 @@ session is established with Mallory, who falsely uses Patsy's certificate
 fingerprint.  A second session is initiated between Norma and Patsy.  Signaling
 for both sessions is permitted to complete.
 
-Once complete, the session that is ostensibly between Mallory and Norma is
-completed by forwarding packets between Norma and Patsy.  This requires that
-Mallory is able to intercept DTLS and media packets from Patsy so that they can
-be forwarded to Norma at the transport addresses that Norma associates with the
-first session.
+Once signaling is complete on the session that is ostensibly between Mallory and
+Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her
+by Norma to Patsy.  Mallory also intercepts packets from Patsy and forwards
+those to Norma at the transport address that Norma associates with Mallory.
 
 The second session - between Norma and Patsy - is permitted to continue to the
 point where Patsy believes that it has succeeded.  This ensures that Patsy
 believes that she is communicating with Norma.  In the end, Norma believes that
-she is communicating with Mallory, when she is actually communicating with
-Patsy.
+she is communicating with Mallory, when she is really communicating with Patsy.
 
 Though Patsy needs to believe that the second session is successful, Mallory has
 no real interest in seeing that session complete.  Mallory only needs to ensure
 that Patsy does not abandon the session prematurely.  For this reason, it might
-be necessary to permit the answer from Patsy to reach Norma to allow Patsy to
+be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to
 receive a call completion signal, such as a SIP ACK.  Once the second session
 completes, Mallory causes any DTLS packets sent by Norma to Patsy to be dropped.
 
@@ -209,8 +211,13 @@ might receive a notice that the call is failed and thereby abort the call.
 
 This attack creates an asymmetry in the beliefs about the identity of peers.
 However, this attack is only possible if the victim (Norma) is willing to
-conduct two sessions concurrently, and if the same certificate - and therefore
-SDP `fingerprint` attribute value - is used in both sessions.
+conduct two sessions concurrently, if the attacker (Mallory) is on the network
+path between the victims, and if the same certificate - and therefore SDP
+`fingerprint` attribute value - is used in both sessions.
+
+Where ICE {{?ICE=I-D.ietf-ice-rfc5245bis}} is used, Mallory also needs to ensure
+that connectivity between Patsy and Norma succeed, either by forwarding checks
+or answering and generating the necessary messages.
 
 
 ## Interactions with Key Continuity {#continuity}
@@ -254,10 +261,10 @@ SDP `tls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
 required to be unique.  Thus, no two offers or answers from the same client will
 have the same value.
 
-A new `external_session_id` extension is added to the TLS or DTLS handshake for connections
-that are established as part of the same call or real-time session.  This
-carries the value of the `tls-id` attribute and provides integrity protection
-for its exchange as part of the TLS or DTLS handshake.
+A new `external_session_id` extension is added to the TLS or DTLS handshake for
+connections that are established as part of the same call or real-time session.
+This carries the value of the `tls-id` attribute and provides integrity
+protection for its exchange as part of the TLS or DTLS handshake.
 
 
 ## The external_session_id TLS Extension {#ext_sess_id}
@@ -289,9 +296,10 @@ separate DTLS connections carrying RTP and RTCP can be switched.  This is
 considered benign since these protocols are usually distinguishable.  RTP/RTCP
 multiplexing is advised to address this problem.
 
-The `external_session_id` extension is included in a ClientHello and either ServerHello
-(for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
-In TLS 1.3, the `external_session_id` extension MUST NOT be included in a ServerHello.
+The `external_session_id` extension is included in a ClientHello and either
+ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions
+(for TLS 1.3).  In TLS 1.3, the `external_session_id` extension MUST NOT be
+included in a ServerHello.
 
 Endpoints MUST check that the `id` parameter in the extension that they receive
 includes the `tls-id` attribute value that they received in their peer's session
@@ -383,14 +391,14 @@ and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
 
 A peer that receives an identity assertion, but does not receive a
 `webrtc_id_hash` extension MAY choose to fail the connection, though it is
-expected that implementations that were written prior to the existence of this
-document will not support these extensions for some time.
+expected that implementations written prior to the definition of the extensions
+in this document will not support both for some time.
 
 In TLS 1.3, the `webrtc_id_hash` extension MUST be sent in the
 EncryptedExtensions message.
 
 
-# Session Concatenation
+# Consequences of Session Concatenation
 
 Use of session identifiers does not prevent an attacker from establishing two
 concurrent sessions with different peers and forwarding signaling from those
@@ -438,8 +446,8 @@ This entire document contains security considerations.
 
 # IANA Considerations
 
-This document registers two extensions in the TLS "ExtensionType Values" registry
-established in {{!RFC5246}}:
+This document registers two extensions in the TLS "ExtensionType Values"
+registry established in {{!RFC5246}}:
 
 * The `external_session_id` extension has been assigned a code point of TBD; it
   is recommended and is marked as "Encrypted" in TLS 1.3.
