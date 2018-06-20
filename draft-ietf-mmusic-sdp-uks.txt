@@ -5,7 +5,7 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Intended status: Standards Track                                 Mozilla
-Expires: December 17, 2018                                 June 15, 2018
+Expires: December 22, 2018                                 June 20, 2018
 
 
  Unknown Key Share Attacks on uses of Transport Layer Security with the
@@ -14,10 +14,13 @@ Expires: December 17, 2018                                 June 15, 2018
 
 Abstract
 
-   Unknown key-share attacks on the use of Datagram Transport Layer
-   Security for the Secure Real-Time Transport Protocol (DTLS-SRTP) and
-   its use with Web Real-Time Communications (WebRTC) identity
-   assertions are described.  Simple mitigation techniques are defined.
+   This document describes unknown key-share attacks on the use of
+   Datagram Transport Layer Security for the Secure Real-Time Transport
+   Protocol (DTLS-SRTP).  Similar attacks are described on the use of
+   DTLS-SRTP with Web Real-Time Communications (WebRTC) identity
+   assertions.  Both attacks cause a victim to be mislead about the
+   identity of a communicating peer.  Simple mitigation techniques are
+   defined for each.
 
 Status of This Memo
 
@@ -34,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 17, 2018.
+   This Internet-Draft will expire on December 22, 2018.
 
 Copyright Notice
 
@@ -47,16 +50,17 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 1]
+Thomson & Rescorla      Expires December 22, 2018               [Page 1]
 
 Internet-Draft                   SDP UKS                       June 2018
 
+
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
 
 Table of Contents
 
@@ -103,16 +107,15 @@ Table of Contents
    creation of sessions where peers are confused about the identify of
    the participants.
 
-   An extension to TLS is defined that can be used to mitigate this
-   attack.
 
 
-
-
-Thomson & Rescorla      Expires December 17, 2018               [Page 2]
+Thomson & Rescorla      Expires December 22, 2018               [Page 2]
 
 Internet-Draft                   SDP UKS                       June 2018
 
+
+   An extension to TLS is defined that can be used to mitigate this
+   attack.
 
    A similar attack is possible with sessions that use WebRTC identity
    (see Section 5.6 of [I-D.ietf-rtcweb-security-arch]).  This issue and
@@ -158,17 +161,17 @@ Internet-Draft                   SDP UKS                       June 2018
    attacker when it is in fact calling a second party.  The second party
    correctly believes that it is talking to the victim.
 
-   The same technique can be used to cause two victims to both believe
-   they are talking to the attacker when they are talking to each other.
 
 
 
 
-
-Thomson & Rescorla      Expires December 17, 2018               [Page 3]
+Thomson & Rescorla      Expires December 22, 2018               [Page 3]
 
 Internet-Draft                   SDP UKS                       June 2018
 
+
+   The same technique can be used to cause two victims to both believe
+   they are talking to the attacker when they are talking to each other.
 
    In a related attack, a single call using WebRTC identity can be
    attacked so that it produces the same outcome.  This attack does not
@@ -218,10 +221,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-
-
-
-Thomson & Rescorla      Expires December 17, 2018               [Page 4]
+Thomson & Rescorla      Expires December 22, 2018               [Page 4]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 5]
+Thomson & Rescorla      Expires December 22, 2018               [Page 5]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 6]
+Thomson & Rescorla      Expires December 22, 2018               [Page 6]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 7]
+Thomson & Rescorla      Expires December 22, 2018               [Page 7]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 8]
+Thomson & Rescorla      Expires December 22, 2018               [Page 8]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018               [Page 9]
+Thomson & Rescorla      Expires December 22, 2018               [Page 9]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018              [Page 10]
+Thomson & Rescorla      Expires December 22, 2018              [Page 10]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018              [Page 11]
+Thomson & Rescorla      Expires December 22, 2018              [Page 11]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                       June 2018
 
 
 
-Thomson & Rescorla      Expires December 17, 2018              [Page 12]
+Thomson & Rescorla      Expires December 22, 2018              [Page 12]
 
 Internet-Draft                   SDP UKS                       June 2018
 
@@ -725,4 +725,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires December 17, 2018              [Page 13]
+Thomson & Rescorla      Expires December 22, 2018              [Page 13]
