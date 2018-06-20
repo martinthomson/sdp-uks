@@ -53,8 +53,9 @@ informative:
 This document describes unknown key-share attacks on the use of Datagram
 Transport Layer Security for the Secure Real-Time Transport Protocol
 (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web
-Real-Time Communications (WebRTC) identity assertions.  Simple mitigation
-techniques are defined for each.
+Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a
+victim to be mislead about the identity of a communicating peer.  Simple
+mitigation techniques are defined for each.
 
 
 --- middle
