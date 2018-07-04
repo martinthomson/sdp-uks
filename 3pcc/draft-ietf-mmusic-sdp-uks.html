@@ -1,0 +1,710 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)</title>
+
+  
+<style type="text/css">/*<![CDATA[*/
+
+body {
+  font: 16px "Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
+  color: #333;
+  font-size-adjust: 0.5;
+  line-height: 24px;
+  margin: 75px auto;
+  max-width: 624px;
+  padding: 0 5px;
+}
+
+.title, .filename, h1, h2, h3, h4, h5 {
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
+  font-size-adjust: 0.5;
+  font-weight: bold;
+  color: #333;
+  line-height: 100%;
+  margin: 1.2em 0 0.3em;
+}
+.title, #rfc\.title h1 { font-size: 32px; }
+h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
+h3, section h4, h4, section h5 { font-size: 16px; }
+h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
+  color: #333;
+}
+
+table {
+  margin-left: 0em;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(2n+1) > td,
+tr:nth-child(2n+1) > th {
+  background-color: #f9f9f9;
+}
+td.reference {
+  max-width: 200px;
+  border-top: none;
+  padding-right: 1em;
+}
+.right {
+  text-align: right;
+}
+
+
+table.header, table#rfc\.headerblock {
+  width: 100%;
+}
+table.header td, table#rfc\.headerblock td {
+  border: none;
+  background-color: transparent;
+  color: black;
+  padding: 0;
+}
+.filename {
+  display: block;
+  color: rgb(119, 119, 119);
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 100%;
+  margin: 10px 0 32px;
+}
+#rfc\.abstract+p, #rfc\.abstract p {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+samp, tt, code, pre {
+  font: 15px Consolas, monospace;
+  font-size-adjust: none;
+}
+pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  overflow-x: auto;
+  padding: 5px;
+  margin: 5px;
+}
+.figure, caption {
+  font-style: italic;
+  margin: 0 1.5em;
+  text-align: left;
+}
+
+address {
+  margin: 16px 2px;
+  line-height: 20px;
+}
+.vcard {
+  font-style: normal;
+}
+.vcardline {
+  display: block;
+}
+.vcardline .fn, address b {
+  font-weight: normal;
+}
+.vcardline .hidden {
+  display: none;
+}
+
+dl {
+  margin-left: 1em;
+}
+dl.dl-horizontal: {
+  margin-left: 0;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+hr.noprint {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #2a6496;
+}
+a[href]:hover {
+  background-color: #eee;
+}
+
+p, ol, ul, li {
+  padding: 0;
+}
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
+}
+address {
+  font-style: normal;
+}
+
+ul.toc ul {
+  margin: 0 0 0 2em;
+}
+ul.toc li {
+  list-style: none;
+  margin: 0;
+}
+
+@media screen and (min-width: 924px) {
+  body {
+    padding-right: 350px;
+  }
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    z-index: 1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>#rfc\.toc {
+    top: 55px;
+  }
+  body>ul.toc {
+    top: 100px;
+  }
+
+  ul.toc {
+    margin: 0 0 0 4px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  ul.toc ul {
+    margin-left: 1.2em;
+  }
+}
+
+.github-fork-ribbon-wrapper {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  /* "Fork me on GitHub" CSS ribbon based on
+   * https://github.com/simonwhitaker/github-fork-ribbon-css
+   */
+  .github-fork-ribbon {
+    position: absolute;
+    padding: 2px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    pointer-events: auto;
+
+    top: 38px;
+    right: -45px;
+
+    transform: rotate(45deg);
+  }
+
+  .github-fork-ribbon a[href],
+  .github-fork-ribbon a[href]:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+
+    width: 190px;
+    line-height: 18px;
+
+    display: inline-block;
+    padding: 2px 0;
+
+    border: 1.5px dotted #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .github-fork-ribbon-wrapper {
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    overflow: hidden;
+    top: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .github-fork-ribbon-wrapper {
+    position: fixed;
+  }
+  /*]]>*/</style>
+  <meta name="viewport" content="initial-scale=1.0">
+
+
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.2" rel="Chapter" title="2 Unknown Key-Share Attack">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Attack Overview">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Limits on Attack Feasibility">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Example">
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Interactions with Key Continuity">
+<link href="#rfc.section.2.5" rel="Chapter" title="2.5 Third-Party Call Control">
+<link href="#rfc.section.3" rel="Chapter" title="3 Adding a Session Identifier">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 The external_session_id TLS Extension">
+<link href="#rfc.section.4" rel="Chapter" title="4 WebRTC Identity Binding">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 The webrtc_id_hash TLS Extension">
+<link href="#rfc.section.5" rel="Chapter" title="5 Consequences of Session Concatenation">
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
+<link href="#rfc.references" rel="Chapter" title="8 References">
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements">
+<link href="#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-04" />
+  <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
+  <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">Network Working Group</td>
+<td class="right">M. Thomson</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right">E. Rescorla</td>
+</tr>
+<tr>
+<td class="left">Intended status: Standards Track</td>
+<td class="right">Mozilla</td>
+</tr>
+<tr>
+<td class="left">Expires: January 5, 2019</td>
+<td class="right">July 04, 2018</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)<br />
+  <span class="filename">draft-ietf-mmusic-sdp-uks-latest</span></p>
+  
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each.</p>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on January 5, 2019.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<li>2.   <a href="#rfc.section.2">Unknown Key-Share Attack</a>
+</li>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Attack Overview</a>
+</li>
+<li>2.2.   <a href="#rfc.section.2.2">Limits on Attack Feasibility</a>
+</li>
+<li>2.3.   <a href="#rfc.section.2.3">Example</a>
+</li>
+<li>2.4.   <a href="#rfc.section.2.4">Interactions with Key Continuity</a>
+</li>
+<li>2.5.   <a href="#rfc.section.2.5">Third-Party Call Control</a>
+</li>
+</ul><li>3.   <a href="#rfc.section.3">Adding a Session Identifier</a>
+</li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">The external_session_id TLS Extension</a>
+</li>
+</ul><li>4.   <a href="#rfc.section.4">WebRTC Identity Binding</a>
+</li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">The webrtc_id_hash TLS Extension</a>
+</li>
+</ul><li>5.   <a href="#rfc.section.5">Consequences of Session Concatenation</a>
+</li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a>
+</li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+</li>
+<li>8.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a>
+</li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a>
+</li>
+<li><a href="#rfc.authors">Authors' Addresses</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">The use of Transport Layer Security (TLS) <a href="#RFC5246" class="xref">[RFC5246]</a> with the Session Description Protocol (SDP) <a href="#RFC4566" class="xref">[RFC4566]</a> is defined in <a href="#RFC8122" class="xref">[RFC8122]</a>.  Further use with Datagram Transport Layer Security (DTLS) <a href="#RFC6347" class="xref">[RFC6347]</a> and the Secure Real-time Transport Protocol (SRTP) <a href="#RFC3711" class="xref">[RFC3711]</a> is defined as DTLS-SRTP <a href="#RFC5763" class="xref">[RFC5763]</a>.</p>
+<p id="rfc.section.1.p.2">In these specifications, key agreement is performed using TLS or DTLS, with authentication being tied back to the session description (or SDP) through the use of certificate fingerprints.  Communication peers check that a hash, or fingerprint, provided in the SDP matches the certificate that is used in the TLS or DTLS handshake.  This is defined in <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
+<p id="rfc.section.1.p.3">The design in RFC 8122 relies on the integrity of the signaling channel.  Certificate fingerprints are assumed to be provided by the communicating peers and carried by the signaling channel without being subject to modification.  However, this design is vulnerable to an unknown key-share (UKS) attack where a misbehaving endpoint is able to advertise a key that it does not control.  This leads to the creation of sessions where peers are confused about the identify of the participants.</p>
+<p id="rfc.section.1.p.4">An extension to TLS is defined that can be used to mitigate this attack.</p>
+<p id="rfc.section.1.p.5">A similar attack is possible with sessions that use WebRTC identity (see Section 5.6 of <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>).  This issue and a mitigation for it is discussed in more detail in <a href="#webrtc" class="xref">Section 4</a>.</p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#unknown-key-share-attack" id="unknown-key-share-attack">Unknown Key-Share Attack</a>
+</h1>
+<p id="rfc.section.2.p.1">In an unknown key-share attack <a href="#UKS" class="xref">[UKS]</a>, a malicious participant in a protocol claims to control a key that is in reality controlled by some other actor.  This arises when the identity associated with a key is not properly bound to the key.</p>
+<p id="rfc.section.2.p.2">In usages of TLS that use SDP for negotiation, an endpoint is able to acquire the certificate fingerprint of another entity.  By advertising that fingerprint in place of one of its own, the malicious endpoint can cause its peer to communicate with a different peer, even though it believes that it is communicating with the malicious endpoint.</p>
+<p id="rfc.section.2.p.3">When the identity of communicating peers is established by higher-layer signaling constructs, such as those in SIP <a href="#RFC4474" class="xref">[RFC4474]</a> or WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>, this allows an attacker to bind their own identity to a session with any other entity.</p>
+<p id="rfc.section.2.p.4">By substituting the fingerprint of one peer for its own, an attacker is able to cause a TLS connection to be established where one endpoint might make an incorrect assumption about the identity of its peer.  The TLS peer is not the same as the signaling peer.</p>
+<p id="rfc.section.2.p.5">The peer does not suffer any such confusion, resulting in each peer involved in the session having a different view of the nature of the session.</p>
+<p id="rfc.section.2.p.6">This attack applies to any communications established based on the SDP <samp>fingerprint</samp> attribute <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
+<p id="rfc.section.2.p.7">This attack is an aspect of the protocol that the technique known as third-party call control (3PCC) relies on.  <a href="#byebye-3pcc" class="xref">Section 2.5</a> describes the consequences of this the mitigations described here for systems that use 3PCC.</p>
+<h1 id="rfc.section.2.1">
+<a href="#rfc.section.2.1">2.1.</a> <a href="#attack-overview" id="attack-overview">Attack Overview</a>
+</h1>
+<p id="rfc.section.2.1.p.1">This vulnerability can be used by an attacker to create a session where there is confusion about the communicating endpoints.</p>
+<p id="rfc.section.2.1.p.2">A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can be attacked if it is willing to conduct two concurrent calls, one of which is with an attacker.  The attacker can arrange for the victim to incorrectly believe that is calling the attacker when it is in fact calling a second party.  The second party correctly believes that it is talking to the victim.</p>
+<p id="rfc.section.2.1.p.3">The same technique can be used to cause two victims to both believe they are talking to the attacker when they are talking to each other.</p>
+<p id="rfc.section.2.1.p.4">In a related attack, a single call using WebRTC identity can be attacked so that it produces the same outcome.  This attack does not require a concurrent call.</p>
+<h1 id="rfc.section.2.2">
+<a href="#rfc.section.2.2">2.2.</a> <a href="#limits-on-attack-feasibility" id="limits-on-attack-feasibility">Limits on Attack Feasibility</a>
+</h1>
+<p id="rfc.section.2.2.p.1">The use of TLS with SDP depends on the integrity of session signaling.  Assuming signaling integrity limits the capabilities of an attacker in several ways.  In particular:</p>
+<p></p>
+
+<ol>
+<li>An attacker can only modify the parts of the session signaling for a session that they are part of, which is limited to their own offers and answers.</li>
+<li>No entity will complete communications with a peer unless they are willing to participate in a session with that peer.</li>
+</ol>
+<p id="rfc.section.2.2.p.3">The combination of these two constraints make the spectrum of possible attacks quite limited.  An attacker is only able to switch its own certificate fingerprint for a valid certificate that is acceptable to its peer.  Attacks therefore rely on joining two separate sessions into a single session.</p>
+<p id="rfc.section.2.2.p.4">The second condition is not necessary with WebRTC identity if the victim has or is configured with a target peer identity (as defined in <a href="#WEBRTC" class="xref">[WEBRTC]</a>).  Furthermore, any identity displayed by a browser could be different to the identity used by the application, since the attack affects the browser&#8217;s understanding of the peer&#8217;s identity.</p>
+<h1 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#example" id="example">Example</a>
+</h1>
+<p id="rfc.section.2.3.p.1">In this example, two sessions are created with the same endpoint concurrently.  One of those sessions is initiated with the attacker, the second session is created toward another honest endpoint.  The attacker convinces the endpoint that their session has completed, and that the session with the other endpoint has succeeded.</p>
+<pre>
+  Norma               Mallory             Patsy
+  (fp=N)               -----              (fp=P)
+    |                    |                  |
+    +---Offer1 (fp=N)---&gt;|                  |
+    +-----Offer2 (fp=N)--------------------&gt;|
+    |&lt;--------------------Answer2 (fp=P)----+
+    |&lt;--Answer1 (fp=P)---+                  |
+    |                    |                  |
+    |======DTLS1====&gt;(Forward)====DTLS1====&gt;|
+    |&lt;=====DTLS2=====(Forward)&lt;===DTLS2=====|
+    |======Media1===&gt;(Forward)====Media1===&gt;|
+    |&lt;=====Media2====(Forward)&lt;===Media2====|
+    |                    |                  |
+    |======DTLS2===========&gt;(Drop)          |
+    |                    |                  |
+</pre>
+<p id="rfc.section.2.3.p.2">In this case, Norma is willing to conduct two concurrent sessions.  The first session is established with Mallory, who falsely uses Patsy&#8217;s certificate fingerprint.  A second session is initiated between Norma and Patsy.  Signaling for both sessions is permitted to complete.</p>
+<p id="rfc.section.2.3.p.3">Once signaling is complete on the session that is ostensibly between Mallory and Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her by Norma to Patsy.  Mallory also intercepts packets from Patsy and forwards those to Norma at the transport address that Norma associates with Mallory.</p>
+<p id="rfc.section.2.3.p.4">The second signaling exchange - between Norma and Patsy - is permitted to continue to the point where Patsy believes that it has succeeded.  This ensures that Patsy believes that she is communicating with Norma.  In the end, Norma believes that she is communicating with Mallory, when she is really communicating with Patsy.</p>
+<p id="rfc.section.2.3.p.5">Though Patsy needs to believe that the second signaling session has been successfully established, Mallory has no real interest in seeing that session complete.  Mallory only needs to ensure that Patsy does not abandon the session prematurely.  For this reason, it might be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to receive a call completion signal, such as a SIP ACK.  Once the second session completes, Mallory might cause DTLS packets sent by Norma to Patsy to be dropped, though these will likely be discarded by Patsy.</p>
+<p id="rfc.section.2.3.p.6">For the attacked session to be sustained beyond the point that Norma detects errors in the second session, Mallory also needs to block any signaling that Norma might send to Patsy asking for the call to be abandoned.  Otherwise, Patsy might receive a notice that the call is failed and thereby abort the call.</p>
+<p id="rfc.section.2.3.p.7">This attack creates an asymmetry in the beliefs about the identity of peers.  However, this attack is only possible if the victim (Norma) is willing to conduct two sessions concurrently, if the attacker (Mallory) is on the network path between the victims, and if the same certificate - and therefore SDP <samp>fingerprint</samp> attribute value - is used in both sessions.</p>
+<p id="rfc.section.2.3.p.8">Where ICE <a href="#ICE" class="xref">[ICE]</a> is used, Mallory also needs to ensure that connectivity between Patsy and Norma succeed, either by forwarding checks or answering and generating the necessary messages.</p>
+<h1 id="rfc.section.2.4">
+<a href="#rfc.section.2.4">2.4.</a> <a href="#continuity" id="continuity">Interactions with Key Continuity</a>
+</h1>
+<p id="rfc.section.2.4.p.1">Systems that use key continuity might be able to detect an unknown key-share attack if a session with the actual peer (i.e., Patsy in the example) was established in the past.  Whether this is possible depends on how key continuity is implemented.</p>
+<p id="rfc.section.2.4.p.2">Implementations that maintain a single database of identities with an index on peer keys could discover that the identity saved for the peer key does not match the claimed identity.  Such an implementation could notice the disparity between the actual keys (Patsy) and the expected keys (Mallory).</p>
+<p id="rfc.section.2.4.p.3">In comparison, implementations that first match based on peer identity could treat an unknown key-share attack as though their peer had used a newly-configured device.  The apparent addition of a new device could generate user-visible notices (e.g., &#8220;Mallory appears to have a new device&#8221;).  However, such an event is not always considered alarming; some implementations might silently save a new key.</p>
+<h1 id="rfc.section.2.5">
+<a href="#rfc.section.2.5">2.5.</a> <a href="#byebye-3pcc" id="byebye-3pcc">Third-Party Call Control</a>
+</h1>
+<p id="rfc.section.2.5.p.1">Third-party call control (3PCC) is a technique where a signaling peer establishes a call that is terminated by a different entity.  This attack is very similar to the 3PCC technique, except where the TLS peers are aware of the use of 3PCC.</p>
+<p id="rfc.section.2.5.p.2">For 3PCC to work with the proposed defense, TLS peers need to be aware of the signaling so that they can correctly generate (and check) the extension.  It understood that this technique will prevent the use of 3PCC if peers are not able to access signaling.</p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#sess-id" id="sess-id">Adding a Session Identifier</a>
+</h1>
+<p id="rfc.section.3.p.1">An attack on DTLS-SRTP is possible because the identity of peers involved is not established prior to establishing the call.  Endpoints use certificate fingerprints as a proxy for authentication, but as long as fingerprints are used in multiple calls, they are vulnerable to attacks of the sort described.</p>
+<p id="rfc.section.3.p.2">The solution to this problem is to assign a new identifier to communicating peers.  Each endpoint assigns their peer a unique identifier during call signaling.  The peer echoes that identifier in the TLS handshake, binding that identity into the session.  Including this new identity in the TLS handshake means that it will be covered by the TLS Finished message, which is necessary to authenticate it (see <a href="#SIGMA" class="xref">[SIGMA]</a>).  Validating that peers use the correct identifier then means that the session is established between the correct two endpoints.</p>
+<p id="rfc.section.3.p.3">This solution relies on the unique identifier given to DTLS sessions using the SDP <samp>tls-id</samp> attribute <a href="#DTLS-SDP" class="xref">[DTLS-SDP]</a>.  This field is already required to be unique.  Thus, no two offers or answers from the same client will have the same value.</p>
+<p id="rfc.section.3.p.4">A new <samp>external_session_id</samp> extension is added to the TLS or DTLS handshake for connections that are established as part of the same call or real-time session.  This carries the value of the <samp>tls-id</samp> attribute and provides integrity protection for its exchange as part of the TLS or DTLS handshake.</p>
+<h1 id="rfc.section.3.1">
+<a href="#rfc.section.3.1">3.1.</a> <a href="#ext_sess_id" id="ext_sess_id">The external_session_id TLS Extension</a>
+</h1>
+<p id="rfc.section.3.1.p.1">The <samp>external_session_id</samp> TLS extension carries the unique identifier that an endpoint selects.  When used with SDP, the value includes the <samp>tls-id</samp> attribute from the SDP that the endpoint generated when negotiating the session.  This document only defines use of this extensions for SDP; other methods of external session negotiation can use this extension to include a unique session identifier.</p>
+<p id="rfc.section.3.1.p.2">The <samp>extension_data</samp> for the <samp>external_session_id</samp> extension contains a ExternalSessionId struct, described below using the syntax defined in <a href="#RFC5246" class="xref">[RFC5246]</a>:</p>
+<pre>
+   struct {
+      opaque id&lt;20..255&gt;;
+   } ExternalSessionId;
+</pre>
+<p id="rfc.section.3.1.p.3">For SDP, the <samp>id</samp> field of the extension includes the value of the <samp>tls-id</samp> SDP attribute as defined in <a href="#DTLS-SDP" class="xref">[DTLS-SDP]</a> (that is, the <samp>tls-id-value</samp> ABNF production).  The value of the <samp>tls-id</samp> attribute is encoded using ASCII <a href="#RFC0020" class="xref">[RFC0020]</a>.</p>
+<p id="rfc.section.3.1.p.4">Where RTP and RTCP <a href="#RFC3550" class="xref">[RFC3550]</a> are not multiplexed, it is possible that the two separate DTLS connections carrying RTP and RTCP can be switched.  This is considered benign since these protocols are usually distinguishable.  RTP/RTCP multiplexing is advised to address this problem.</p>
+<p id="rfc.section.3.1.p.5">The <samp>external_session_id</samp> extension is included in a ClientHello and either ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).  In TLS 1.3, the <samp>external_session_id</samp> extension MUST NOT be included in a ServerHello.</p>
+<p id="rfc.section.3.1.p.6">Endpoints MUST check that the <samp>id</samp> parameter in the extension that they receive includes the <samp>tls-id</samp> attribute value that they received in their peer&#8217;s session description.  Comparison can be performed with either the decoded ASCII string or the encoded octets.  An endpoint that receives a <samp>external_session_id</samp> extension that is not identical to the value that it expects MUST abort the connection with a fatal <samp>handshake_failure</samp> alert.</p>
+<p id="rfc.section.3.1.p.7">An endpoint that is communicating with a peer that does not support this extension will receive a ClientHello, ServerHello or EncryptedExtensions that does not include this extension.  An endpoint MAY choose to continue a session without this extension in order to interoperate with peers that do not implement this specification.</p>
+<p id="rfc.section.3.1.p.8">In TLS 1.3, the <samp>external_session_id</samp> extension MUST be sent in the EncryptedExtensions message.</p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#webrtc" id="webrtc">WebRTC Identity Binding</a>
+</h1>
+<p id="rfc.section.4.p.1">The identity assertion used for WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> is bound only to the certificate fingerprint of an endpoint and can therefore be copied by an attacker along with any SDP <samp>fingerprint</samp> attributes.  An attacker can exploit this by causing a victim to believe that they are communicating with an attacker-controlled identity, when they are really talking to another entity of the attacker&#8217;s choice.</p>
+<p id="rfc.section.4.p.2">The problem might appear to be caused by the fact that an identity provider is not required to verify that the entity requesting an identity assertion controls the keys associated with the certificate that is used.  A WebRTC identity provider is not required, or even able, to perform validation.  This is not an issue because verification is not a necessary condition for a secure protocol, nor would it be sufficient to prevent attack <a href="#SIGMA" class="xref">[SIGMA]</a>.</p>
+<p id="rfc.section.4.p.3">A simple solution to this problem is suggested by <a href="#SIGMA" class="xref">[SIGMA]</a>.  The identity of endpoints is included under a message authentication code (MAC) during the cryptographic handshake.  Endpoints then validate that their peer has provided an identity that matches their expectations.</p>
+<p id="rfc.section.4.p.4">In TLS, the Finished message provides a MAC over the entire handshake, so that including the identity in a TLS extension is sufficient to implement this solution.  Rather than include a complete identity assertion - which could be sizeable - a collision- and pre-image-resistant hash of the identity assertion is included in a TLS extension.  Peers then need only validate that the extension contains a hash of the identity assertion they received in signaling in addition to validating the identity assertion.</p>
+<p id="rfc.section.4.p.5">Endpoints MAY use the <samp>external_session_id</samp> extension in addition to this so that two calls between the same parties can&#8217;t be altered by an attacker.</p>
+<h1 id="rfc.section.4.1">
+<a href="#rfc.section.4.1">4.1.</a> <a href="#webrtc_id_hash" id="webrtc_id_hash">The webrtc_id_hash TLS Extension</a>
+</h1>
+<p id="rfc.section.4.1.p.1">The <samp>webrtc_id_hash</samp> TLS extension carries a hash of the identity assertion that communicating peers have exchanged.</p>
+<p id="rfc.section.4.1.p.2">The <samp>extension_data</samp> for the <samp>webrtc_id_hash</samp> extension contains a WebrtcIdentityHash struct, described below using the syntax defined in <a href="#RFC5246" class="xref">[RFC5246]</a>:</p>
+<pre>
+   struct {
+      opaque assertion_hash&lt;0..32&gt;;
+   } WebrtcIdentityHash;
+</pre>
+<p id="rfc.section.4.1.p.3">A WebRTC identity assertion is provided as a JSON <a href="#RFC7159" class="xref">[RFC7159]</a> object that is encoded into a JSON text.  The resulting string is then encoded using UTF-8 <a href="#RFC3629" class="xref">[RFC3629]</a>.  The content of the <samp>webrtc_id_hash</samp> extension are produced by hashing the resulting octets with SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  This produces the 32 octets of the assertion_hash parameter, which is the sole contents of the extension.</p>
+<p id="rfc.section.4.1.p.4">The SDP <samp>identity</samp> attribute includes the base64 <a href="#RFC4648" class="xref">[RFC4648]</a> encoding of the same octets that were input to the hash.  The <samp>webrtc_id_hash</samp> extension is validated by performing base64 decoding on the value of the SDP <samp>identity</samp> attribute, hashing the resulting octets using SHA-256, and comparing the results with the content of the extension.</p>
+<p id="rfc.section.4.1.p.5">Identity assertions might be provided by only one peer.  An endpoint that does not produce an identity assertion MUST generate an empty <samp>webrtc_id_hash</samp> extension in its ClientHello.  This allows its peer to include a hash of its identity assertion.  An endpoint without an identity assertion MUST omit the <samp>webrtc_id_hash</samp> extension from its ServerHello or EncryptedExtensions message.</p>
+<p id="rfc.section.4.1.p.6">A peer that receives a <samp>webrtc_id_hash</samp> extension that is not equal to the value of the identity assertion from its peer MUST immediately fail the TLS handshake with an error.  This includes cases where the <samp>identity</samp> attribute is not present in the SDP.</p>
+<p id="rfc.section.4.1.p.7">A <samp>webrtc_id_hash</samp> extension that is any length other than 0 or 32 is invalid and MUST cause the receiving endpoint to generate a fatal <samp>decode_error</samp> alert.</p>
+<p id="rfc.section.4.1.p.8">A peer that receives an identity assertion, but does not receive a <samp>webrtc_id_hash</samp> extension MAY choose to fail the connection, though it is expected that implementations written prior to the definition of the extensions in this document will not support both for some time.</p>
+<p id="rfc.section.4.1.p.9">In TLS 1.3, the <samp>webrtc_id_hash</samp> extension MUST be sent in the EncryptedExtensions message.</p>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#consequences-of-session-concatenation" id="consequences-of-session-concatenation">Consequences of Session Concatenation</a>
+</h1>
+<p id="rfc.section.5.p.1">Use of session identifiers does not prevent an attacker from establishing two concurrent sessions with different peers and forwarding signaling from those peers to each other.  Concatenating two signaling sessions creates a situation where both peers believe that they are talking to the attacker when they are talking to each other.</p>
+<p id="rfc.section.5.p.2">This kind of attack is prevented by systems that enable peer authentication such as WebRTC identity <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> or SIP identity <a href="#RFC4474" class="xref">[RFC4474]</a>.  However, session concatention remains possible at higher layers: an attacker can establish two independent sessions and simply forward any data it receives from one into the other.</p>
+<p id="rfc.section.5.p.3">In the absence of any higher-level concept of peer identity, the use of session identifiers does not prevent session concatenation.  The value to an attacker is limited unless information from the TLS connection is extracted and used with the signaling.  For instance, a key exporter <a href="#RFC5705" class="xref">[RFC5705]</a> might be used to create a shared secret or unique identifier that is used in a secondary protocol.</p>
+<p id="rfc.section.5.p.4">If a secondary protocol uses the signaling channel with the assumption that the signaling and TLS peers are the same then that protocol is vulnerable to attack unless they also validate the identity of peers at both layers.  Use of the <samp>external_session_id</samp> does not guarantee that the identity of the peer at the TLS layer is the same as the identity of the signaling peer.</p>
+<p id="rfc.section.5.p.5">It is important to note that multiple connections can be created within the same signaling session.  An attacker might concatenate only part of a session, choosing to terminate some connections (and optionally forward data) while arranging to have peers interact directly for other connections.  It is even possible to have different peers interact for each connection.  This means that the actual identity of the peer for one connection might differ from the peer on another connection.</p>
+<p id="rfc.section.5.p.6">Information extracted from a TLS connection therefore MUST NOT be used in a secondary protocol outside of that connection if that protocol relies on the signaling protocol having the same peers.  Similarly, data from one TLS connection MUST NOT be used in other TLS connections even if they are established as a result of the same signaling session.</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.6.p.1">This entire document contains security considerations.</p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<p id="rfc.section.7.p.1">This document registers two extensions in the TLS &#8220;ExtensionType Values&#8221; registry established in <a href="#RFC5246" class="xref">[RFC5246]</a>:</p>
+<p></p>
+
+<ul>
+<li>The <samp>external_session_id</samp> extension has been assigned a code point of TBD; it is recommended and is marked as &#8220;Encrypted&#8221; in TLS 1.3.</li>
+<li>The <samp>webrtc_id_hash</samp> extension has been assigned a code point of TBD; it is recommended and is marked as &#8220;Encrypted&#8221; in TLS 1.3.</li>
+</ul>
+<h1 id="rfc.references">
+<a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="DTLS-SDP">[DTLS-SDP]</b></td>
+<td class="top">
+<a>Holmberg, C.</a> and <a>R. Shpount</a>, "<a href="https://tools.ietf.org/html/draft-ietf-mmusic-dtls-sdp-32">Session Description Protocol (SDP) Offer/Answer Considerations for Datagram Transport Layer Security (DTLS) and Transport Layer Security (TLS)</a>", Internet-Draft draft-ietf-mmusic-dtls-sdp-32, October 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC0020">[RFC0020]</b></td>
+<td class="top">
+<a>Cerf, V.</a>, "<a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>", STD 80, RFC 20, DOI 10.17487/RFC0020, October 1969.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3629">[RFC3629]</b></td>
+<td class="top">
+<a>Yergeau, F.</a>, "<a href="https://tools.ietf.org/html/rfc3629">UTF-8, a transformation format of ISO 10646</a>", STD 63, RFC 3629, DOI 10.17487/RFC3629, November 2003.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3711">[RFC3711]</b></td>
+<td class="top">
+<a>Baugher, M.</a>, <a>McGrew, D.</a>, <a>Naslund, M.</a>, <a>Carrara, E.</a> and <a>K. Norrman</a>, "<a href="https://tools.ietf.org/html/rfc3711">The Secure Real-time Transport Protocol (SRTP)</a>", RFC 3711, DOI 10.17487/RFC3711, March 2004.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4566">[RFC4566]</b></td>
+<td class="top">
+<a>Handley, M.</a>, <a>Jacobson, V.</a> and <a>C. Perkins</a>, "<a href="https://tools.ietf.org/html/rfc4566">SDP: Session Description Protocol</a>", RFC 4566, DOI 10.17487/RFC4566, July 2006.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5246">[RFC5246]</b></td>
+<td class="top">
+<a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5763">[RFC5763]</b></td>
+<td class="top">
+<a>Fischl, J.</a>, <a>Tschofenig, H.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5763">Framework for Establishing a Secure Real-time Transport Protocol (SRTP) Security Context Using Datagram Transport Layer Security (DTLS)</a>", RFC 5763, DOI 10.17487/RFC5763, May 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6347">[RFC6347]</b></td>
+<td class="top">
+<a>Rescorla, E.</a> and <a>N. Modadugu</a>, "<a href="https://tools.ietf.org/html/rfc6347">Datagram Transport Layer Security Version 1.2</a>", RFC 6347, DOI 10.17487/RFC6347, January 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8122">[RFC8122]</b></td>
+<td class="top">
+<a>Lennox, J.</a> and <a>C. Holmberg</a>, "<a href="https://tools.ietf.org/html/rfc8122">Connection-Oriented Media Transport over the Transport Layer Security (TLS) Protocol in the Session Description Protocol (SDP)</a>", RFC 8122, DOI 10.17487/RFC8122, March 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="SHA">[SHA]</b></td>
+<td class="top">
+<a>Dang, Q.</a>, "<a>Secure Hash Standard</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.fips.180-4, July 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="WEBRTC-SEC">[WEBRTC-SEC]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-rtcweb-security-arch-13">WebRTC Security Architecture</a>", Internet-Draft draft-ietf-rtcweb-security-arch-13, October 2017.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="ICE">[ICE]</b></td>
+<td class="top">
+<a>Keranen, A.</a>, <a>Holmberg, C.</a> and <a>J. Rosenberg</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ice-rfc5245bis-20">Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</a>", Internet-Draft draft-ietf-ice-rfc5245bis-20, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3550">[RFC3550]</b></td>
+<td class="top">
+<a>Schulzrinne, H.</a>, <a>Casner, S.</a>, <a>Frederick, R.</a> and <a>V. Jacobson</a>, "<a href="https://tools.ietf.org/html/rfc3550">RTP: A Transport Protocol for Real-Time Applications</a>", STD 64, RFC 3550, DOI 10.17487/RFC3550, July 2003.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4474">[RFC4474]</b></td>
+<td class="top">
+<a>Peterson, J.</a> and <a>C. Jennings</a>, "<a href="https://tools.ietf.org/html/rfc4474">Enhancements for Authenticated Identity Management in the Session Initiation Protocol (SIP)</a>", RFC 4474, DOI 10.17487/RFC4474, August 2006.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4648">[RFC4648]</b></td>
+<td class="top">
+<a>Josefsson, S.</a>, "<a href="https://tools.ietf.org/html/rfc4648">The Base16, Base32, and Base64 Data Encodings</a>", RFC 4648, DOI 10.17487/RFC4648, October 2006.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5705">[RFC5705]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/rfc5705">Keying Material Exporters for Transport Layer Security (TLS)</a>", RFC 5705, DOI 10.17487/RFC5705, March 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7159">[RFC7159]</b></td>
+<td class="top">
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="SIGMA">[SIGMA]</b></td>
+<td class="top">
+<a>Krawczyk, H.</a>, "<a>SIGMA: The &#8216;SIGn-and-MAc&#8217;approach to authenticated Diffie-Hellman and its use in the IKE protocols</a>", Annual International Cryptology Conference, Springer, pp. 400-425 , 2003.</td>
+</tr>
+<tr>
+<td class="reference"><b id="UKS">[UKS]</b></td>
+<td class="top">
+<a>Blake-Wilson, S.</a> and <a>A. Menezes</a>, "<a>Unknown Key-Share Attacks on the Station-to-Station (STS) Protocol</a>", Lecture Notes in Computer Science 1560, Springer, pp. 154&#8211;170 , 1999.</td>
+</tr>
+<tr>
+<td class="reference"><b id="WEBRTC">[WEBRTC]</b></td>
+<td class="top">
+<a>Bergkvist, A.</a>, <a>Burnett, D.</a>, <a>Narayanan, A.</a>, <a>Jennings, C.</a> and <a>B. Aboba</a>, "<a>WebRTC 1.0: Real-time Communication Between Browsers</a>", W3C WD-webrtc-30160531 , May 2016.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
+</h1>
+<p id="rfc.section.A.p.1">This problem would not have been discovered if it weren&#8217;t for discussions with Sam Scott, Hugo Krawczyk, and Richard Barnes.  A solution similar to the one presented here was first proposed by Karthik Bhargavan who provided valuable input on this document.  Thyla van der Merwe assisted with a formal model of the solution.  Adam Roach and Paul E. Jones provided useful review and input.</p>
+<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Martin Thomson</span> 
+	  <span class="n hidden">
+		<span class="family-name">Thomson</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Mozilla</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:martin.thomson@gmail.com">martin.thomson@gmail.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Eric Rescorla</span> 
+	  <span class="n hidden">
+		<span class="family-name">Rescorla</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Mozilla</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:ekr@rftm.com">ekr@rftm.com</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
