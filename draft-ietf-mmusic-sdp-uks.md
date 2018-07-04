@@ -95,10 +95,10 @@ In an unknown key-share attack {{UKS}}, a malicious participant in a protocol
 claims to control a key that is in reality controlled by some other actor.  This
 arises when the identity associated with a key is not properly bound to the key.
 
-In usages of TLS and DTLS that use SDP for negotiation, an endpoint is able to
-acquire the certificate fingerprint of another entity.  By advertising that
-fingerprint in place of one of its own, the malicious endpoint can cause its
-peer to communicate with a different peer, even though it believes that it is
+In usages of (D)TLS that use SDP for negotiation, an endpoint is able to acquire
+the certificate fingerprint of another entity.  By advertising that fingerprint
+in place of one of its own, the malicious endpoint can cause its peer to
+communicate with a different peer, even though it believes that it is
 communicating with the malicious endpoint.
 
 When the identity of communicating peers is established by higher-layer
@@ -107,13 +107,19 @@ signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
 with any other entity.
 
 By substituting the fingerprint of one peer for its own, an attacker is able to
-cause a session to be established where one endpoint has an incorrect value for
-the identity of its peer.  However, the peer does not suffer any such confusion,
-resulting in each peer involved in the session having a different view of the
-nature of the session.
+cause a (D)TLS connection to be established where one endpoint might make an
+incorrect assumption about the identity of its peer.  The (D)TLS peer is not the
+same as the signaling peer.
+
+The peer does not suffer any such confusion, resulting in each peer involved in
+the session having a different view of the nature of the session.
 
 This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
+
+This attack is an aspect of the protocol that the technique known as third-party
+call control (3PCC) relies on.  {{byebye-3pcc}} describes the consequences of
+this the mitigations described here for systems that use 3PCC.
 
 
 ## Attack Overview
@@ -194,17 +200,20 @@ Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her
 by Norma to Patsy.  Mallory also intercepts packets from Patsy and forwards
 those to Norma at the transport address that Norma associates with Mallory.
 
-The second session - between Norma and Patsy - is permitted to continue to the
-point where Patsy believes that it has succeeded.  This ensures that Patsy
-believes that she is communicating with Norma.  In the end, Norma believes that
-she is communicating with Mallory, when she is really communicating with Patsy.
+The second signaling exchange - between Norma and Patsy - is permitted to
+continue to the point where Patsy believes that it has succeeded.  This ensures
+that Patsy believes that she is communicating with Norma.  In the end, Norma
+believes that she is communicating with Mallory, when she is really
+communicating with Patsy.
 
-Though Patsy needs to believe that the second session is successful, Mallory has
-no real interest in seeing that session complete.  Mallory only needs to ensure
-that Patsy does not abandon the session prematurely.  For this reason, it might
-be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to
-receive a call completion signal, such as a SIP ACK.  Once the second session
-completes, Mallory causes any DTLS packets sent by Norma to Patsy to be dropped.
+Though Patsy needs to believe that the second signaling session has been
+successfully established, Mallory has no real interest in seeing that session
+complete.  Mallory only needs to ensure that Patsy does not abandon the session
+prematurely.  For this reason, it might be necessary to permit the signaling
+from Patsy to reach Norma to allow Patsy to receive a call completion signal,
+such as a SIP ACK.  Once the second session completes, Mallory might cause DTLS
+packets sent by Norma to Patsy to be dropped, though these will likely be
+discarded by Patsy.
 
 For the attacked session to be sustained beyond the point that Norma detects
 errors in the second session, Mallory also needs to block any signaling that
@@ -240,6 +249,19 @@ newly-configured device.  The apparent addition of a new device could generate
 user-visible notices (e.g., "Mallory appears to have a new device").  However,
 such an event is not always considered alarming; some implementations might
 silently save a new key.
+
+
+## Third-Party Call Control {#byebye-3pcc}
+
+Third-Party call control (3PCC) is a technique where a signaling peer
+establishes a call that is terminated by a different entity.  This attack is
+very similar to the 3PCC technique, except where the (D)TLS peers are aware of
+the use of 3PCC.
+
+For 3PCC to work with the proposed defense, (D)TLS peers need to be aware of the
+signaling so that they can correctly generate (and check) the extension.  It
+understood that this technique will prevent the use of 3PCC if peers are not
+able to access signaling.
 
 
 # Adding a Session Identifier {#sess-id}
