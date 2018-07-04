@@ -85,8 +85,8 @@ the participants.
 An extension to TLS is defined that can be used to mitigate this attack.
 
 A similar attack is possible with sessions that use WebRTC identity (see Section
-5.6 of {{!I-D.ietf-rtcweb-security-arch}}).  This issue and a mitigation for it
-is discussed in more detail in {{webrtc}}.
+5.6 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}).  This issue and a mitigation
+for it is discussed in more detail in {{webrtc}}.
 
 
 # Unknown Key-Share Attack
@@ -103,8 +103,8 @@ communicating with the malicious endpoint.
 
 When the identity of communicating peers is established by higher-layer
 signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
-{{!I-D.ietf-rtcweb-security-arch}}, this allows an attacker to bind their own
-identity to a session with any other entity.
+{{!WEBRTC-SEC}}, this allows an attacker to bind their own identity to a session
+with any other entity.
 
 By substituting the fingerprint of one peer for its own, an attacker is able to
 cause a session to be established where one endpoint has an incorrect value for
@@ -152,7 +152,7 @@ fingerprint for a valid certificate that is acceptable to its peer.  Attacks
 therefore rely on joining two separate sessions into a single session.
 
 The second condition is not necessary with WebRTC identity if the victim has or
-is configured with a target peer identity (this is defined in {{WEBRTC}}).
+is configured with a target peer identity (as defined in {{WEBRTC}}).
 Furthermore, any identity displayed by a browser could be different to the
 identity used by the application, since the attack affects the browser's
 understanding of the peer's identity.
@@ -259,9 +259,9 @@ identifier then means that the session is established between the correct two
 endpoints.
 
 This solution relies on the unique identifier given to DTLS sessions using the
-SDP `tls-id` attribute {{!I-D.ietf-mmusic-dtls-sdp}}.  This field is already
-required to be unique.  Thus, no two offers or answers from the same client will
-have the same value.
+SDP `tls-id` attribute {{!DTLS-SDP=I-D.ietf-mmusic-dtls-sdp}}.  This field is
+already required to be unique.  Thus, no two offers or answers from the same
+client will have the same value.
 
 A new `external_session_id` extension is added to the TLS or DTLS handshake for
 connections that are established as part of the same call or real-time session.
@@ -289,7 +289,7 @@ ExternalSessionId struct, described below using the syntax defined in
 ~~~
 
 For SDP, the `id` field of the extension includes the value of the `tls-id` SDP
-attribute as defined in {{!I-D.ietf-mmusic-dtls-sdp}} (that is, the
+attribute as defined in {{!DTLS-SDP=I-D.ietf-mmusic-dtls-sdp}} (that is, the
 `tls-id-value` ABNF production).  The value of the `tls-id` attribute is encoded
 using ASCII {{!RFC0020}}.
 
@@ -322,9 +322,9 @@ EncryptedExtensions message.
 
 # WebRTC Identity Binding {#webrtc}
 
-The identity assertion used for WebRTC {{!I-D.ietf-rtcweb-security-arch}} is
-bound only to the certificate fingerprint of an endpoint and can therefore be
-copied by an attacker along with any SDP `fingerprint` attributes.
+The identity assertion used for WebRTC {{!WEBRTC-SEC}} is bound only to the
+certificate fingerprint of an endpoint and can therefore be copied by an
+attacker along with any SDP `fingerprint` attributes.
 
 The problem is compounded by the fact that an identity provider is not required
 to verify that the entity requesting an identity assertion controls the keys.
@@ -411,8 +411,8 @@ talking to each other.
 Session concatention is possible at higher layers: an attacker can establish two
 independent sessions and simply forward any data it receives from one into the
 other.  This kind of attack is prevented by systems that enable peer
-authentication such as WebRTC identity {{!I-D.ietf-rtcweb-security-arch}} or
-SIP identity {{?RFC4474}}.
+authentication such as WebRTC identity {{!WEBRTC-SEC}} or SIP identity
+{{?RFC4474}}.
 
 In the absence of any higher-level concept of peer identity, the use of session
 identifiers does not prevent session concatenation.  The value to an attacker is
