@@ -346,26 +346,30 @@ EncryptedExtensions message.
 
 The identity assertion used for WebRTC {{!WEBRTC-SEC}} is bound only to the
 certificate fingerprint of an endpoint and can therefore be copied by an
-attacker along with any SDP `fingerprint` attributes.
+attacker along with any SDP `fingerprint` attributes.  An attacker can exploit
+this by causing a victim to believe that they are communicating with an
+attacker-controlled identity, when they are really talking to another entity of
+the attacker's choice.
 
-The problem is compounded by the fact that an identity provider is not required
-to verify that the entity requesting an identity assertion controls the keys.
-Nor is it currently able to perform this validation.  This is not an issue
-because verification is not a necessary condition for a secure protocol, nor
-would it be sufficient as established in {{SIGMA}}.
+The problem might appear to be caused by the fact that an identity provider is
+not required to verify that the entity requesting an identity assertion controls
+the keys associated with the certificate that is used.  A WebRTC identity
+provider is not required, or even able, to perform validation.  This is not an
+issue because verification is not a necessary condition for a secure protocol,
+nor would it be sufficient to prevent attack {{SIGMA}}.
 
 A simple solution to this problem is suggested by {{SIGMA}}.  The identity of
 endpoints is included under a message authentication code (MAC) during the
-cryptographic handshake.  Endpoints are then expected to validate that their
-peer has provided an identity that matches their expectations.
+cryptographic handshake.  Endpoints then validate that their peer has provided
+an identity that matches their expectations.
 
 In TLS, the Finished message provides a MAC over the entire handshake, so that
 including the identity in a TLS extension is sufficient to implement this
 solution.  Rather than include a complete identity assertion - which could be
-sizeable - a collision-resistant hash of the identity assertion is included in a
-TLS extension.  Peers then need only validate that the extension contains a hash
-of the identity assertion they received in signaling in addition to validating
-the identity assertion.
+sizeable - a collision- and pre-image-resistant hash of the identity assertion
+is included in a TLS extension.  Peers then need only validate that the
+extension contains a hash of the identity assertion they received in signaling
+in addition to validating the identity assertion.
 
 Endpoints MAY use the `external_session_id` extension in addition to this so
 that two calls between the same parties can't be altered by an attacker.
@@ -430,11 +434,11 @@ peers to each other.  Concatenating two signaling sessions creates a situation
 where both peers believe that they are talking to the attacker when they are
 talking to each other.
 
-Session concatention is possible at higher layers: an attacker can establish two
-independent sessions and simply forward any data it receives from one into the
-other.  This kind of attack is prevented by systems that enable peer
-authentication such as WebRTC identity {{!WEBRTC-SEC}} or SIP identity
-{{?RFC4474}}.
+This kind of attack is prevented by systems that enable peer authentication such
+as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?RFC4474}}.  However,
+session concatention remains possible at higher layers: an attacker can
+establish two independent sessions and simply forward any data it receives from
+one into the other.
 
 In the absence of any higher-level concept of peer identity, the use of session
 identifiers does not prevent session concatenation.  The value to an attacker is
@@ -444,9 +448,10 @@ create a shared secret or unique identifier that is used in a secondary
 protocol.
 
 If a secondary protocol uses the signaling channel with the assumption that the
-signaling and TLS peers are the same then that protocol is vulnerable to attack.
-The identity of the peer at the TLS layer is not guaranteed to be the same as
-the identity of the signaling peer.
+signaling and TLS peers are the same then that protocol is vulnerable to attack
+unless they also validate the identity of peers at both layers.  Use of the
+`external_session_id` does not guarantee that the identity of the peer at the
+TLS layer is the same as the identity of the signaling peer.
 
 It is important to note that multiple connections can be created within the same
 signaling session.  An attacker might concatenate only part of a session,
