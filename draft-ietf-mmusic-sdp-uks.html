@@ -26,7 +26,7 @@ body {
   font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
 .title, #rfc\.title h1 { font-size: 32px; }
 h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
@@ -165,12 +165,17 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
@@ -296,12 +301,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-04" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -325,8 +330,8 @@ ul.toc li {
 <td class="right">Mozilla</td>
 </tr>
 <tr>
-<td class="left">Expires: December 22, 2018</td>
-<td class="right">June 20, 2018</td>
+<td class="left">Expires: January 5, 2019</td>
+<td class="right">July 04, 2018</td>
 </tr>
 
     	
@@ -342,7 +347,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 22, 2018.</p>
+<p>This Internet-Draft will expire on January 5, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -399,13 +404,13 @@ ul.toc li {
 <p id="rfc.section.1.p.2">In these specifications, key agreement is performed using TLS or DTLS, with authentication being tied back to the session description (or SDP) through the use of certificate fingerprints.  Communication peers check that a hash, or fingerprint, provided in the SDP matches the certificate that is used in the TLS or DTLS handshake.  This is defined in <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
 <p id="rfc.section.1.p.3">The design in RFC 8122 relies on the integrity of the signaling channel.  Certificate fingerprints are assumed to be provided by the communicating peers and carried by the signaling channel without being subject to modification.  However, this design is vulnerable to an unknown key-share (UKS) attack where a misbehaving endpoint is able to advertise a key that it does not control.  This leads to the creation of sessions where peers are confused about the identify of the participants.</p>
 <p id="rfc.section.1.p.4">An extension to TLS is defined that can be used to mitigate this attack.</p>
-<p id="rfc.section.1.p.5">A similar attack is possible with sessions that use WebRTC identity (see Section 5.6 of <a href="#I-D.ietf-rtcweb-security-arch" class="xref">[I-D.ietf-rtcweb-security-arch]</a>).  This issue and a mitigation for it is discussed in more detail in <a href="#webrtc" class="xref">Section 4</a>.</p>
+<p id="rfc.section.1.p.5">A similar attack is possible with sessions that use WebRTC identity (see Section 5.6 of <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>).  This issue and a mitigation for it is discussed in more detail in <a href="#webrtc" class="xref">Section 4</a>.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#unknown-key-share-attack" id="unknown-key-share-attack">Unknown Key-Share Attack</a>
 </h1>
 <p id="rfc.section.2.p.1">In an unknown key-share attack <a href="#UKS" class="xref">[UKS]</a>, a malicious participant in a protocol claims to control a key that is in reality controlled by some other actor.  This arises when the identity associated with a key is not properly bound to the key.</p>
 <p id="rfc.section.2.p.2">In usages of TLS and DTLS that use SDP for negotiation, an endpoint is able to acquire the certificate fingerprint of another entity.  By advertising that fingerprint in place of one of its own, the malicious endpoint can cause its peer to communicate with a different peer, even though it believes that it is communicating with the malicious endpoint.</p>
-<p id="rfc.section.2.p.3">When the identity of communicating peers is established by higher-layer signaling constructs, such as those in SIP <a href="#RFC4474" class="xref">[RFC4474]</a> or WebRTC <a href="#I-D.ietf-rtcweb-security-arch" class="xref">[I-D.ietf-rtcweb-security-arch]</a>, this allows an attacker to bind their own identity to a session with any other entity.</p>
+<p id="rfc.section.2.p.3">When the identity of communicating peers is established by higher-layer signaling constructs, such as those in SIP <a href="#RFC4474" class="xref">[RFC4474]</a> or WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>, this allows an attacker to bind their own identity to a session with any other entity.</p>
 <p id="rfc.section.2.p.4">By substituting the fingerprint of one peer for its own, an attacker is able to cause a session to be established where one endpoint has an incorrect value for the identity of its peer.  However, the peer does not suffer any such confusion, resulting in each peer involved in the session having a different view of the nature of the session.</p>
 <p id="rfc.section.2.p.5">This attack applies to any communications established based on the SDP <samp>fingerprint</samp> attribute <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
 <h1 id="rfc.section.2.1">
@@ -426,7 +431,7 @@ ul.toc li {
 <li>No entity will complete communications with a peer unless they are willing to participate in a session with that peer.</li>
 </ol>
 <p id="rfc.section.2.2.p.3">The combination of these two constraints make the spectrum of possible attacks quite limited.  An attacker is only able to switch its own certificate fingerprint for a valid certificate that is acceptable to its peer.  Attacks therefore rely on joining two separate sessions into a single session.</p>
-<p id="rfc.section.2.2.p.4">The second condition is not necessary with WebRTC identity if the victim has or is configured with a target peer identity (this is defined in <a href="#WEBRTC" class="xref">[WEBRTC]</a>).  Furthermore, any identity displayed by a browser could be different to the identity used by the application, since the attack affects the browser&#8217;s understanding of the peer&#8217;s identity.</p>
+<p id="rfc.section.2.2.p.4">The second condition is not necessary with WebRTC identity if the victim has or is configured with a target peer identity (as defined in <a href="#WEBRTC" class="xref">[WEBRTC]</a>).  Furthermore, any identity displayed by a browser could be different to the identity used by the application, since the attack affects the browser&#8217;s understanding of the peer&#8217;s identity.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#example" id="example">Example</a>
 </h1>
@@ -466,7 +471,7 @@ ul.toc li {
 </h1>
 <p id="rfc.section.3.p.1">An attack on DTLS-SRTP is possible because the identity of peers involved is not established prior to establishing the call.  Endpoints use certificate fingerprints as a proxy for authentication, but as long as fingerprints are used in multiple calls, they are vulnerable to attacks of the sort described.</p>
 <p id="rfc.section.3.p.2">The solution to this problem is to assign a new identifier to communicating peers.  Each endpoint assigns their peer a unique identifier during call signaling.  The peer echoes that identifier in the TLS handshake, binding that identity into the session.  Including this new identity in the TLS handshake means that it will be covered by the TLS Finished message, which is necessary to authenticate it (see <a href="#SIGMA" class="xref">[SIGMA]</a>).  Validating that peers use the correct identifier then means that the session is established between the correct two endpoints.</p>
-<p id="rfc.section.3.p.3">This solution relies on the unique identifier given to DTLS sessions using the SDP <samp>tls-id</samp> attribute <a href="#I-D.ietf-mmusic-dtls-sdp" class="xref">[I-D.ietf-mmusic-dtls-sdp]</a>.  This field is already required to be unique.  Thus, no two offers or answers from the same client will have the same value.</p>
+<p id="rfc.section.3.p.3">This solution relies on the unique identifier given to DTLS sessions using the SDP <samp>tls-id</samp> attribute <a href="#DTLS-SDP" class="xref">[DTLS-SDP]</a>.  This field is already required to be unique.  Thus, no two offers or answers from the same client will have the same value.</p>
 <p id="rfc.section.3.p.4">A new <samp>external_session_id</samp> extension is added to the TLS or DTLS handshake for connections that are established as part of the same call or real-time session.  This carries the value of the <samp>tls-id</samp> attribute and provides integrity protection for its exchange as part of the TLS or DTLS handshake.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#ext_sess_id" id="ext_sess_id">The external_session_id TLS Extension</a>
@@ -478,7 +483,7 @@ ul.toc li {
       opaque id&lt;20..255&gt;;
    } ExternalSessionId;
 </pre>
-<p id="rfc.section.3.1.p.3">For SDP, the <samp>id</samp> field of the extension includes the value of the <samp>tls-id</samp> SDP attribute as defined in <a href="#I-D.ietf-mmusic-dtls-sdp" class="xref">[I-D.ietf-mmusic-dtls-sdp]</a> (that is, the <samp>tls-id-value</samp> ABNF production).  The value of the <samp>tls-id</samp> attribute is encoded using ASCII <a href="#RFC0020" class="xref">[RFC0020]</a>.</p>
+<p id="rfc.section.3.1.p.3">For SDP, the <samp>id</samp> field of the extension includes the value of the <samp>tls-id</samp> SDP attribute as defined in <a href="#DTLS-SDP" class="xref">[DTLS-SDP]</a> (that is, the <samp>tls-id-value</samp> ABNF production).  The value of the <samp>tls-id</samp> attribute is encoded using ASCII <a href="#RFC0020" class="xref">[RFC0020]</a>.</p>
 <p id="rfc.section.3.1.p.4">Where RTP and RTCP <a href="#RFC3550" class="xref">[RFC3550]</a> are not multiplexed, it is possible that the two separate DTLS connections carrying RTP and RTCP can be switched.  This is considered benign since these protocols are usually distinguishable.  RTP/RTCP multiplexing is advised to address this problem.</p>
 <p id="rfc.section.3.1.p.5">The <samp>external_session_id</samp> extension is included in a ClientHello and either ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for TLS 1.3).  In TLS 1.3, the <samp>external_session_id</samp> extension MUST NOT be included in a ServerHello.</p>
 <p id="rfc.section.3.1.p.6">Endpoints MUST check that the <samp>id</samp> parameter in the extension that they receive includes the <samp>tls-id</samp> attribute value that they received in their peer&#8217;s session description.  Comparison can be performed with either the decoded ASCII string or the encoded octets.  An endpoint that receives a <samp>external_session_id</samp> extension that is not identical to the value that it expects MUST abort the connection with a fatal <samp>handshake_failure</samp> alert.</p>
@@ -487,7 +492,7 @@ ul.toc li {
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#webrtc" id="webrtc">WebRTC Identity Binding</a>
 </h1>
-<p id="rfc.section.4.p.1">The identity assertion used for WebRTC <a href="#I-D.ietf-rtcweb-security-arch" class="xref">[I-D.ietf-rtcweb-security-arch]</a> is bound only to the certificate fingerprint of an endpoint and can therefore be copied by an attacker along with any SDP <samp>fingerprint</samp> attributes.</p>
+<p id="rfc.section.4.p.1">The identity assertion used for WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> is bound only to the certificate fingerprint of an endpoint and can therefore be copied by an attacker along with any SDP <samp>fingerprint</samp> attributes.</p>
 <p id="rfc.section.4.p.2">The problem is compounded by the fact that an identity provider is not required to verify that the entity requesting an identity assertion controls the keys.  Nor is it currently able to perform this validation.  This is not an issue because verification is not a necessary condition for a secure protocol, nor would it be sufficient as established in <a href="#SIGMA" class="xref">[SIGMA]</a>.</p>
 <p id="rfc.section.4.p.3">A simple solution to this problem is suggested by <a href="#SIGMA" class="xref">[SIGMA]</a>.  The identity of endpoints is included under a message authentication code (MAC) during the cryptographic handshake.  Endpoints are then expected to validate that their peer has provided an identity that matches their expectations.</p>
 <p id="rfc.section.4.p.4">In TLS, the Finished message provides a MAC over the entire handshake, so that including the identity in a TLS extension is sufficient to implement this solution.  Rather than include a complete identity assertion - which could be sizeable - a collision-resistant hash of the identity assertion is included in a TLS extension.  Peers then need only validate that the extension contains a hash of the identity assertion they received in signaling in addition to validating the identity assertion.</p>
@@ -513,7 +518,7 @@ ul.toc li {
 <a href="#rfc.section.5">5.</a> <a href="#consequences-of-session-concatenation" id="consequences-of-session-concatenation">Consequences of Session Concatenation</a>
 </h1>
 <p id="rfc.section.5.p.1">Use of session identifiers does not prevent an attacker from establishing two concurrent sessions with different peers and forwarding signaling from those peers to each other.  Concatenating two signaling sessions creates a situation where both peers believe that they are talking to the attacker when they are talking to each other.</p>
-<p id="rfc.section.5.p.2">Session concatention is possible at higher layers: an attacker can establish two independent sessions and simply forward any data it receives from one into the other.  This kind of attack is prevented by systems that enable peer authentication such as WebRTC identity <a href="#I-D.ietf-rtcweb-security-arch" class="xref">[I-D.ietf-rtcweb-security-arch]</a> or SIP identity <a href="#RFC4474" class="xref">[RFC4474]</a>.</p>
+<p id="rfc.section.5.p.2">Session concatention is possible at higher layers: an attacker can establish two independent sessions and simply forward any data it receives from one into the other.  This kind of attack is prevented by systems that enable peer authentication such as WebRTC identity <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> or SIP identity <a href="#RFC4474" class="xref">[RFC4474]</a>.</p>
 <p id="rfc.section.5.p.3">In the absence of any higher-level concept of peer identity, the use of session identifiers does not prevent session concatenation.  The value to an attacker is limited unless information from the TLS connection is extracted and used with the signaling.  For instance, a key exporter <a href="#RFC5705" class="xref">[RFC5705]</a> might be used to create a shared secret or unique identifier that is used in a secondary protocol.</p>
 <p id="rfc.section.5.p.4">If a secondary protocol uses the signaling channel with the assumption that the signaling and TLS peers are the same then that protocol is vulnerable to attack.  The identity of the peer at the TLS layer is not guaranteed to be the same as the identity of the signaling peer.</p>
 <p id="rfc.section.5.p.5">It is important to note that multiple connections can be created within the same signaling session.  An attacker might concatenate only part of a session, choosing to terminate some connections (and optionally forward data) while arranging to have peers interact directly for other connections.  It is even possible to have different peers interact for each connection.  This means that the actual identity of the peer for one connection might differ from the peer on another connection.</p>
@@ -538,14 +543,9 @@ ul.toc li {
 <a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
-<td class="reference"><b id="I-D.ietf-mmusic-dtls-sdp">[I-D.ietf-mmusic-dtls-sdp]</b></td>
+<td class="reference"><b id="DTLS-SDP">[DTLS-SDP]</b></td>
 <td class="top">
 <a>Holmberg, C.</a> and <a>R. Shpount</a>, "<a href="https://tools.ietf.org/html/draft-ietf-mmusic-dtls-sdp-32">Session Description Protocol (SDP) Offer/Answer Considerations for Datagram Transport Layer Security (DTLS) and Transport Layer Security (TLS)</a>", Internet-Draft draft-ietf-mmusic-dtls-sdp-32, October 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.ietf-rtcweb-security-arch">[I-D.ietf-rtcweb-security-arch]</b></td>
-<td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-rtcweb-security-arch-13">WebRTC Security Architecture</a>", Internet-Draft draft-ietf-rtcweb-security-arch-13, October 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC0020">[RFC0020]</b></td>
@@ -591,6 +591,11 @@ ul.toc li {
 <td class="reference"><b id="SHA">[SHA]</b></td>
 <td class="top">
 <a>Dang, Q.</a>, "<a>Secure Hash Standard</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.fips.180-4, July 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="WEBRTC-SEC">[WEBRTC-SEC]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-rtcweb-security-arch-13">WebRTC Security Architecture</a>", Internet-Draft draft-ietf-rtcweb-security-arch-13, October 2017.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
