@@ -95,7 +95,7 @@ In an unknown key-share attack {{UKS}}, a malicious participant in a protocol
 claims to control a key that is in reality controlled by some other actor.  This
 arises when the identity associated with a key is not properly bound to the key.
 
-In usages of (D)TLS that use SDP for negotiation, an endpoint is able to acquire
+In usages of TLS that use SDP for negotiation, an endpoint is able to acquire
 the certificate fingerprint of another entity.  By advertising that fingerprint
 in place of one of its own, the malicious endpoint can cause its peer to
 communicate with a different peer, even though it believes that it is
@@ -107,8 +107,8 @@ signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
 with any other entity.
 
 By substituting the fingerprint of one peer for its own, an attacker is able to
-cause a (D)TLS connection to be established where one endpoint might make an
-incorrect assumption about the identity of its peer.  The (D)TLS peer is not the
+cause a TLS connection to be established where one endpoint might make an
+incorrect assumption about the identity of its peer.  The TLS peer is not the
 same as the signaling peer.
 
 The peer does not suffer any such confusion, resulting in each peer involved in
@@ -253,12 +253,12 @@ silently save a new key.
 
 ## Third-Party Call Control {#byebye-3pcc}
 
-Third-Party call control (3PCC) is a technique where a signaling peer
+Third-party call control (3PCC) is a technique where a signaling peer
 establishes a call that is terminated by a different entity.  This attack is
-very similar to the 3PCC technique, except where the (D)TLS peers are aware of
-the use of 3PCC.
+very similar to the 3PCC technique, except where the TLS peers are aware of the
+use of 3PCC.
 
-For 3PCC to work with the proposed defense, (D)TLS peers need to be aware of the
+For 3PCC to work with the proposed defense, TLS peers need to be aware of the
 signaling so that they can correctly generate (and check) the extension.  It
 understood that this technique will prevent the use of 3PCC if peers are not
 able to access signaling.
