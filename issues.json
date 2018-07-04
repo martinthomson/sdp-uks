@@ -1,5 +1,148 @@
 [
 
+  {
+    "url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/3",
+    "repository_url": "https://api.github.com/repos/martinthomson/sdp-uks",
+    "labels_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/3/labels{/name}",
+    "comments_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/3/comments",
+    "events_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/3/events",
+    "html_url": "https://github.com/martinthomson/sdp-uks/issues/3",
+    "id": 337399891,
+    "node_id": "MDU6SXNzdWUzMzczOTk4OTE=",
+    "number": 3,
+    "title": "Make identity attack clearer",
+    "user": {
+      "login": "martinthomson",
+      "id": 67641,
+      "node_id": "MDQ6VXNlcjY3NjQx",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/67641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/martinthomson",
+      "html_url": "https://github.com/martinthomson",
+      "followers_url": "https://api.github.com/users/martinthomson/followers",
+      "following_url": "https://api.github.com/users/martinthomson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/martinthomson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/martinthomson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/martinthomson/subscriptions",
+      "organizations_url": "https://api.github.com/users/martinthomson/orgs",
+      "repos_url": "https://api.github.com/users/martinthomson/repos",
+      "events_url": "https://api.github.com/users/martinthomson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/martinthomson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
 
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2018-07-02T07:30:22Z",
+    "updated_at": "2018-07-02T07:30:22Z",
+    "closed_at": null,
+    "author_association": "OWNER",
+    "body": "The attacker can give away their identity to anyone.  With the fingerprint-based attack, this means that people talking to an attacker can believe that they are talking to the attacker, with strong authentication on the media, but find themselves talking to another entity, one that the attacker copied the fingerprint of."
+  },
+  {
+    "url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/2",
+    "repository_url": "https://api.github.com/repos/martinthomson/sdp-uks",
+    "labels_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/2/labels{/name}",
+    "comments_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/2/comments",
+    "events_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/2/events",
+    "html_url": "https://github.com/martinthomson/sdp-uks/issues/2",
+    "id": 337396121,
+    "node_id": "MDU6SXNzdWUzMzczOTYxMjE=",
+    "number": 2,
+    "title": "Calling/media/expectations",
+    "user": {
+      "login": "martinthomson",
+      "id": 67641,
+      "node_id": "MDQ6VXNlcjY3NjQx",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/67641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/martinthomson",
+      "html_url": "https://github.com/martinthomson",
+      "followers_url": "https://api.github.com/users/martinthomson/followers",
+      "following_url": "https://api.github.com/users/martinthomson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/martinthomson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/martinthomson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/martinthomson/subscriptions",
+      "organizations_url": "https://api.github.com/users/martinthomson/orgs",
+      "repos_url": "https://api.github.com/users/martinthomson/repos",
+      "events_url": "https://api.github.com/users/martinthomson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/martinthomson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2018-07-02T07:16:33Z",
+    "updated_at": "2018-07-02T07:16:33Z",
+    "closed_at": null,
+    "author_association": "OWNER",
+    "body": "More from Dale:\r\n\r\n>    The attacker can\r\n>    arrange for the victim to incorrectly believe that is calling the\r\n>    attacker when it is in fact calling a second party.\r\n>\r\n> This is subtly incorrect -- the victim doesn't *incorrectly* believe that\r\n> it is *calling* the attacker, because it *is* calling -- has a SIP\r\n> dialog with -- the attacker.  And the victim doesn't really incorrectly\r\n> believe that the media session is \"with\" the attacker, because (like\r\n> every SIP session), it has a media session with the media endpoint that\r\n> the SIP peer directed it to.\r\n\r\nThe draft really needs to address the various expectations of those involved.  Part of what has been assumed here is that the signaling endpoints expect the media endpoints to be the same entities.  If you have internalized 3PCC, that's not an expectation you ever have, but not everyone thinks that way.  The real problem is a mismatch between signaling and reality.\r\n"
+  },
+  {
+    "url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/1",
+    "repository_url": "https://api.github.com/repos/martinthomson/sdp-uks",
+    "labels_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/1/labels{/name}",
+    "comments_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/1/comments",
+    "events_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/1/events",
+    "html_url": "https://github.com/martinthomson/sdp-uks/issues/1",
+    "id": 337395602,
+    "node_id": "MDU6SXNzdWUzMzczOTU2MDI=",
+    "number": 1,
+    "title": "3PCC",
+    "user": {
+      "login": "martinthomson",
+      "id": 67641,
+      "node_id": "MDQ6VXNlcjY3NjQx",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/67641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/martinthomson",
+      "html_url": "https://github.com/martinthomson",
+      "followers_url": "https://api.github.com/users/martinthomson/followers",
+      "following_url": "https://api.github.com/users/martinthomson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/martinthomson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/martinthomson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/martinthomson/subscriptions",
+      "organizations_url": "https://api.github.com/users/martinthomson/orgs",
+      "repos_url": "https://api.github.com/users/martinthomson/repos",
+      "events_url": "https://api.github.com/users/martinthomson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/martinthomson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2018-07-02T07:14:31Z",
+    "updated_at": "2018-07-02T07:14:31Z",
+    "closed_at": null,
+    "author_association": "OWNER",
+    "body": "Dale Worley notes that the attack just looks like 3PCC.  We need to be clearer about the confusion aspect in light of \"features\" like that."
+  }
 
 ]
