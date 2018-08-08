@@ -117,9 +117,9 @@ the session having a different view of the nature of the session.
 This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
 
-This attack is an aspect of the protocol that the technique known as third-party
-call control (3PCC) relies on.  {{byebye-3pcc}} describes the consequences of
-this the mitigations described here for systems that use 3PCC.
+This attack is an aspect of SDP-based protocols that the technique known as
+third-party call control (3PCC) relies on.  {{byebye-3pcc}} describes the
+consequences of the mitigations described here for systems that use 3PCC.
 
 
 ## Attack Overview
@@ -259,7 +259,7 @@ very similar to the 3PCC technique, except where the TLS peers are aware of the
 use of 3PCC.
 
 For 3PCC to work with the proposed defense, TLS peers need to be aware of the
-signaling so that they can correctly generate (and check) the extension.  It
+signaling so that they can correctly generate (and check) the extension.  It is
 understood that this technique will prevent the use of 3PCC if peers are not
 able to access signaling.
 
