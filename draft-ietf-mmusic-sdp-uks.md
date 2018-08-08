@@ -353,7 +353,8 @@ certificate fingerprint of an endpoint and can therefore be copied by an
 attacker along with any SDP `fingerprint` attributes.  An attacker can exploit
 this by causing a victim to believe that they are communicating with an
 attacker-controlled identity, when they are really talking to another entity of
-the attacker's choice.
+the attacker's choice.  The attacker only needs to create an identity assertion
+that covers a certificate fingerprint of their choosing.
 
 The problem might appear to be caused by the fact that an identity provider is
 not required to verify that the entity requesting an identity assertion controls
@@ -375,8 +376,8 @@ is included in a TLS extension.  Peers then need only validate that the
 extension contains a hash of the identity assertion they received in signaling
 in addition to validating the identity assertion.
 
-Endpoints MAY use the `external_session_id` extension in addition to this so
-that two calls between the same parties can't be altered by an attacker.
+Endpoints can also use the `external_session_id` extension in addition to this
+so that two calls between the same parties can't be altered by an attacker.
 
 
 ## The webrtc_id_hash TLS Extension {#webrtc_id_hash}
