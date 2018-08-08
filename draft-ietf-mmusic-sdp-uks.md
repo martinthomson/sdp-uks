@@ -30,12 +30,14 @@ informative:
       - ins: A. Menezes
     date: 1999
     seriesinfo: Lecture Notes in Computer Science 1560, Springer, pp. 154–170
+
   SIGMA:
     title: "SIGMA: The ‘SIGn-and-MAc’approach to authenticated Diffie-Hellman and its use in the IKE protocols"
     author:
       - ins: H. Krawczyk
     date: 2003
     seriesinfo: Annual International Cryptology Conference, Springer, pp. 400-425
+
   WEBRTC:
     title: "WebRTC 1.0: Real-time Communication Between Browsers"
     author:
@@ -118,7 +120,9 @@ This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
 
 This attack is an aspect of SDP-based protocols that the technique known as
-third-party call control (3PCC) relies on.  {{byebye-3pcc}} describes the
+third-party call control (3PCC) relies on.  3PCC exploits the potential for the
+identity of a signaling peer to be different than the media peer, allowing the
+media peer to be selected by the signaling peer.  {{byebye-3pcc}} describes the
 consequences of the mitigations described here for systems that use 3PCC.
 
 
