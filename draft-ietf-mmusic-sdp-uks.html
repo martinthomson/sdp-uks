@@ -287,6 +287,7 @@ ul.toc li {
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Limits on Attack Feasibility">
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Example">
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 Interactions with Key Continuity">
+<link href="#rfc.section.2.5" rel="Chapter" title="2.5 Third-Party Call Control">
 <link href="#rfc.section.3" rel="Chapter" title="3 Adding a Session Identifier">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 The external_session_id TLS Extension">
 <link href="#rfc.section.4" rel="Chapter" title="4 WebRTC Identity Binding">
@@ -306,7 +307,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-04" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-08" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -330,8 +331,8 @@ ul.toc li {
 <td class="right">Mozilla</td>
 </tr>
 <tr>
-<td class="left">Expires: January 5, 2019</td>
-<td class="right">July 04, 2018</td>
+<td class="left">Expires: February 9, 2019</td>
+<td class="right">August 08, 2018</td>
 </tr>
 
     	
@@ -347,7 +348,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 5, 2019.</p>
+<p>This Internet-Draft will expire on February 9, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -368,6 +369,8 @@ ul.toc li {
 <li>2.3.   <a href="#rfc.section.2.3">Example</a>
 </li>
 <li>2.4.   <a href="#rfc.section.2.4">Interactions with Key Continuity</a>
+</li>
+<li>2.5.   <a href="#rfc.section.2.5">Third-Party Call Control</a>
 </li>
 </ul><li>3.   <a href="#rfc.section.3">Adding a Session Identifier</a>
 </li>
@@ -409,10 +412,12 @@ ul.toc li {
 <a href="#rfc.section.2">2.</a> <a href="#unknown-key-share-attack" id="unknown-key-share-attack">Unknown Key-Share Attack</a>
 </h1>
 <p id="rfc.section.2.p.1">In an unknown key-share attack <a href="#UKS" class="xref">[UKS]</a>, a malicious participant in a protocol claims to control a key that is in reality controlled by some other actor.  This arises when the identity associated with a key is not properly bound to the key.</p>
-<p id="rfc.section.2.p.2">In usages of TLS and DTLS that use SDP for negotiation, an endpoint is able to acquire the certificate fingerprint of another entity.  By advertising that fingerprint in place of one of its own, the malicious endpoint can cause its peer to communicate with a different peer, even though it believes that it is communicating with the malicious endpoint.</p>
+<p id="rfc.section.2.p.2">In usages of TLS that use SDP for negotiation, an endpoint is able to acquire the certificate fingerprint of another entity.  By advertising that fingerprint in place of one of its own, the malicious endpoint can cause its peer to communicate with a different peer, even though it believes that it is communicating with the malicious endpoint.</p>
 <p id="rfc.section.2.p.3">When the identity of communicating peers is established by higher-layer signaling constructs, such as those in SIP <a href="#RFC4474" class="xref">[RFC4474]</a> or WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>, this allows an attacker to bind their own identity to a session with any other entity.</p>
-<p id="rfc.section.2.p.4">By substituting the fingerprint of one peer for its own, an attacker is able to cause a session to be established where one endpoint has an incorrect value for the identity of its peer.  However, the peer does not suffer any such confusion, resulting in each peer involved in the session having a different view of the nature of the session.</p>
-<p id="rfc.section.2.p.5">This attack applies to any communications established based on the SDP <samp>fingerprint</samp> attribute <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
+<p id="rfc.section.2.p.4">By substituting the fingerprint of one peer for its own, an attacker is able to cause a TLS connection to be established where one endpoint might make an incorrect assumption about the identity of its peer.  The TLS peer is not the same as the signaling peer.</p>
+<p id="rfc.section.2.p.5">The peer does not suffer any such confusion, resulting in each peer involved in the session having a different view of the nature of the session.</p>
+<p id="rfc.section.2.p.6">This attack applies to any communications established based on the SDP <samp>fingerprint</samp> attribute <a href="#RFC8122" class="xref">[RFC8122]</a>.</p>
+<p id="rfc.section.2.p.7">This attack is an aspect of SDP-based protocols that the technique known as third-party call control (3PCC) relies on.  <a href="#byebye-3pcc" class="xref">Section 2.5</a> describes the consequences of the mitigations described here for systems that use 3PCC.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#attack-overview" id="attack-overview">Attack Overview</a>
 </h1>
@@ -455,8 +460,8 @@ ul.toc li {
 </pre>
 <p id="rfc.section.2.3.p.2">In this case, Norma is willing to conduct two concurrent sessions.  The first session is established with Mallory, who falsely uses Patsy&#8217;s certificate fingerprint.  A second session is initiated between Norma and Patsy.  Signaling for both sessions is permitted to complete.</p>
 <p id="rfc.section.2.3.p.3">Once signaling is complete on the session that is ostensibly between Mallory and Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her by Norma to Patsy.  Mallory also intercepts packets from Patsy and forwards those to Norma at the transport address that Norma associates with Mallory.</p>
-<p id="rfc.section.2.3.p.4">The second session - between Norma and Patsy - is permitted to continue to the point where Patsy believes that it has succeeded.  This ensures that Patsy believes that she is communicating with Norma.  In the end, Norma believes that she is communicating with Mallory, when she is really communicating with Patsy.</p>
-<p id="rfc.section.2.3.p.5">Though Patsy needs to believe that the second session is successful, Mallory has no real interest in seeing that session complete.  Mallory only needs to ensure that Patsy does not abandon the session prematurely.  For this reason, it might be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to receive a call completion signal, such as a SIP ACK.  Once the second session completes, Mallory causes any DTLS packets sent by Norma to Patsy to be dropped.</p>
+<p id="rfc.section.2.3.p.4">The second signaling exchange - between Norma and Patsy - is permitted to continue to the point where Patsy believes that it has succeeded.  This ensures that Patsy believes that she is communicating with Norma.  In the end, Norma believes that she is communicating with Mallory, when she is really communicating with Patsy.</p>
+<p id="rfc.section.2.3.p.5">Though Patsy needs to believe that the second signaling session has been successfully established, Mallory has no real interest in seeing that session complete.  Mallory only needs to ensure that Patsy does not abandon the session prematurely.  For this reason, it might be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to receive a call completion signal, such as a SIP ACK.  Once the second session completes, Mallory might cause DTLS packets sent by Norma to Patsy to be dropped, though these will likely be discarded by Patsy.</p>
 <p id="rfc.section.2.3.p.6">For the attacked session to be sustained beyond the point that Norma detects errors in the second session, Mallory also needs to block any signaling that Norma might send to Patsy asking for the call to be abandoned.  Otherwise, Patsy might receive a notice that the call is failed and thereby abort the call.</p>
 <p id="rfc.section.2.3.p.7">This attack creates an asymmetry in the beliefs about the identity of peers.  However, this attack is only possible if the victim (Norma) is willing to conduct two sessions concurrently, if the attacker (Mallory) is on the network path between the victims, and if the same certificate - and therefore SDP <samp>fingerprint</samp> attribute value - is used in both sessions.</p>
 <p id="rfc.section.2.3.p.8">Where ICE <a href="#ICE" class="xref">[ICE]</a> is used, Mallory also needs to ensure that connectivity between Patsy and Norma succeed, either by forwarding checks or answering and generating the necessary messages.</p>
@@ -466,6 +471,11 @@ ul.toc li {
 <p id="rfc.section.2.4.p.1">Systems that use key continuity might be able to detect an unknown key-share attack if a session with the actual peer (i.e., Patsy in the example) was established in the past.  Whether this is possible depends on how key continuity is implemented.</p>
 <p id="rfc.section.2.4.p.2">Implementations that maintain a single database of identities with an index on peer keys could discover that the identity saved for the peer key does not match the claimed identity.  Such an implementation could notice the disparity between the actual keys (Patsy) and the expected keys (Mallory).</p>
 <p id="rfc.section.2.4.p.3">In comparison, implementations that first match based on peer identity could treat an unknown key-share attack as though their peer had used a newly-configured device.  The apparent addition of a new device could generate user-visible notices (e.g., &#8220;Mallory appears to have a new device&#8221;).  However, such an event is not always considered alarming; some implementations might silently save a new key.</p>
+<h1 id="rfc.section.2.5">
+<a href="#rfc.section.2.5">2.5.</a> <a href="#byebye-3pcc" id="byebye-3pcc">Third-Party Call Control</a>
+</h1>
+<p id="rfc.section.2.5.p.1">Third-party call control (3PCC) is a technique where a signaling peer establishes a call that is terminated by a different entity.  This attack is very similar to the 3PCC technique, except where the TLS peers are aware of the use of 3PCC.</p>
+<p id="rfc.section.2.5.p.2">For 3PCC to work with the proposed defense, TLS peers need to be aware of the signaling so that they can correctly generate (and check) the extension.  It is understood that this technique will prevent the use of 3PCC if peers are not able to access signaling.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#sess-id" id="sess-id">Adding a Session Identifier</a>
 </h1>
@@ -492,10 +502,10 @@ ul.toc li {
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#webrtc" id="webrtc">WebRTC Identity Binding</a>
 </h1>
-<p id="rfc.section.4.p.1">The identity assertion used for WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> is bound only to the certificate fingerprint of an endpoint and can therefore be copied by an attacker along with any SDP <samp>fingerprint</samp> attributes.</p>
-<p id="rfc.section.4.p.2">The problem is compounded by the fact that an identity provider is not required to verify that the entity requesting an identity assertion controls the keys.  Nor is it currently able to perform this validation.  This is not an issue because verification is not a necessary condition for a secure protocol, nor would it be sufficient as established in <a href="#SIGMA" class="xref">[SIGMA]</a>.</p>
-<p id="rfc.section.4.p.3">A simple solution to this problem is suggested by <a href="#SIGMA" class="xref">[SIGMA]</a>.  The identity of endpoints is included under a message authentication code (MAC) during the cryptographic handshake.  Endpoints are then expected to validate that their peer has provided an identity that matches their expectations.</p>
-<p id="rfc.section.4.p.4">In TLS, the Finished message provides a MAC over the entire handshake, so that including the identity in a TLS extension is sufficient to implement this solution.  Rather than include a complete identity assertion - which could be sizeable - a collision-resistant hash of the identity assertion is included in a TLS extension.  Peers then need only validate that the extension contains a hash of the identity assertion they received in signaling in addition to validating the identity assertion.</p>
+<p id="rfc.section.4.p.1">The identity assertion used for WebRTC <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> is bound only to the certificate fingerprint of an endpoint and can therefore be copied by an attacker along with any SDP <samp>fingerprint</samp> attributes.  An attacker can exploit this by causing a victim to believe that they are communicating with an attacker-controlled identity, when they are really talking to another entity of the attacker&#8217;s choice.</p>
+<p id="rfc.section.4.p.2">The problem might appear to be caused by the fact that an identity provider is not required to verify that the entity requesting an identity assertion controls the keys associated with the certificate that is used.  A WebRTC identity provider is not required, or even able, to perform validation.  This is not an issue because verification is not a necessary condition for a secure protocol, nor would it be sufficient to prevent attack <a href="#SIGMA" class="xref">[SIGMA]</a>.</p>
+<p id="rfc.section.4.p.3">A simple solution to this problem is suggested by <a href="#SIGMA" class="xref">[SIGMA]</a>.  The identity of endpoints is included under a message authentication code (MAC) during the cryptographic handshake.  Endpoints then validate that their peer has provided an identity that matches their expectations.</p>
+<p id="rfc.section.4.p.4">In TLS, the Finished message provides a MAC over the entire handshake, so that including the identity in a TLS extension is sufficient to implement this solution.  Rather than include a complete identity assertion - which could be sizeable - a collision- and pre-image-resistant hash of the identity assertion is included in a TLS extension.  Peers then need only validate that the extension contains a hash of the identity assertion they received in signaling in addition to validating the identity assertion.</p>
 <p id="rfc.section.4.p.5">Endpoints MAY use the <samp>external_session_id</samp> extension in addition to this so that two calls between the same parties can&#8217;t be altered by an attacker.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#webrtc_id_hash" id="webrtc_id_hash">The webrtc_id_hash TLS Extension</a>
@@ -518,9 +528,9 @@ ul.toc li {
 <a href="#rfc.section.5">5.</a> <a href="#consequences-of-session-concatenation" id="consequences-of-session-concatenation">Consequences of Session Concatenation</a>
 </h1>
 <p id="rfc.section.5.p.1">Use of session identifiers does not prevent an attacker from establishing two concurrent sessions with different peers and forwarding signaling from those peers to each other.  Concatenating two signaling sessions creates a situation where both peers believe that they are talking to the attacker when they are talking to each other.</p>
-<p id="rfc.section.5.p.2">Session concatention is possible at higher layers: an attacker can establish two independent sessions and simply forward any data it receives from one into the other.  This kind of attack is prevented by systems that enable peer authentication such as WebRTC identity <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> or SIP identity <a href="#RFC4474" class="xref">[RFC4474]</a>.</p>
+<p id="rfc.section.5.p.2">This kind of attack is prevented by systems that enable peer authentication such as WebRTC identity <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> or SIP identity <a href="#RFC4474" class="xref">[RFC4474]</a>.  However, session concatention remains possible at higher layers: an attacker can establish two independent sessions and simply forward any data it receives from one into the other.</p>
 <p id="rfc.section.5.p.3">In the absence of any higher-level concept of peer identity, the use of session identifiers does not prevent session concatenation.  The value to an attacker is limited unless information from the TLS connection is extracted and used with the signaling.  For instance, a key exporter <a href="#RFC5705" class="xref">[RFC5705]</a> might be used to create a shared secret or unique identifier that is used in a secondary protocol.</p>
-<p id="rfc.section.5.p.4">If a secondary protocol uses the signaling channel with the assumption that the signaling and TLS peers are the same then that protocol is vulnerable to attack.  The identity of the peer at the TLS layer is not guaranteed to be the same as the identity of the signaling peer.</p>
+<p id="rfc.section.5.p.4">If a secondary protocol uses the signaling channel with the assumption that the signaling and TLS peers are the same then that protocol is vulnerable to attack unless they also validate the identity of peers at both layers.  Use of the <samp>external_session_id</samp> does not guarantee that the identity of the peer at the TLS layer is the same as the identity of the signaling peer.</p>
 <p id="rfc.section.5.p.5">It is important to note that multiple connections can be created within the same signaling session.  An attacker might concatenate only part of a session, choosing to terminate some connections (and optionally forward data) while arranging to have peers interact directly for other connections.  It is even possible to have different peers interact for each connection.  This means that the actual identity of the peer for one connection might differ from the peer on another connection.</p>
 <p id="rfc.section.5.p.6">Information extracted from a TLS connection therefore MUST NOT be used in a secondary protocol outside of that connection if that protocol relies on the signaling protocol having the same peers.  Similarly, data from one TLS connection MUST NOT be used in other TLS connections even if they are established as a result of the same signaling session.</p>
 <h1 id="rfc.section.6">
