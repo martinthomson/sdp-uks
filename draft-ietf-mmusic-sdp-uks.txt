@@ -78,7 +78,7 @@ Table of Contents
    5.  Consequences of Session Concatenation . . . . . . . . . . . .  10
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  13
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  14
@@ -156,11 +156,11 @@ Internet-Draft                   SDP UKS                     August 2018
    SDP "fingerprint" attribute [RFC8122].
 
    This attack is an aspect of SDP-based protocols that the technique
-   known as third-party call control (3PCC) relies on.  Section 2.5
-   describes the consequences of the mitigations described here for
-   systems that use 3PCC.
-
-
+   known as third-party call control (3PCC) relies on.  3PCC exploits
+   the potential for the identity of a signaling peer to be different
+   than the media peer, allowing the media peer to be selected by the
+   signaling peer.  Section 2.5 describes the consequences of the
+   mitigations described here for systems that use 3PCC.
 
 
 
@@ -440,7 +440,7 @@ Internet-Draft                   SDP UKS                     August 2018
    copied by an attacker along with any SDP "fingerprint" attributes.
    An attacker can exploit this by causing a victim to believe that they
    are communicating with an attacker-controlled identity, when they are
-   really talking to another entity of the attacker's choice.
+   really talking to another entity of the attacker's choice.  The
 
 
 
@@ -449,6 +449,9 @@ Thomson & Rescorla      Expires February 9, 2019                [Page 8]
 
 Internet-Draft                   SDP UKS                     August 2018
 
+
+   attacker only needs to create an identity assertion that covers a
+   certificate fingerprint of their choosing.
 
    The problem might appear to be caused by the fact that an identity
    provider is not required to verify that the entity requesting an
@@ -473,9 +476,9 @@ Internet-Draft                   SDP UKS                     August 2018
    contains a hash of the identity assertion they received in signaling
    in addition to validating the identity assertion.
 
-   Endpoints MAY use the "external_session_id" extension in addition to
-   this so that two calls between the same parties can't be altered by
-   an attacker.
+   Endpoints can also use the "external_session_id" extension in
+   addition to this so that two calls between the same parties can't be
+   altered by an attacker.
 
 4.1.  The webrtc_id_hash TLS Extension
 
@@ -494,9 +497,6 @@ Internet-Draft                   SDP UKS                     August 2018
    that is encoded into a JSON text.  The resulting string is then
    encoded using UTF-8 [RFC3629].  The content of the "webrtc_id_hash"
    extension are produced by hashing the resulting octets with SHA-256
-   [SHA].  This produces the 32 octets of the assertion_hash parameter,
-   which is the sole contents of the extension.
-
 
 
 
@@ -505,6 +505,9 @@ Thomson & Rescorla      Expires February 9, 2019                [Page 9]
 
 Internet-Draft                   SDP UKS                     August 2018
 
+
+   [SHA].  This produces the 32 octets of the assertion_hash parameter,
+   which is the sole contents of the extension.
 
    The SDP "identity" attribute includes the base64 [RFC4648] encoding
    of the same octets that were input to the hash.  The "webrtc_id_hash"
@@ -552,9 +555,6 @@ Internet-Draft                   SDP UKS                     August 2018
    layers: an attacker can establish two independent sessions and simply
    forward any data it receives from one into the other.
 
-   In the absence of any higher-level concept of peer identity, the use
-   of session identifiers does not prevent session concatenation.  The
-
 
 
 Thomson & Rescorla      Expires February 9, 2019               [Page 10]
@@ -562,6 +562,8 @@ Thomson & Rescorla      Expires February 9, 2019               [Page 10]
 Internet-Draft                   SDP UKS                     August 2018
 
 
+   In the absence of any higher-level concept of peer identity, the use
+   of session identifiers does not prevent session concatenation.  The
    value to an attacker is limited unless information from the TLS
    connection is extracted and used with the signaling.  For instance, a
    key exporter [RFC5705] might be used to create a shared secret or
@@ -605,8 +607,6 @@ Internet-Draft                   SDP UKS                     August 2018
    o  The "webrtc_id_hash" extension has been assigned a code point of
       TBD; it is recommended and is marked as "Encrypted" in TLS 1.3.
 
-8.  References
-
 
 
 
@@ -617,6 +617,8 @@ Thomson & Rescorla      Expires February 9, 2019               [Page 11]
 
 Internet-Draft                   SDP UKS                     August 2018
 
+
+8.  References
 
 8.1.  Normative References
 
@@ -664,8 +666,6 @@ Internet-Draft                   SDP UKS                     August 2018
               in the Session Description Protocol (SDP)", RFC 8122,
               DOI 10.17487/RFC8122, March 2017,
               <https://www.rfc-editor.org/info/rfc8122>.
-
-
 
 
 
