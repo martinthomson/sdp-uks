@@ -91,10 +91,10 @@ the use of unknown key shares in combination with other protocol or
 implementation vulnerabilities.  An extension to TLS is defined that can be used
 to mitigate unknown key share attacks in a setting where fingerprints are used.
 
-Similar attacks and mitigations are described in {{webrtc}} for sessions that
-use an external identity bound to fingerprints, like that defined in WebRTC
-identity (see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}) or SIP
-identity {{?SIP-ID=RFC8224}}.
+Similar attacks and mitigations are described in {{id}} for sessions that use an
+external identity bound to fingerprints, like that defined in WebRTC identity
+(see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}) or SIP identity
+{{?SIP-ID=RFC8224}}.
 
 
 # Unknown Key-Share Attack
@@ -126,7 +126,7 @@ This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
 
 This attack is an aspect of SDP-based protocols that the technique known as
-third-party call control (3PCC) {{?RFC3725}} relies on.  3PCC exploits the
+third-party call control (3PCC) {{?3PCC=RFC3725}} relies on.  3PCC exploits the
 potential for the identity of a signaling peer to be different than the media
 peer, allowing the media peer to be selected by the signaling peer.
 {{byebye-3pcc}} describes the consequences of the mitigations described here for
@@ -135,8 +135,8 @@ systems that use 3PCC.
 
 ## Attack Overview
 
-This vulnerability can be used by an attacker to create a session where there is
-confusion about the communicating endpoints.
+This vulnerability might be used by an attacker to create a session where there
+is confusion about the communicating endpoints.
 
 A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can
 be attacked if it is willing to initiate two calls at the same time, one of
@@ -148,8 +148,9 @@ victim.
 The same technique can be used to cause two victims to both believe they are
 talking to the attacker when they are talking to each other.
 
-In a related attack, a single call using WebRTC identity can be attacked so that
-it produces the same outcome.  This attack does not require concurrent calls.
+In a related attack, a single call using WebRTC or SIP identity can be attacked
+so that it produces the same outcome.  This attack does not depend on concurrent
+call initiation.
 
 
 ## Limits on Attack Feasibility {#limits}
@@ -183,45 +184,62 @@ about communication peers.
 
 ## Example
 
-In this example, two sessions are created with the same endpoint concurrently.
-One of those sessions is initiated with the attacker, the second session is
-created toward another honest endpoint.  The attacker convinces the endpoint
+In this example, two sessions are created with the same endpoint at the same
+time.  One of those sessions is initiated with the attacker, the second session
+is created toward another honest endpoint.  The attacker convinces the endpoint
 that their session has completed, and that the session with the other endpoint
 has succeeded.
 
+In addition to the constraints described in {{limits}}, the attacker in this
+example also needs to the ability to view and drop packets between victims.
+That is, the attacker is on-path.
+
+This example depends on a somewhat implausible set of conditions.  It is
+intended to demonstrate what sort of attack is possible and what conditions are
+necessary to exploit this weakness in the protocol.
+
 ~~~
-  Norma               Mallory             Patsy
-  (fp=N)               -----              (fp=P)
-    |                    |                  |
-    +---Offer1 (fp=N)--->|                  |
-    +-----Offer2 (fp=N)-------------------->|
-    |<--------------------Answer2 (fp=P)----+
-    |<--Answer1 (fp=P)---+                  |
-    |                    |                  |
-    |======DTLS1====>(Forward)====DTLS1====>|
-    |<=====DTLS2=====(Forward)<===DTLS2=====|
-    |======Media1===>(Forward)====Media1===>|
-    |<=====Media2====(Forward)<===Media2====|
-    |                    |                  |
-    |======DTLS2===========>(Drop)          |
-    |                    |                  |
+  Norma                   Mallory                 Patsy
+  (fp=N)                   -----                  (fp=P)
+    |                        |                      |
+    +---Signaling1 (fp=N)--->|                      |
+    +-----Signaling2 (fp=N)------------------------>|
+    |<-------------------------Signaling2 (fp=P)----+
+    |<---Signaling1 (fp=P)---+                      |
+    |                        |                      |
+    |=======DTLS1=======>(Forward)======DTLS1======>|
+    |<======DTLS2========(Forward)<=====DTLS2=======|
+    |=======Media1======>(Forward)======Media1=====>|
+    |<======Media2=======(Forward)<=====Media2======|
+    |                       |                       |
+    |=======DTLS2========>(Drop)                    |
+    |                       |                       |
 ~~~
 {: #implausible-attack title="Example Attack Scenario"}
 
-In this case, Norma is willing to conduct two concurrent sessions.  The first
-session is established with Mallory, who falsely uses Patsy's certificate
-fingerprint.  A second session is initiated between Norma and Patsy.  Signaling
-for both sessions is permitted to complete.
+In {{implausible-attack}}, there are two sessions initiated at the same time by
+Norma.  Signaling is shown with single lines ('-'), DTLS and media with double
+lines ('=').
+
+The first session is established with Mallory, who falsely uses Patsy's
+certificate fingerprint (denoted with 'fp=P').  A second session is initiated
+between Norma and Patsy.  Signaling for both sessions is permitted to complete.
 
 Once signaling is complete on the session that is ostensibly between Mallory and
 Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her
-by Norma to Patsy.  Mallory also intercepts packets from Patsy and forwards
-those to Norma at the transport address that Norma associates with Mallory.
+by Norma to Patsy.  These packets denoted 'DTLS1' because Norma associates these
+with the first signaling session ('signaling1').
 
-The second signaling exchange - between Norma and Patsy - is permitted to
-continue to the point where Patsy believes that it has succeeded.  This ensures
-that Patsy believes that she is communicating with Norma.  In the end, Norma
-believes that she is communicating with Mallory, when she is really
+Mallory also intercepts packets from Patsy and forwards those to Norma at the
+transport address that Norma associates with Mallory.  These packets are denoted
+'DTLS2' to indicate that Patsy associates these with the second signaling
+session ('signaling2'), however Norma will interpret these as being associated
+with the first signaling session ('signaling1').
+
+The second signaling exchange - 'signaling2', between Norma and Patsy - is
+permitted to continue to the point where Patsy believes that it has succeeded.
+This ensures that Patsy believes that she is communicating with Norma.  In the
+end, Norma believes that she is communicating with Mallory, when she is really
 communicating with Patsy.
 
 Though Patsy needs to believe that the second signaling session has been
@@ -271,7 +289,7 @@ silently save a new key.
 
 ## Third-Party Call Control {#byebye-3pcc}
 
-Third-party call control (3PCC) is a technique where a signaling peer
+Third-party call control (3PCC) {{?3PCC}} is a technique where a signaling peer
 establishes a call that is terminated by a different entity.  This attack is
 very similar to the 3PCC technique, except where the TLS peers are aware of the
 use of 3PCC.
@@ -345,10 +363,12 @@ included in a ServerHello.
 
 Endpoints MUST check that the `id` parameter in the extension that they receive
 includes the `tls-id` attribute value that they received in their peer's session
-description.  Comparison can be performed with either the decoded ASCII string
-or the encoded octets.  An endpoint that receives a `external_session_id`
-extension that is not identical to the value that it expects MUST abort the
-connection with a fatal `handshake_failure` alert.
+description.  Endpoints can perform string comparison by ASCII decoding the TLS
+extension value and comparing it to the SDP attribute value, or compare the
+encoded TLS extension octets with the encoded SDP attribute value.  An endpoint
+that receives a `external_session_id` extension that is not identical to the
+value that it expects MUST abort the connection with a fatal `handshake_failure`
+alert.
 
 An endpoint that is communicating with a peer that does not support this
 extension will receive a ClientHello, ServerHello or EncryptedExtensions that
@@ -360,15 +380,16 @@ In TLS 1.3, the `external_session_id` extension MUST be sent in the
 EncryptedExtensions message.
 
 
-# WebRTC Identity Binding {#webrtc}
+# WebRTC and SIP Identity Bindings {#id}
 
-The identity assertion used for WebRTC {{!WEBRTC-SEC}} is bound only to the
-certificate fingerprint of an endpoint and can therefore be copied by an
-attacker along with any SDP `fingerprint` attributes.  An attacker can exploit
-this by causing a victim to believe that they are communicating with an
-attacker-controlled identity, when they are really talking to another entity of
-the attacker's choice.  The attacker only needs to create an identity assertion
-that covers a certificate fingerprint of their choosing.
+The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
+SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
+bound only to the certificate fingerprint of an endpoint and can therefore be
+copied by an attacker along with any SDP `fingerprint` attributes.  An attacker
+can exploit this by causing a victim to believe that they are communicating with
+an attacker-controlled identity, when they are really talking to another entity
+of the attacker's choice.  The attacker only needs to create an identity
+assertion that covers a certificate fingerprint of their choosing.
 
 The problem might appear to be caused by the fact that an identity provider is
 not required to verify that the entity requesting an identity assertion controls
@@ -394,24 +415,24 @@ Endpoints can also use the `external_session_id` extension in addition to this
 so that two calls between the same parties can't be altered by an attacker.
 
 
-## The webrtc_id_hash TLS Extension {#webrtc_id_hash}
+## The ext_id_hash TLS Extension {#ext_id_hash}
 
-The `webrtc_id_hash` TLS extension carries a hash of the identity assertion that
+The `id_hash` TLS extension carries a hash of the identity assertion that
 communicating peers have exchanged.
 
-The `extension_data` for the `webrtc_id_hash` extension contains a
-WebrtcIdentityHash struct, described below using the syntax defined in
+The `extension_data` for the `ext_id_hash` extension contains a
+ExternalIdentityHash struct, described below using the syntax defined in
 {{!RFC5246}}:
 
 ~~~
    struct {
       opaque assertion_hash<0..32>;
-   } WebrtcIdentityHash;
+   } ExternalIdentityHash;
 ~~~
 
 A WebRTC identity assertion is provided as a JSON {{?RFC7159}} object that is
 encoded into a JSON text.  The resulting string is then encoded using UTF-8
-{{!RFC3629}}.  The content of the `webrtc_id_hash` extension are produced by
+{{!RFC3629}}.  The content of the `ext_id_hash` extension are produced by
 hashing the resulting octets with SHA-256 {{!SHA=DOI.10.6028/NIST.FIPS.180-4}}.
 This produces the 32 octets of the assertion_hash parameter, which is the sole
 contents of the extension.
@@ -422,27 +443,38 @@ validated by performing base64 decoding on the value of the SDP `identity`
 attribute, hashing the resulting octets using SHA-256, and comparing the results
 with the content of the extension.
 
-Identity assertions might be provided by only one peer.  An endpoint that does
-not produce an identity assertion MUST generate an empty `webrtc_id_hash`
-extension in its ClientHello.  This allows its peer to include a hash of its
-identity assertion.  An endpoint without an identity assertion MUST omit the
-`webrtc_id_hash` extension from its ServerHello or EncryptedExtensions message.
+Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
+the full form.  The base64 encoding used in the Identity (or 'y') header field
+MUST be decoded then used as input to SHA-256.  This produces the 32 octet
+assertion_hash value.
 
-A peer that receives a `webrtc_id_hash` extension that is not equal to the value
+Note:
+
+: Should SHA-256 prove to be inadequate at some point in the future (see
+  {{?AGILITY=RFC7696}}), a new TLS extension can be defined that uses a
+  different hash function.
+
+Identity assertions in either form might be provided by only one peer.  An
+endpoint that does not produce an identity assertion MUST generate an empty
+`ext_id_hash` extension in its ClientHello.  This allows its peer to include a
+hash of its identity assertion.  An endpoint without an identity assertion MUST
+omit the `ext_id_hash` extension from its ServerHello or EncryptedExtensions
+message.
+
+A peer that receives an `ext_id_hash` extension that is not equal to the value
 of the identity assertion from its peer MUST immediately fail the TLS handshake
-with an error.  This includes cases where the `identity` attribute is not
-present in the SDP.
+with an error.  This includes cases where the assertion is absent.
 
-A `webrtc_id_hash` extension that is any length other than 0 or 32 is invalid
-and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
+An `ext_id_hash` extension that is any length other than 0 or 32 is invalid and
+MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
 
-A peer that receives an identity assertion, but does not receive a
-`webrtc_id_hash` extension MAY choose to fail the connection, though it is
-expected that implementations written prior to the definition of the extensions
-in this document will not support both for some time.
+A peer that receives an identity assertion, but does not receive an
+`ext_id_hash` extension MAY choose to fail the connection, though it is expected
+that implementations written prior to the definition of the extensions in this
+document will not support both for some time.
 
-In TLS 1.3, the `webrtc_id_hash` extension MUST be sent in the
-EncryptedExtensions message.
+In TLS 1.3, the `ext_id_hash` extension MUST be sent in the EncryptedExtensions
+message.
 
 
 # Consequences of Session Concatenation
@@ -454,7 +486,7 @@ where both peers believe that they are talking to the attacker when they are
 talking to each other.
 
 This kind of attack is prevented by systems that enable peer authentication such
-as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?RFC8224}}.  However,
+as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?SIP-ID}}.  However,
 session concatention remains possible at higher layers: an attacker can
 establish two independent sessions and simply forward any data it receives from
 one into the other.
@@ -462,8 +494,8 @@ one into the other.
 In the absence of any higher-level concept of peer identity, the use of session
 identifiers does not prevent session concatenation.  The value to an attacker is
 limited unless information from the TLS connection is extracted and used with
-the signaling.  For instance, a key exporter {{?RFC5705}} might be used to
-create a shared secret or unique identifier that is used in a secondary
+the signaling.  For instance, a key exporter {{?EXPORTER=RFC5705}} might be used
+to create a shared secret or unique identifier that is used in a secondary
 protocol.
 
 If a secondary protocol uses the signaling channel with the assumption that the
@@ -500,7 +532,7 @@ registry established in {{!RFC5246}}:
 * The `external_session_id` extension has been assigned a code point of TBD; it
   is recommended and is marked as "Encrypted" in TLS 1.3.
 
-* The `webrtc_id_hash` extension has been assigned a code point of TBD; it is
+* The `ext_id_hash` extension has been assigned a code point of TBD; it is
   recommended and is marked as "Encrypted" in TLS 1.3.
 
 
