@@ -79,16 +79,22 @@ or DTLS handshake.  This is defined in {{!RFC8122}}.
 The design in RFC 8122 relies on the integrity of the signaling channel.
 Certificate fingerprints are assumed to be provided by the communicating peers
 and carried by the signaling channel without being subject to modification.
-However, this design is vulnerable to an unknown key-share (UKS) attack where a
-misbehaving endpoint is able to advertise a key that it does not control.  This
-leads to the creation of sessions where peers are confused about the identify of
-the participants.
+However, this design is vulnerable to a potential unknown key-share (UKS) attack
+where a misbehaving endpoint is able to advertise a key that it does not
+control.  This could lead to the creation of sessions where peers are confused
+about the identify of the participants.
 
-An extension to TLS is defined that can be used to mitigate this attack.
+The theorized attacks described here are largely hypotetical; the conditions for
+mounting an attack in practice are challenging (see {{limits}}).  The mechanisms
+defined in this document are intended to strengthen the protocol by preventing
+the use of unknown key shares in combination with other protocol or
+implementation vulnerabilities.  An extension to TLS is defined that can be used
+to mitigate unknown key share attacks in a setting where fingerprints are used.
 
-A similar attack is possible with sessions that use WebRTC identity (see Section
-5.6 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}).  This issue and a mitigation
-for it is discussed in more detail in {{webrtc}}.
+Similar attacks and mitigations are described in {{webrtc}} for sessions that
+use an external identity bound to fingerprints, like that defined in WebRTC
+identity (see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}) or SIP
+identity {{?SIP-ID=RFC8224}}.
 
 
 # Unknown Key-Share Attack
@@ -104,7 +110,7 @@ communicate with a different peer, even though it believes that it is
 communicating with the malicious endpoint.
 
 When the identity of communicating peers is established by higher-layer
-signaling constructs, such as those in SIP {{?RFC4474}} or WebRTC
+signaling constructs, such as those in SIP identity {{?RFC8224}} or WebRTC
 {{!WEBRTC-SEC}}, this allows an attacker to bind their own identity to a session
 with any other entity.
 
@@ -120,10 +126,11 @@ This attack applies to any communications established based on the SDP
 `fingerprint` attribute {{!RFC8122}}.
 
 This attack is an aspect of SDP-based protocols that the technique known as
-third-party call control (3PCC) relies on.  3PCC exploits the potential for the
-identity of a signaling peer to be different than the media peer, allowing the
-media peer to be selected by the signaling peer.  {{byebye-3pcc}} describes the
-consequences of the mitigations described here for systems that use 3PCC.
+third-party call control (3PCC) {{?RFC3725}} relies on.  3PCC exploits the
+potential for the identity of a signaling peer to be different than the media
+peer, allowing the media peer to be selected by the signaling peer.
+{{byebye-3pcc}} describes the consequences of the mitigations described here for
+systems that use 3PCC.
 
 
 ## Attack Overview
@@ -132,19 +139,20 @@ This vulnerability can be used by an attacker to create a session where there is
 confusion about the communicating endpoints.
 
 A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can
-be attacked if it is willing to conduct two concurrent calls, one of which is
-with an attacker.  The attacker can arrange for the victim to incorrectly
-believe that is calling the attacker when it is in fact calling a second party.
-The second party correctly believes that it is talking to the victim.
+be attacked if it is willing to initiate two calls at the same time, one of
+which is with an attacker.  The attacker can arrange for the victim to
+incorrectly believe that is calling the attacker when it is in fact calling a
+second party.  The second party correctly believes that it is talking to the
+victim.
 
 The same technique can be used to cause two victims to both believe they are
 talking to the attacker when they are talking to each other.
 
 In a related attack, a single call using WebRTC identity can be attacked so that
-it produces the same outcome.  This attack does not require a concurrent call.
+it produces the same outcome.  This attack does not require concurrent calls.
 
 
-## Limits on Attack Feasibility
+## Limits on Attack Feasibility {#limits}
 
 The use of TLS with SDP depends on the integrity of session signaling.  Assuming
 signaling integrity limits the capabilities of an attacker in several ways.  In
@@ -166,6 +174,11 @@ is configured with a target peer identity (as defined in {{WEBRTC}}).
 Furthermore, any identity displayed by a browser could be different to the
 identity used by the application, since the attack affects the browser's
 understanding of the peer's identity.
+
+Many contemporary deployments do not provide signaling integrity.  Without
+signaling integrity or explicit peer authentication, such as is defined in
+WebRTC {{?WEBRTC-SEC}} or SIP identity {{?SIP-ID}}, no assurances can be made
+about communication peers.
 
 
 ## Example
@@ -193,6 +206,7 @@ has succeeded.
     |======DTLS2===========>(Drop)          |
     |                    |                  |
 ~~~
+{: #implausible-attack title="Example Attack Scenario"}
 
 In this case, Norma is willing to conduct two concurrent sessions.  The first
 session is established with Mallory, who falsely uses Patsy's certificate
@@ -440,7 +454,7 @@ where both peers believe that they are talking to the attacker when they are
 talking to each other.
 
 This kind of attack is prevented by systems that enable peer authentication such
-as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?RFC4474}}.  However,
+as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?RFC8224}}.  However,
 session concatention remains possible at higher layers: an attacker can
 establish two independent sessions and simply forward any data it receives from
 one into the other.
