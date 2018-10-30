@@ -4,6 +4,7 @@ abbrev: "SDP UKS"
 docname: draft-ietf-mmusic-sdp-uks-latest
 category: std
 ipr: trust200902
+updates: 8122
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -54,10 +55,11 @@ informative:
 
 This document describes unknown key-share attacks on the use of Datagram
 Transport Layer Security for the Secure Real-Time Transport Protocol
-(DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with Web
-Real-Time Communications (WebRTC) identity assertions.  Both attacks cause a
-victim to be mislead about the identity of a communicating peer.  Simple
-mitigation techniques are defined for each.
+(DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the
+identity bindings used in Web Real-Time Communications (WebRTC) and SIP
+identity.  These attacks are difficult to mount, but they cause a victim to be
+mislead about the identity of a communicating peer.  Simple mitigation
+techniques are defined for each.
 
 
 --- middle
@@ -79,10 +81,11 @@ or DTLS handshake.  This is defined in {{!RFC8122}}.
 The design in RFC 8122 relies on the integrity of the signaling channel.
 Certificate fingerprints are assumed to be provided by the communicating peers
 and carried by the signaling channel without being subject to modification.
-However, this design is vulnerable to a potential unknown key-share (UKS) attack
-where a misbehaving endpoint is able to advertise a key that it does not
-control.  This could lead to the creation of sessions where peers are confused
-about the identify of the participants.
+
+The use of certificate fingerprints as described in RFC 8122 is vulnerable to a
+potential unknown key-share (UKS) attack where a misbehaving endpoint is able to
+advertise a key that it does not control.  This could lead to the creation of
+sessions where peers are confused about the identify of the participants.
 
 The theorized attacks described here are largely hypotetical; the conditions for
 mounting an attack in practice are challenging (see {{limits}}).  The mechanisms
@@ -151,6 +154,14 @@ talking to the attacker when they are talking to each other.
 In a related attack, a single call using WebRTC or SIP identity can be attacked
 so that it produces the same outcome.  This attack does not depend on concurrent
 call initiation.
+
+This document assumes that signaling is integrity protected.  However, as
+Section 7 of {{!RFC8122}} explains, many deployments that use SDP do not
+guarantee integrity of session signaling and so are vulnerable to other attacks.
+{{!RFC8122}} offers key continuity mechanisms as a potential means of reducing
+exposure to attack in the absence of integrity protection.  {{continuity}}
+provides some analysis of the effect of key continuity in relation to the
+described attacks.
 
 
 ## Limits on Attack Feasibility {#limits}
@@ -380,7 +391,7 @@ In TLS 1.3, the `external_session_id` extension MUST be sent in the
 EncryptedExtensions message.
 
 
-# WebRTC and SIP Identity Bindings {#id}
+# Identity Bindings {#id}
 
 The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
 SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
