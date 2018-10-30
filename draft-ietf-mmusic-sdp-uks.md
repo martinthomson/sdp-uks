@@ -449,7 +449,7 @@ This produces the 32 octets of the assertion_hash parameter, which is the sole
 contents of the extension.
 
 The SDP `identity` attribute includes the base64 {{?RFC4648}} encoding of the
-same octets that were input to the hash.  The `webrtc_id_hash` extension is
+same octets that were input to the hash.  The `ext_id_hash` extension is
 validated by performing base64 decoding on the value of the SDP `identity`
 attribute, hashing the resulting octets using SHA-256, and comparing the results
 with the content of the extension.
@@ -457,7 +457,7 @@ with the content of the extension.
 Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
 the full form.  The base64 encoding used in the Identity (or 'y') header field
 MUST be decoded then used as input to SHA-256.  This produces the 32 octet
-assertion_hash value.
+assertion_hash value used for creating or validating the extension.
 
 Note:
 
