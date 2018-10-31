@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                        October 30, 2018
-Expires: May 3, 2019
+Intended status: Standards Track                        October 31, 2018
+Expires: May 4, 2019
 
 
  Unknown Key Share Attacks on uses of Transport Layer Security with the
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 3, 2019.
+   This Internet-Draft will expire on May 4, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 1]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 1]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 2]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 2]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 3]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 3]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 4]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 4]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 5]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 5]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 6]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 6]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 7]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 7]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 8]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 8]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                  [Page 9]
+Thomson & Rescorla         Expires May 4, 2019                  [Page 9]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 10]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 10]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -574,7 +574,7 @@ Internet-Draft                   SDP UKS                    October 2018
    which is the sole contents of the extension.
 
    The SDP "identity" attribute includes the base64 [RFC4648] encoding
-   of the same octets that were input to the hash.  The "webrtc_id_hash"
+   of the same octets that were input to the hash.  The "ext_id_hash"
    extension is validated by performing base64 decoding on the value of
    the SDP "identity" attribute, hashing the resulting octets using SHA-
    256, and comparing the results with the content of the extension.
@@ -582,7 +582,8 @@ Internet-Draft                   SDP UKS                    October 2018
    Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be
    expanded into the full form.  The base64 encoding used in the
    Identity (or 'y') header field MUST be decoded then used as input to
-   SHA-256.  This produces the 32 octet assertion_hash value.
+   SHA-256.  This produces the 32 octet assertion_hash value used for
+   creating or validating the extension.
 
    Note:  Should SHA-256 prove to be inadequate at some point in the
       future (see [AGILITY]), a new TLS extension can be defined that
@@ -612,8 +613,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-
-Thomson & Rescorla         Expires May 3, 2019                 [Page 11]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 11]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 12]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 12]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 13]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 13]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                   SDP UKS                    October 2018
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 14]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 14]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -837,7 +837,7 @@ Appendix A.  Acknowledgements
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 15]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 15]
 
 Internet-Draft                   SDP UKS                    October 2018
 
@@ -893,4 +893,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla         Expires May 3, 2019                 [Page 16]
+Thomson & Rescorla         Expires May 4, 2019                 [Page 16]
