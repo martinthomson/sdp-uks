@@ -118,7 +118,7 @@ communicate with a different peer, even though it believes that it is
 communicating with the malicious endpoint.
 
 When the identity of communicating peers is established by higher-layer
-signaling constructs, such as those in SIP identity {{?RFC8224}} or WebRTC
+signaling constructs, such as those in SIP identity {{?SIP-ID}} or WebRTC
 {{!WEBRTC-SEC}}, this allows an attacker to bind their own identity to a session
 with any other entity.
 
@@ -278,9 +278,9 @@ conduct two sessions concurrently, if the attacker (Mallory) is on the network
 path between the victims, and if the same certificate - and therefore SDP
 `fingerprint` attribute value - is used in both sessions.
 
-Where ICE {{?ICE=I-D.ietf-ice-rfc5245bis}} is used, Mallory also needs to ensure
-that connectivity between Patsy and Norma succeed, either by forwarding checks
-or answering and generating the necessary messages.
+Where ICE {{?ICE=RFC8445}} is used, Mallory also needs to ensure that
+connectivity between Patsy and Norma succeed, either by forwarding checks or
+answering and generating the necessary messages.
 
 
 ## Interactions with Key Continuity {#continuity}
