@@ -99,6 +99,11 @@ external identity bound to fingerprints, like that defined in WebRTC identity
 (see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}) or SIP identity
 {{?SIP-ID=RFC8224}}.
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14 {{!RFC2119}} {{!RFC8174}}
+when, and only when, they appear in all capitals, as shown here.
+
 
 # Unknown Key-Share Attack
 
