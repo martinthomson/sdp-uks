@@ -1,5 +1,5 @@
 ---
-title: "Unknown Key Share Attacks on uses of Transport Layer Security with the Session Description Protocol (SDP)"
+title: "Unknown Key Share Attacks on uses of TLS with the Session Description Protocol (SDP)"
 abbrev: "SDP UKS"
 docname: draft-ietf-mmusic-sdp-uks-latest
 category: std
@@ -47,8 +47,10 @@ informative:
       - ins: A. Narayanan
       - ins: C. Jennings
       - ins: B. Aboba
-    date: 2016-05-31
-    seriesinfo: W3C WD-webrtc-30160531
+      - ins: T. Brandstetter
+      - ins: J. Bruaroey
+    date: 2018-11-08
+    seriesinfo: W3C Editor's Draft
 
 
 --- abstract
@@ -66,38 +68,46 @@ techniques are defined for each.
 
 # Introduction
 
-The use of Transport Layer Security (TLS) {{!RFC5246}} with the Session
-Description Protocol (SDP) {{!RFC4566}} is defined in {{!RFC8122}}.  Further use
-with Datagram Transport Layer Security (DTLS) {{!RFC6347}} and the Secure
-Real-time Transport Protocol (SRTP) {{!RFC3711}} is defined as DTLS-SRTP
-{{!RFC5763}}.
+The use of Transport Layer Security (TLS) {{!TLS13=RFC8446}} with the Session
+Description Protocol (SDP) {{!SDP=RFC4566}} is defined in
+{{!FINGERPRINT=RFC8122}}.  Further use with Datagram Transport Layer Security
+(DTLS) {{!DTLS=RFC6347}} and the Secure Real-time Transport Protocol (SRTP)
+{{!SRTP=RFC3711}} is defined as DTLS-SRTP {{!DTLS-SRTP=RFC5763}}.
 
 In these specifications, key agreement is performed using TLS or DTLS, with
 authentication being tied back to the session description (or SDP) through the
 use of certificate fingerprints.  Communication peers check that a hash, or
 fingerprint, provided in the SDP matches the certificate that is used in the TLS
-or DTLS handshake.  This is defined in {{!RFC8122}}.
+or DTLS handshake.
 
-The design in RFC 8122 relies on the integrity of the signaling channel.
-Certificate fingerprints are assumed to be provided by the communicating peers
-and carried by the signaling channel without being subject to modification.
+WebRTC identity (see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}})
+and SIP identity {{?SIP-ID=RFC8224}} both provide a mechanism that binds an
+external identity to the certificate fingerprints from a session description.
+However, this binding is not integrity-protected and therefore vulnerable to an
+identity misbinding attack - or unknown key-share (UKS) attack - where the
+attacker binds their identity to the fingerprint of another entity.  A
+successful attack leads to the creation of sessions where peers are confused
+about the identify of the participants.
 
-The use of certificate fingerprints as described in RFC 8122 is vulnerable to a
-potential unknown key-share (UKS) attack where a misbehaving endpoint is able to
-advertise a key that it does not control.  This could lead to the creation of
-sessions where peers are confused about the identify of the participants.
+This document describes a TLS extension that can be used in combination with
+these identity bindings to prevent this attack.
 
-The theorized attacks described here are largely hypotetical; the conditions for
-mounting an attack in practice are challenging (see {{limits}}).  The mechanisms
-defined in this document are intended to strengthen the protocol by preventing
-the use of unknown key shares in combination with other protocol or
-implementation vulnerabilities.  An extension to TLS is defined that can be used
-to mitigate unknown key share attacks in a setting where fingerprints are used.
+A similar attack is possible with the use of certificate fingerprints alone.
+Though attacks in this setting are likely infeasible in existing deployments due
+to the narrow conditions necessary (see {{limits}}), this document also
+describes mitigations for this attack.
 
-Similar attacks and mitigations are described in {{id}} for sessions that use an
-external identity bound to fingerprints, like that defined in WebRTC identity
-(see Section 7 of {{!WEBRTC-SEC=I-D.ietf-rtcweb-security-arch}}) or SIP identity
-{{?SIP-ID=RFC8224}}.
+The mechanisms defined in this document are intended to strengthen the protocol
+by preventing the use of unknown key shares in combination with other protocol
+or implementation vulnerabilities.
+
+This document assumes that signaling is integrity protected.  However, as
+Section 7 of {{!FINGERPRINT}} explains, many deployments that use SDP do not
+guarantee integrity of session signaling and so are vulnerable to other attacks.
+{{!FINGERPRINT}} offers key continuity mechanisms as a potential means of
+reducing exposure to attack in the absence of integrity protection.
+{{continuity}} provides some analysis of the effect of key continuity in
+relation to the described attacks.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -105,68 +115,38 @@ document are to be interpreted as described in BCP 14 {{!RFC2119}} {{!RFC8174}}
 when, and only when, they appear in all capitals, as shown here.
 
 
-# Unknown Key-Share Attack
+# Unknown Key-Share Attack {#uks}
 
 In an unknown key-share attack {{UKS}}, a malicious participant in a protocol
 claims to control a key that is in reality controlled by some other actor.  This
 arises when the identity associated with a key is not properly bound to the key.
 
-In usages of TLS that use SDP for negotiation, an endpoint is able to acquire
-the certificate fingerprint of another entity.  By advertising that fingerprint
-in place of one of its own, the malicious endpoint can cause its peer to
-communicate with a different peer, even though it believes that it is
-communicating with the malicious endpoint.
+An endpoint that can acquire the certificate fingerprint of another entity can
+advertise that fingerprint as their own in SDP.  An attacker can use a copy of
+that fingerprint to cause a victim to communicate with another unaware victim,
+even though it believes that it is communicating with the attacker.
 
 When the identity of communicating peers is established by higher-layer
 signaling constructs, such as those in SIP identity {{?SIP-ID}} or WebRTC
 {{!WEBRTC-SEC}}, this allows an attacker to bind their own identity to a session
 with any other entity.
 
-By substituting the fingerprint of one peer for its own, an attacker is able to
-cause a TLS connection to be established where one endpoint might make an
-incorrect assumption about the identity of its peer.  The TLS peer is not the
-same as the signaling peer.
+The attacker obtains an identity assertion for an identity it controls, but
+binds that to the fingerprint of one peer.  The attacker is then able to cause a
+TLS connection to be established where two endpoints communicate.  The victim
+that has its fingerprint copied by the attack correctly believes that it is
+communicating with the other victim; however, the other victim incorrectly
+believes that it is communicating with the attacker.
 
-The peer does not suffer any such confusion, resulting in each peer involved in
-the session having a different view of the nature of the session.
-
-This attack applies to any communications established based on the SDP
-`fingerprint` attribute {{!RFC8122}}.
+A similar attack can be mounted without to any communications established based
+on the SDP `fingerprint` attribute {{!FINGERPRINT}}.
 
 This attack is an aspect of SDP-based protocols that the technique known as
-third-party call control (3PCC) {{?3PCC=RFC3725}} relies on.  3PCC exploits the
+third-party call control (3PCC) {{?RFC3725}} relies on.  3PCC exploits the
 potential for the identity of a signaling peer to be different than the media
 peer, allowing the media peer to be selected by the signaling peer.
 {{byebye-3pcc}} describes the consequences of the mitigations described here for
 systems that use 3PCC.
-
-
-## Attack Overview
-
-This vulnerability might be used by an attacker to create a session where there
-is confusion about the communicating endpoints.
-
-A SIP endpoint or WebRTC endpoint that is configured to reuse a certificate can
-be attacked if it is willing to initiate two calls at the same time, one of
-which is with an attacker.  The attacker can arrange for the victim to
-incorrectly believe that is calling the attacker when it is in fact calling a
-second party.  The second party correctly believes that it is talking to the
-victim.
-
-The same technique can be used to cause two victims to both believe they are
-talking to the attacker when they are talking to each other.
-
-In a related attack, a single call using WebRTC or SIP identity can be attacked
-so that it produces the same outcome.  This attack does not depend on concurrent
-call initiation.
-
-This document assumes that signaling is integrity protected.  However, as
-Section 7 of {{!RFC8122}} explains, many deployments that use SDP do not
-guarantee integrity of session signaling and so are vulnerable to other attacks.
-{{!RFC8122}} offers key continuity mechanisms as a potential means of reducing
-exposure to attack in the absence of integrity protection.  {{continuity}}
-provides some analysis of the effect of key continuity in relation to the
-described attacks.
 
 
 ## Limits on Attack Feasibility {#limits}
@@ -186,19 +166,209 @@ quite limited.  An attacker is only able to switch its own certificate
 fingerprint for a valid certificate that is acceptable to its peer.  Attacks
 therefore rely on joining two separate sessions into a single session.
 
-The second condition is not necessary with WebRTC identity if the victim has or
-is configured with a target peer identity (as defined in {{WEBRTC}}).
-Furthermore, any identity displayed by a browser could be different to the
-identity used by the application, since the attack affects the browser's
-understanding of the peer's identity.
-
-Many contemporary deployments do not provide signaling integrity.  Without
-signaling integrity or explicit peer authentication, such as is defined in
-WebRTC {{?WEBRTC-SEC}} or SIP identity {{?SIP-ID}}, no assurances can be made
-about communication peers.
+However, the second condition might not be necessary when using an identity
+binding such as those defined in {{WEBRTC}} or {{!SIP-ID}}.  When using an
+identity binding, the threat model assumes the possibility of attack by an
+entity with access to the signaling channel.  Removing this constraint makes
+attacks considerably more feasible.
 
 
-## Example
+## Interactions with Key Continuity {#continuity}
+
+Systems that use key continuity might be able to detect an unknown key-share
+attack if a session with either the attacker or the geniune peer (i.e., the
+victim whose fingerprint was copied by an attacker) was established in the past.
+Whether this is possible depends on how key continuity is implemented.
+
+Implementations that maintain a single database of identities with an index on
+peer keys could discover that the identity saved for the peer key does not match
+the claimed identity.  Such an implementation could notice the disparity between
+the actual keys (those copied from a victim) and the expected keys (those of the
+attacker).
+
+In comparison, implementations that first match based on peer identity could
+treat an unknown key-share attack as though their peer had used a
+newly-configured device.  The apparent addition of a new device could generate
+user-visible notices (e.g., "Mallory appears to have a new device").  However,
+such an event is not always considered alarming; some implementations might
+silently save a new key.
+
+
+## Third-Party Call Control {#byebye-3pcc}
+
+Third-party call control (3PCC) {{?RFC3725}} is a technique where a signaling
+peer establishes a call that is terminated by a different entity.  This attack
+is very similar to the 3PCC technique, except where the TLS peers are aware of
+the use of 3PCC.
+
+For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the
+signaling so that they can correctly generate (and check) the extension.  It is
+understood that this technique will prevent the use of 3PCC if peers are not
+able to access signaling.
+
+
+# Attack on Identity Bindings {#id}
+
+The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
+SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
+bound to the certificate fingerprint of an endpoint.  An attacker causes an
+identity binding to be created that binds an identity they control to the
+fingerprint of a victim.
+
+An attacker can thereby cause a victim to believe that they are communicating
+with an attacker-controlled identity, when they are really talking to another
+entity of the attacker's choice.  The attacker only needs to create an identity
+assertion that covers a certificate fingerprint of their choosing.
+
+The problem might appear to be caused by the fact that the entity that certifies
+the identity binding is not required to verify that the entity requesting the
+binding controls the keys associated with the fingerprints.  Both SIP and WebRTC
+identity providers are not required to perform this validation.  This is not an
+issue because verifying control of the associated keys is not a necessary
+condition for a secure protocol, nor would it be sufficient to prevent attack
+{{SIGMA}}.
+
+A simple solution to this problem is suggested by {{SIGMA}}.  The identity of
+endpoints is included under a message authentication code (MAC) during the
+cryptographic handshake.  Endpoints then validate that their peer has provided
+an identity that matches their expectations.  In TLS, the Finished message
+provides a MAC over the entire handshake, so that including the identity in a
+TLS extension is sufficient to implement this solution.
+
+Rather than include a complete identity binding - which could be
+sizeable - a collision- and pre-image-resistant hash of the binding is included
+in a TLS extension.  Endpoints then need only validate that the extension
+contains a hash of the identity binding they received in signaling.  If the
+identity binding is successfully validated, the identity of a peer is verified
+and bound to the session.
+
+The same technique can be used to cause two victims to both believe they are
+talking to the attacker when they are talking to each other.
+
+
+## Example {#id-example}
+
+In the example shown in {{identity-attack}}, it is assumed that the attacker
+also controls the signaling channel.
+
+Mallory (the attacker) presents two victims, Norma and Patsy, with two separate
+sessions.  In the first session, Patsy is presented with the option to
+communicate with Norma; a second session with Mallory is presented to Norma.
+
+~~~
+  Norma                   Mallory                   Patsy
+  (fp=N)                   -----                    (fp=P)
+    |                        |                        |
+    |                        |<---- Signaling1 ------>|
+    |                        |   Norma=N Patsy=P      |
+    |<---- Signaling2 ------>|                        |
+    |   Norma=N Mallory=P    |                        |
+    |                                                 |
+    |<=================DTLS (fp=N,P)=================>|
+    |                                                 |
+  (peer = Mallory!)                         (peer = Norma)
+~~~
+{: #identity-attack title="Example Attack on Identity Bindings"}
+
+The attack requires that Mallory obtain an identity binding for their own
+identity with the fingerprints presented by Patsy (P).  This false binding is
+then presented to Norma.
+
+Patsy could be similarly duped, but in this example, a correct binding between
+Norma's identity and fingerprint (N) is faithfully presented by Mallory.
+
+The resulting DTLS session is established directly between Norma and Patsy.
+Patsy correctly believes that they are communicating with Norma.  However, Norma
+incorrectly believes they are talking to Mallory.
+
+In order for this attack to work without compromising signaling integrity, it is
+likely that the attacker also needs to subvert the session as described in
+{{fp}}.  Endpoints can use the `external_session_id` extension (see
+{{external_session_id}}) in addition to this so that two calls between the same parties
+can't be altered by an attacker.
+
+
+## The external_id_hash TLS Extension {#external_id_hash}
+
+The `external_id_hash` TLS extension carries a hash of the identity assertion
+that communicating peers have exchanged.
+
+The `extension_data` for the `external_id_hash` extension contains a
+`ExternalIdentityHash` struct, described below using the syntax defined in
+{{!TLS13}}:
+
+~~~
+   struct {
+      opaque binding_hash<0..32>;
+   } ExternalIdentityHash;
+~~~
+
+A WebRTC identity assertion is provided as a JSON {{?JSON=RFC8259}} object that
+is encoded into a JSON text.  The resulting string is then encoded using UTF-8
+{{!UTF8=RFC3629}}.  The content of the `external_id_hash` extension are produced
+by hashing the resulting octets with SHA-256
+{{!SHA=DOI.10.6028/NIST.FIPS.180-4}}.  This produces the 32 octets of the
+`binding_hash` parameter, which is the sole contents of the extension.
+
+The SDP `identity` attribute includes the base64 {{?BASE64=RFC4648}} encoding of
+the same octets that were input to the hash.  The `external_id_hash` extension
+is validated by performing base64 decoding on the value of the SDP `identity`
+attribute, hashing the resulting octets using SHA-256, and comparing the results
+with the content of the extension.
+
+Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
+the full form.  The base64 encoding used in the Identity (or 'y') header field
+MUST be decoded then used as input to SHA-256.  This produces the 32 octet
+`binding_hash` value used for creating or validating the extension.
+
+Note:
+
+: Should SHA-256 prove to be inadequate at some point in the future (see
+  {{?AGILITY=RFC7696}}), a new TLS extension can be defined that uses a
+  different hash function.
+
+Identity bindings in either form might be provided by only one peer.  An
+endpoint that does not produce an identity binding MUST generate an empty
+`external_id_hash` extension in its ClientHello.  This allows its peer to
+include a hash of its identity binding.  An endpoint without an identity binding
+MUST include an empty `external_id_hash` extension in its ServerHello or
+EncryptedExtensions message, to indicate support for the extension.
+
+A peer that receives an `external_id_hash` extension that does not match the
+value of the identity binding from its peer MUST immediately fail the TLS
+handshake with an error.  This includes cases where the binding is absent, in
+which the extension MUST be present and empty.
+
+An `external_id_hash` extension that is any length other than 0 or 32 is invalid
+and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
+
+A peer that receives an identity binding, but does not receive an
+`external_id_hash` extension MAY choose to fail the connection, though it is
+expected that implementations written prior to the definition of the extensions
+in this document will not support both for some time.
+
+In TLS 1.3, the `external_id_hash` extension MUST be sent in the
+EncryptedExtensions message.
+
+
+# Unknown Key-Share with Fingerprints {#fp}
+
+A similar attack can create a session where there is confusion about the
+communicating endpoints by substituting the fingerprint of a communicating
+endpoint.
+
+An endpoint that is configured to reuse a certificate can be attacked if it is
+willing to initiate two calls at the same time, one of which is with an
+attacker.  The attacker can arrange for the victim to incorrectly believe that
+is calling the attacker when it is in fact calling a second party.  The second
+party correctly believes that it is talking to the victim.
+
+As with the attack on identity bindings, this can be used to cause two victims
+to both believe they are talking to the attacker when they are talking to each
+other.
+
+
+## Example {#fp-example}
 
 In this example, two sessions are created with the same endpoint at the same
 time.  One of those sessions is initiated with the attacker, the second session
@@ -210,9 +380,9 @@ In addition to the constraints described in {{limits}}, the attacker in this
 example also needs to the ability to view and drop packets between victims.
 That is, the attacker is on-path.
 
-This example depends on a somewhat implausible set of conditions.  It is
-intended to demonstrate what sort of attack is possible and what conditions are
-necessary to exploit this weakness in the protocol.
+The attack shown in {{implausible-attack}} depends on a somewhat implausible set
+of conditions.  It is intended to demonstrate what sort of attack is possible
+and what conditions are necessary to exploit this weakness in the protocol.
 
 ~~~
   Norma                   Mallory                 Patsy
@@ -231,11 +401,11 @@ necessary to exploit this weakness in the protocol.
     |=======DTLS2========>(Drop)                    |
     |                       |                       |
 ~~~
-{: #implausible-attack title="Example Attack Scenario"}
+{: #implausible-attack title="Example Attack Scenario using Fingerprints"}
 
-In {{implausible-attack}}, there are two sessions initiated at the same time by
-Norma.  Signaling is shown with single lines ('-'), DTLS and media with double
-lines ('=').
+In this scenario, there are two sessions initiated at the same time by Norma.
+Signaling is shown with single lines ('-'), DTLS and media with double lines
+('=').
 
 The first session is established with Mallory, who falsely uses Patsy's
 certificate fingerprint (denoted with 'fp=P').  A second session is initiated
@@ -283,45 +453,12 @@ connectivity between Patsy and Norma succeed, either by forwarding checks or
 answering and generating the necessary messages.
 
 
-## Interactions with Key Continuity {#continuity}
-
-Systems that use key continuity might be able to detect an unknown key-share
-attack if a session with the actual peer (i.e., Patsy in the example) was
-established in the past.  Whether this is possible depends on how key continuity
-is implemented.
-
-Implementations that maintain a single database of identities with an index on
-peer keys could discover that the identity saved for the peer key does not match
-the claimed identity.  Such an implementation could notice the disparity between
-the actual keys (Patsy) and the expected keys (Mallory).
-
-In comparison, implementations that first match based on peer identity could
-treat an unknown key-share attack as though their peer had used a
-newly-configured device.  The apparent addition of a new device could generate
-user-visible notices (e.g., "Mallory appears to have a new device").  However,
-such an event is not always considered alarming; some implementations might
-silently save a new key.
-
-
-## Third-Party Call Control {#byebye-3pcc}
-
-Third-party call control (3PCC) {{?3PCC}} is a technique where a signaling peer
-establishes a call that is terminated by a different entity.  This attack is
-very similar to the 3PCC technique, except where the TLS peers are aware of the
-use of 3PCC.
-
-For 3PCC to work with the proposed defense, TLS peers need to be aware of the
-signaling so that they can correctly generate (and check) the extension.  It is
-understood that this technique will prevent the use of 3PCC if peers are not
-able to access signaling.
-
-
-# Adding a Session Identifier {#sess-id}
+## Unique Session Identity Solution {#sess-id}
 
 An attack on DTLS-SRTP is possible because the identity of peers involved is not
 established prior to establishing the call.  Endpoints use certificate
 fingerprints as a proxy for authentication, but as long as fingerprints are used
-in multiple calls, they are vulnerable to attacks of the sort described.
+in multiple calls, they are vulnerable to attack.
 
 The solution to this problem is to assign a new identifier to communicating
 peers.  Each endpoint assigns their peer a unique identifier during call
@@ -343,7 +480,7 @@ This carries the value of the `tls-id` attribute and provides integrity
 protection for its exchange as part of the TLS or DTLS handshake.
 
 
-## The external_session_id TLS Extension {#ext_sess_id}
+## The external_session_id TLS Extension {#external_session_id}
 
 The `external_session_id` TLS extension carries the unique identifier that an
 endpoint selects.  When used with SDP, the value includes the `tls-id` attribute
@@ -354,21 +491,21 @@ identifier.
 
 The `extension_data` for the `external_session_id` extension contains a
 ExternalSessionId struct, described below using the syntax defined in
-{{!RFC5246}}:
+{{!TLS13}}:
 
 ~~~
    struct {
-      opaque id<20..255>;
+      opaque session_id<20..255>;
    } ExternalSessionId;
 ~~~
 
-For SDP, the `id` field of the extension includes the value of the `tls-id` SDP
-attribute as defined in {{!DTLS-SDP=I-D.ietf-mmusic-dtls-sdp}} (that is, the
-`tls-id-value` ABNF production).  The value of the `tls-id` attribute is encoded
-using ASCII {{!RFC0020}}.
+For SDP, the `session_id` field of the extension includes the value of the
+`tls-id` SDP attribute as defined in {{!DTLS-SDP=I-D.ietf-mmusic-dtls-sdp}}
+(that is, the `tls-id-value` ABNF production).  The value of the `tls-id`
+attribute is encoded using ASCII {{!ASCII=RFC0020}}.
 
-Where RTP and RTCP {{?RFC3550}} are not multiplexed, it is possible that the two
-separate DTLS connections carrying RTP and RTCP can be switched.  This is
+Where RTP and RTCP {{?RTP=RFC3550}} are not multiplexed, it is possible that the
+two separate DTLS connections carrying RTP and RTCP can be switched.  This is
 considered benign since these protocols are usually distinguishable.  RTP/RTCP
 multiplexing is advised to address this problem.
 
@@ -377,14 +514,14 @@ ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions
 (for TLS 1.3).  In TLS 1.3, the `external_session_id` extension MUST NOT be
 included in a ServerHello.
 
-Endpoints MUST check that the `id` parameter in the extension that they receive
-includes the `tls-id` attribute value that they received in their peer's session
-description.  Endpoints can perform string comparison by ASCII decoding the TLS
-extension value and comparing it to the SDP attribute value, or compare the
-encoded TLS extension octets with the encoded SDP attribute value.  An endpoint
-that receives a `external_session_id` extension that is not identical to the
-value that it expects MUST abort the connection with a fatal `handshake_failure`
-alert.
+Endpoints MUST check that the `session_id` parameter in the extension that they
+receive includes the `tls-id` attribute value that they received in their peer's
+session description.  Endpoints can perform string comparison by ASCII decoding
+the TLS extension value and comparing it to the SDP attribute value, or compare
+the encoded TLS extension octets with the encoded SDP attribute value.  An
+endpoint that receives a `external_session_id` extension that is not identical
+to the value that it expects MUST abort the connection with a fatal
+`handshake_failure` alert.
 
 An endpoint that is communicating with a peer that does not support this
 extension will receive a ClientHello, ServerHello or EncryptedExtensions that
@@ -394,103 +531,6 @@ this specification.
 
 In TLS 1.3, the `external_session_id` extension MUST be sent in the
 EncryptedExtensions message.
-
-
-# Identity Bindings {#id}
-
-The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
-SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
-bound only to the certificate fingerprint of an endpoint and can therefore be
-copied by an attacker along with any SDP `fingerprint` attributes.  An attacker
-can exploit this by causing a victim to believe that they are communicating with
-an attacker-controlled identity, when they are really talking to another entity
-of the attacker's choice.  The attacker only needs to create an identity
-assertion that covers a certificate fingerprint of their choosing.
-
-The problem might appear to be caused by the fact that an identity provider is
-not required to verify that the entity requesting an identity assertion controls
-the keys associated with the certificate that is used.  A WebRTC identity
-provider is not required, or even able, to perform validation.  This is not an
-issue because verification is not a necessary condition for a secure protocol,
-nor would it be sufficient to prevent attack {{SIGMA}}.
-
-A simple solution to this problem is suggested by {{SIGMA}}.  The identity of
-endpoints is included under a message authentication code (MAC) during the
-cryptographic handshake.  Endpoints then validate that their peer has provided
-an identity that matches their expectations.
-
-In TLS, the Finished message provides a MAC over the entire handshake, so that
-including the identity in a TLS extension is sufficient to implement this
-solution.  Rather than include a complete identity assertion - which could be
-sizeable - a collision- and pre-image-resistant hash of the identity assertion
-is included in a TLS extension.  Peers then need only validate that the
-extension contains a hash of the identity assertion they received in signaling
-in addition to validating the identity assertion.
-
-Endpoints can also use the `external_session_id` extension in addition to this
-so that two calls between the same parties can't be altered by an attacker.
-
-
-## The ext_id_hash TLS Extension {#ext_id_hash}
-
-The `id_hash` TLS extension carries a hash of the identity assertion that
-communicating peers have exchanged.
-
-The `extension_data` for the `ext_id_hash` extension contains a
-ExternalIdentityHash struct, described below using the syntax defined in
-{{!RFC5246}}:
-
-~~~
-   struct {
-      opaque assertion_hash<0..32>;
-   } ExternalIdentityHash;
-~~~
-
-A WebRTC identity assertion is provided as a JSON {{?RFC7159}} object that is
-encoded into a JSON text.  The resulting string is then encoded using UTF-8
-{{!RFC3629}}.  The content of the `ext_id_hash` extension are produced by
-hashing the resulting octets with SHA-256 {{!SHA=DOI.10.6028/NIST.FIPS.180-4}}.
-This produces the 32 octets of the assertion_hash parameter, which is the sole
-contents of the extension.
-
-The SDP `identity` attribute includes the base64 {{?RFC4648}} encoding of the
-same octets that were input to the hash.  The `ext_id_hash` extension is
-validated by performing base64 decoding on the value of the SDP `identity`
-attribute, hashing the resulting octets using SHA-256, and comparing the results
-with the content of the extension.
-
-Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
-the full form.  The base64 encoding used in the Identity (or 'y') header field
-MUST be decoded then used as input to SHA-256.  This produces the 32 octet
-assertion_hash value used for creating or validating the extension.
-
-Note:
-
-: Should SHA-256 prove to be inadequate at some point in the future (see
-  {{?AGILITY=RFC7696}}), a new TLS extension can be defined that uses a
-  different hash function.
-
-Identity assertions in either form might be provided by only one peer.  An
-endpoint that does not produce an identity assertion MUST generate an empty
-`ext_id_hash` extension in its ClientHello.  This allows its peer to include a
-hash of its identity assertion.  An endpoint without an identity assertion MUST
-omit the `ext_id_hash` extension from its ServerHello or EncryptedExtensions
-message.
-
-A peer that receives an `ext_id_hash` extension that is not equal to the value
-of the identity assertion from its peer MUST immediately fail the TLS handshake
-with an error.  This includes cases where the assertion is absent.
-
-An `ext_id_hash` extension that is any length other than 0 or 32 is invalid and
-MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
-
-A peer that receives an identity assertion, but does not receive an
-`ext_id_hash` extension MAY choose to fail the connection, though it is expected
-that implementations written prior to the definition of the extensions in this
-document will not support both for some time.
-
-In TLS 1.3, the `ext_id_hash` extension MUST be sent in the EncryptedExtensions
-message.
 
 
 # Consequences of Session Concatenation
@@ -543,13 +583,15 @@ This entire document contains security considerations.
 # IANA Considerations
 
 This document registers two extensions in the TLS "ExtensionType Values"
-registry established in {{!RFC5246}}:
+registry established in {{!TLS13}}:
 
-* The `external_session_id` extension has been assigned a code point of TBD; it
-  is recommended and is marked as "Encrypted" in TLS 1.3.
+* The `external_id_hash` extension defined in {{external_id_hash}} has been
+  assigned a code point of TBD; it is recommended and is marked as "Encrypted"
+  in TLS 1.3.
 
-* The `ext_id_hash` extension has been assigned a code point of TBD; it is
-  recommended and is marked as "Encrypted" in TLS 1.3.
+* The `external_session_id` extension defined in {{external_session_id}} has
+  been assigned a code point of TBD; it is recommended and is marked as
+  "Encrypted" in TLS 1.3.
 
 
 --- back
@@ -560,4 +602,4 @@ This problem would not have been discovered if it weren't for discussions with
 Sam Scott, Hugo Krawczyk, and Richard Barnes.  A solution similar to the one
 presented here was first proposed by Karthik Bhargavan who provided valuable
 input on this document.  Thyla van der Merwe assisted with a formal model of the
-solution.  Adam Roach and Paul E. Jones provided useful review and input.
+solution.  Adam Roach and Paul E. Jones provided significant review and input.
