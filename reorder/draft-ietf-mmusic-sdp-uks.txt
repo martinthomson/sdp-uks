@@ -85,7 +85,7 @@ Table of Contents
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  16
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
 
@@ -139,6 +139,12 @@ Internet-Draft                   SDP UKS                   November 2018
    absence of integrity protection.  Section 2.2 provides some analysis
    of the effect of key continuity in relation to the described attacks.
 
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
 2.  Unknown Key-Share Attack
 
    In an unknown key-share attack [UKS], a malicious participant in a
@@ -157,12 +163,6 @@ Internet-Draft                   SDP UKS                   November 2018
    WebRTC [WEBRTC-SEC], this allows an attacker to bind their own
    identity to a session with any other entity.
 
-   The attacker obtains an identity assertion for an identity it
-   controls, but binds that to the fingerprint of one peer.  The
-   attacker is then able to cause a TLS connection to be established
-   where two endpoints communicate.  The victim that has its fingerprint
-   copied by the attack correctly believes that it is communicating with
-
 
 
 Thomson & Rescorla        Expires May 16, 2019                  [Page 3]
@@ -170,6 +170,11 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 3]
 Internet-Draft                   SDP UKS                   November 2018
 
 
+   The attacker obtains an identity assertion for an identity it
+   controls, but binds that to the fingerprint of one peer.  The
+   attacker is then able to cause a TLS connection to be established
+   where two endpoints communicate.  The victim that has its fingerprint
+   copied by the attack correctly believes that it is communicating with
    the other victim; however, the other victim incorrectly believes that
    it is communicating with the attacker.
 
@@ -213,11 +218,6 @@ Internet-Draft                   SDP UKS                   November 2018
    Systems that use key continuity might be able to detect an unknown
    key-share attack if a session with either the attacker or the geniune
    peer (i.e., the victim whose fingerprint was copied by an attacker)
-   was established in the past.  Whether this is possible depends on how
-   key continuity is implemented.
-
-   Implementations that maintain a single database of identities with an
-   index on peer keys could discover that the identity saved for the
 
 
 
@@ -226,6 +226,11 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 4]
 Internet-Draft                   SDP UKS                   November 2018
 
 
+   was established in the past.  Whether this is possible depends on how
+   key continuity is implemented.
+
+   Implementations that maintain a single database of identities with an
+   index on peer keys could discover that the identity saved for the
    peer key does not match the claimed identity.  Such an implementation
    could notice the disparity between the actual keys (those copied from
    a victim) and the expected keys (those of the attacker).
@@ -269,11 +274,6 @@ Internet-Draft                   SDP UKS                   November 2018
    the fingerprints.  Both SIP and WebRTC identity providers are not
    required to perform this validation.  This is not an issue because
    verifying control of the associated keys is not a necessary condition
-   for a secure protocol, nor would it be sufficient to prevent attack
-   [SIGMA].
-
-   A simple solution to this problem is suggested by [SIGMA].  The
-   identity of endpoints is included under a message authentication code
 
 
 
@@ -282,6 +282,11 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 5]
 Internet-Draft                   SDP UKS                   November 2018
 
 
+   for a secure protocol, nor would it be sufficient to prevent attack
+   [SIGMA].
+
+   A simple solution to this problem is suggested by [SIGMA].  The
+   identity of endpoints is included under a message authentication code
    (MAC) during the cryptographic handshake.  Endpoints then validate
    that their peer has provided an identity that matches their
    expectations.  In TLS, the Finished message provides a MAC over the
@@ -323,13 +328,8 @@ Internet-Draft                   SDP UKS                   November 2018
 
                Figure 1: Example Attack on Identity Bindings
 
-   The attack requires that Mallory obtain an identity binding for their
-   own identity with the fingerprints presented by Patsy (P).  This
-   false binding is then presented to Norma.
 
-   Patsy could be similarly duped, but in this example, a correct
-   binding between Norma's identity and fingerprint (N) is faithfully
-   presented by Mallory.
+
 
 
 
@@ -337,6 +337,14 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 6]
 
 Internet-Draft                   SDP UKS                   November 2018
 
+
+   The attack requires that Mallory obtain an identity binding for their
+   own identity with the fingerprints presented by Patsy (P).  This
+   false binding is then presented to Norma.
+
+   Patsy could be similarly duped, but in this example, a correct
+   binding between Norma's identity and fingerprint (N) is faithfully
+   presented by Mallory.
 
    The resulting DTLS session is established directly between Norma and
    Patsy.  Patsy correctly believes that they are communicating with
@@ -378,14 +386,6 @@ Internet-Draft                   SDP UKS                   November 2018
 
    Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be
    expanded into the full form.  The base64 encoding used in the
-   Identity (or 'y') header field MUST be decoded then used as input to
-   SHA-256.  This produces the 32 octet "binding_hash" value used for
-   creating or validating the extension.
-
-   Note:  Should SHA-256 prove to be inadequate at some point in the
-      future (see [AGILITY]), a new TLS extension can be defined that
-      uses a different hash function.
-
 
 
 
@@ -393,6 +393,14 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 7]
 
 Internet-Draft                   SDP UKS                   November 2018
 
+
+   Identity (or 'y') header field MUST be decoded then used as input to
+   SHA-256.  This produces the 32 octet "binding_hash" value used for
+   creating or validating the extension.
+
+   Note:  Should SHA-256 prove to be inadequate at some point in the
+      future (see [AGILITY]), a new TLS extension can be defined that
+      uses a different hash function.
 
    Identity bindings in either form might be provided by only one peer.
    An endpoint that does not produce an identity binding MUST generate
@@ -434,14 +442,6 @@ Internet-Draft                   SDP UKS                   November 2018
    calling a second party.  The second party correctly believes that it
    is talking to the victim.
 
-   As with the attack on identity bindings, this can be used to cause
-   two victims to both believe they are talking to the attacker when
-   they are talking to each other.
-
-
-
-
-
 
 
 
@@ -449,6 +449,10 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 8]
 
 Internet-Draft                   SDP UKS                   November 2018
 
+
+   As with the attack on identity bindings, this can be used to cause
+   two victims to both believe they are talking to the attacker when
+   they are talking to each other.
 
 4.1.  Example
 
@@ -494,10 +498,6 @@ Internet-Draft                   SDP UKS                   November 2018
    session is initiated between Norma and Patsy.  Signaling for both
    sessions is permitted to complete.
 
-   Once signaling is complete on the session that is ostensibly between
-   Mallory and Norma is complete.  Mallory begins forwarding DTLS and
-   media packets sent to her by Norma to Patsy.  These packets denoted
-
 
 
 
@@ -506,6 +506,9 @@ Thomson & Rescorla        Expires May 16, 2019                  [Page 9]
 Internet-Draft                   SDP UKS                   November 2018
 
 
+   Once signaling is complete on the session that is ostensibly between
+   Mallory and Norma is complete.  Mallory begins forwarding DTLS and
+   media packets sent to her by Norma to Patsy.  These packets denoted
    'DTLS1' because Norma associates these with the first signaling
    session ('signaling1').
 
@@ -549,9 +552,6 @@ Internet-Draft                   SDP UKS                   November 2018
    Where ICE [ICE] is used, Mallory also needs to ensure that
    connectivity between Patsy and Norma succeed, either by forwarding
    checks or answering and generating the necessary messages.
-
-
-
 
 
 
@@ -772,10 +772,10 @@ Internet-Draft                   SDP UKS                   November 2018
               Token", RFC 8225, DOI 10.17487/RFC8225, February 2018,
               <https://www.rfc-editor.org/info/rfc8225>.
 
-   [SDP]      Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
-              Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
-              July 2006, <https://www.rfc-editor.org/info/rfc4566>.
-
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
 
 
@@ -785,6 +785,14 @@ Thomson & Rescorla        Expires May 16, 2019                 [Page 14]
 
 Internet-Draft                   SDP UKS                   November 2018
 
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [SDP]      Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
+              Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
+              July 2006, <https://www.rfc-editor.org/info/rfc4566>.
 
    [SHA]      Dang, Q., "Secure Hash Standard", National Institute of
               Standards and Technology report,
@@ -824,15 +832,7 @@ Internet-Draft                   SDP UKS                   November 2018
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
-   [EXPORTER]
-              Rescorla, E., "Keying Material Exporters for Transport
-              Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
-              March 2010, <https://www.rfc-editor.org/info/rfc5705>.
 
-   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
-              Connectivity Establishment (ICE): A Protocol for Network
-              Address Translator (NAT) Traversal", draft-ietf-ice-
-              rfc5245bis-20 (work in progress), March 2018.
 
 
 
@@ -841,6 +841,17 @@ Thomson & Rescorla        Expires May 16, 2019                 [Page 15]
 
 Internet-Draft                   SDP UKS                   November 2018
 
+
+   [EXPORTER]
+              Rescorla, E., "Keying Material Exporters for Transport
+              Layer Security (TLS)", RFC 5705, DOI 10.17487/RFC5705,
+              March 2010, <https://www.rfc-editor.org/info/rfc5705>.
+
+   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", RFC 8445,
+              DOI 10.17487/RFC8445, July 2018,
+              <https://www.rfc-editor.org/info/rfc8445>.
 
    [JSON]     Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -879,6 +890,14 @@ Appendix A.  Acknowledgements
    discussions with Sam Scott, Hugo Krawczyk, and Richard Barnes.  A
    solution similar to the one presented here was first proposed by
    Karthik Bhargavan who provided valuable input on this document.
+
+
+
+Thomson & Rescorla        Expires May 16, 2019                 [Page 16]
+
+Internet-Draft                   SDP UKS                   November 2018
+
+
    Thyla van der Merwe assisted with a formal model of the solution.
    Adam Roach and Paul E.  Jones provided significant review and input.
 
@@ -890,29 +909,10 @@ Authors' Addresses
    Email: martin.thomson@gmail.com
 
 
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 16]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    Eric Rescorla
    Mozilla
 
    Email: ekr@rftm.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 

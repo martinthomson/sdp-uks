@@ -417,6 +417,7 @@ ul.toc li {
 <p id="rfc.section.1.p.5">A similar attack is possible with the use of certificate fingerprints alone.  Though attacks in this setting are likely infeasible in existing deployments due to the narrow conditions necessary (see <a href="#limits" class="xref">Section 2.1</a>), this document also describes mitigations for this attack.</p>
 <p id="rfc.section.1.p.6">The mechanisms defined in this document are intended to strengthen the protocol by preventing the use of unknown key shares in combination with other protocol or implementation vulnerabilities.</p>
 <p id="rfc.section.1.p.7">This document assumes that signaling is integrity protected.  However, as Section 7 of <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> explains, many deployments that use SDP do not guarantee integrity of session signaling and so are vulnerable to other attacks.  <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> offers key continuity mechanisms as a potential means of reducing exposure to attack in the absence of integrity protection.  <a href="#continuity" class="xref">Section 2.2</a> provides some analysis of the effect of key continuity in relation to the described attacks.</p>
+<p id="rfc.section.1.p.8">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#uks" id="uks">Unknown Key-Share Attack</a>
 </h1>
@@ -630,6 +631,16 @@ ul.toc li {
 <a>Wendt, C.</a> and <a>J. Peterson</a>, "<a href="https://tools.ietf.org/html/rfc8225">PASSporT: Personal Assertion Token</a>", RFC 8225, DOI 10.17487/RFC8225, February 2018.</td>
 </tr>
 <tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
+<td class="top">
+<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+<tr>
 <td class="reference"><b id="SDP">[SDP]</b></td>
 <td class="top">
 <a>Handley, M.</a>, <a>Jacobson, V.</a> and <a>C. Perkins</a>, "<a href="https://tools.ietf.org/html/rfc4566">SDP: Session Description Protocol</a>", RFC 4566, DOI 10.17487/RFC4566, July 2006.</td>
@@ -686,7 +697,7 @@ ul.toc li {
 <tr>
 <td class="reference"><b id="ICE">[ICE]</b></td>
 <td class="top">
-<a>Keranen, A.</a>, <a>Holmberg, C.</a> and <a>J. Rosenberg</a>, "<a href="https://tools.ietf.org/html/draft-ietf-ice-rfc5245bis-20">Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</a>", Internet-Draft draft-ietf-ice-rfc5245bis-20, March 2018.</td>
+<a>Keranen, A.</a>, <a>Holmberg, C.</a> and <a>J. Rosenberg</a>, "<a href="https://tools.ietf.org/html/rfc8445">Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal</a>", RFC 8445, DOI 10.17487/RFC8445, July 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="JSON">[JSON]</b></td>
