@@ -138,8 +138,8 @@ that has its fingerprint copied by the attack correctly believes that it is
 communicating with the other victim; however, the other victim incorrectly
 believes that it is communicating with the attacker.
 
-A similar attack can be mounted without to any communications established based
-on the SDP `fingerprint` attribute {{!FINGERPRINT}}.
+A similar attack can be mounted without any communications established based on
+the SDP `fingerprint` attribute {{!FINGERPRINT}}.
 
 This attack is an aspect of SDP-based protocols that the technique known as
 third-party call control (3PCC) {{?RFC3725}} relies on.  3PCC exploits the
@@ -444,9 +444,9 @@ might receive a notice that the call is failed and thereby abort the call.
 
 This attack creates an asymmetry in the beliefs about the identity of peers.
 However, this attack is only possible if the victim (Norma) is willing to
-conduct two sessions concurrently, if the attacker (Mallory) is on the network
-path between the victims, and if the same certificate - and therefore SDP
-`fingerprint` attribute value - is used in both sessions.
+conduct two sessions nearly simultaneously, if the attacker (Mallory) is on the
+network path between the victims, and if the same certificate - and therefore
+SDP `fingerprint` attribute value - is used in both sessions.
 
 Where ICE {{?ICE=RFC8445}} is used, Mallory also needs to ensure that
 connectivity between Patsy and Norma succeed, either by forwarding checks or
@@ -485,7 +485,7 @@ protection for its exchange as part of the TLS or DTLS handshake.
 The `external_session_id` TLS extension carries the unique identifier that an
 endpoint selects.  When used with SDP, the value includes the `tls-id` attribute
 from the SDP that the endpoint generated when negotiating the session.  This
-document only defines use of this extensions for SDP; other methods of external
+document only defines use of this extension for SDP; other methods of external
 session negotiation can use this extension to include a unique session
 identifier.
 
