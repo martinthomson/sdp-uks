@@ -295,7 +295,7 @@ that communicating peers have exchanged.
 
 The `extension_data` for the `external_id_hash` extension contains a
 `ExternalIdentityHash` struct, described below using the syntax defined in
-{{!TLS13}}:
+Section 3 of {{!TLS13}}:
 
 ~~~
    struct {
