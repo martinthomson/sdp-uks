@@ -311,15 +311,27 @@ by hashing the resulting octets with SHA-256
 `binding_hash` parameter, which is the sole contents of the extension.
 
 The SDP `identity` attribute includes the base64 {{?BASE64=RFC4648}} encoding of
-the same octets that were input to the hash.  The `external_id_hash` extension
-is validated by performing base64 decoding on the value of the SDP `identity`
+the UTF-8 encoding of the same JSON text.  The `external_id_hash` extension is
+validated by performing base64 decoding on the value of the SDP `identity`
 attribute, hashing the resulting octets using SHA-256, and comparing the results
-with the content of the extension.
+with the content of the extension.  In pseudocode form, using the
+`identity-assertion-value` field from the `identity` attribute grammar as
+defined in {{!WEBRTC-SEC}}:
+
+```
+external_id_hash = SHA256(b64decode(identity-assertion-value))
+```
 
 Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
 the full form.  The base64 encoding used in the Identity (or 'y') header field
 MUST be decoded then used as input to SHA-256.  This produces the 32 octet
-`binding_hash` value used for creating or validating the extension.
+`binding_hash` value used for creating or validating the extension.  In
+pseudocode, using the `signed-identity-digest` field from the `Identity` grammar
+defined {{!SIP-ID}}:
+
+```
+external_id_hash = SHA256(b64decode(signed-identity-digest))
+```
 
 Note:
 
