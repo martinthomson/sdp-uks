@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                       November 12, 2018
-Expires: May 16, 2019
+Intended status: Standards Track                        January 17, 2019
+Expires: July 21, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,11 +39,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 16, 2019.
+   This Internet-Draft will expire on July 21, 2019.
 
 Copyright Notice
 
-   Copyright (c) 2018 IETF Trust and the persons identified as the
+   Copyright (c) 2019 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 1]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 1]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -74,17 +74,17 @@ Table of Contents
    3.  Attack on Identity Bindings . . . . . . . . . . . . . . . . .   5
      3.1.  Example . . . . . . . . . . . . . . . . . . . . . . . . .   6
      3.2.  The external_id_hash TLS Extension  . . . . . . . . . . .   7
-   4.  Unknown Key-Share with Fingerprints . . . . . . . . . . . . .   8
+   4.  Unknown Key-Share with Fingerprints . . . . . . . . . . . . .   9
      4.1.  Example . . . . . . . . . . . . . . . . . . . . . . . . .   9
      4.2.  Unique Session Identity Solution  . . . . . . . . . . . .  11
-     4.3.  The external_session_id TLS Extension . . . . . . . . . .  11
-   5.  Consequences of Session Concatenation . . . . . . . . . . . .  12
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+     4.3.  The external_session_id TLS Extension . . . . . . . . . .  12
+   5.  Consequences of Session Concatenation . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  16
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  16
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  17
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 2]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 2]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    where the attacker binds their identity to the fingerprint of another
@@ -165,9 +165,9 @@ Internet-Draft                   SDP UKS                   November 2018
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 3]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 3]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    The attacker obtains an identity assertion for an identity it
@@ -178,7 +178,7 @@ Internet-Draft                   SDP UKS                   November 2018
    the other victim; however, the other victim incorrectly believes that
    it is communicating with the attacker.
 
-   A similar attack can be mounted without to any communications
+   A similar attack can be mounted without any communications
    established based on the SDP "fingerprint" attribute [FINGERPRINT].
 
    This attack is an aspect of SDP-based protocols that the technique
@@ -221,9 +221,9 @@ Internet-Draft                   SDP UKS                   November 2018
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 4]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 4]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    was established in the past.  Whether this is possible depends on how
@@ -277,9 +277,9 @@ Internet-Draft                   SDP UKS                   November 2018
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 5]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 5]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    for a secure protocol, nor would it be sufficient to prevent attack
@@ -333,9 +333,9 @@ Internet-Draft                   SDP UKS                   November 2018
 
 
 
-Thomson & Rescorla        Expires May 16, 2019                  [Page 6]
+Thomson & Rescorla        Expires July 21, 2019                 [Page 6]
 
-Internet-Draft                   SDP UKS                   November 2018
+Internet-Draft                   SDP UKS                    January 2019
 
 
    The attack requires that Mallory obtain an identity binding for their
@@ -365,7 +365,7 @@ Internet-Draft                   SDP UKS                   November 2018
 
    The "extension_data" for the "external_id_hash" extension contains a
    "ExternalIdentityHash" struct, described below using the syntax
-   defined in [TLS13]:
+   defined in Section 3 of [TLS13]:
 
       struct {
          opaque binding_hash<0..32>;
@@ -379,24 +379,32 @@ Internet-Draft                   SDP UKS                   November 2018
    the sole contents of the extension.
 
    The SDP "identity" attribute includes the base64 [BASE64] encoding of
-   the same octets that were input to the hash.  The "external_id_hash"
+   the UTF-8 encoding of the same JSON text.  The "external_id_hash"
    extension is validated by performing base64 decoding on the value of
    the SDP "identity" attribute, hashing the resulting octets using SHA-
-   256, and comparing the results with the content of the extension.
+   256, and comparing the results with the content of the extension.  In
+   pseudocode form, using the "identity-assertion-value" field from the
+   "identity" attribute grammar as defined in [WEBRTC-SEC]:
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                 [Page 7]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
+   "external_id_hash = SHA256(b64decode(identity-assertion-value)) "
 
    Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be
    expanded into the full form.  The base64 encoding used in the
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                  [Page 7]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    Identity (or 'y') header field MUST be decoded then used as input to
    SHA-256.  This produces the 32 octet "binding_hash" value used for
-   creating or validating the extension.
+   creating or validating the extension.  In pseudocode, using the
+   "signed-identity-digest" field from the "Identity" grammar defined
+   [SIP-ID]:
+
+   "external_id_hash = SHA256(b64decode(signed-identity-digest)) "
 
    Note:  Should SHA-256 prove to be inadequate at some point in the
       future (see [AGILITY]), a new TLS extension can be defined that
@@ -404,11 +412,12 @@ Internet-Draft                   SDP UKS                   November 2018
 
    Identity bindings in either form might be provided by only one peer.
    An endpoint that does not produce an identity binding MUST generate
-   an empty "external_id_hash" extension in its ClientHello.  This
-   allows its peer to include a hash of its identity binding.  An
-   endpoint without an identity binding MUST include an empty
-   "external_id_hash" extension in its ServerHello or
-   EncryptedExtensions message, to indicate support for the extension.
+   an empty "external_id_hash" extension in its ClientHello.  An empty
+   extension has a zero-length binding_hash field.  This allows its peer
+   to include a hash of its identity binding.  An endpoint without an
+   identity binding MUST include an empty "external_id_hash" extension
+   in its ServerHello or EncryptedExtensions message, to indicate
+   support for the extension.
 
    A peer that receives an "external_id_hash" extension that does not
    match the value of the identity binding from its peer MUST
@@ -429,6 +438,18 @@ Internet-Draft                   SDP UKS                   November 2018
    In TLS 1.3, the "external_id_hash" extension MUST be sent in the
    EncryptedExtensions message.
 
+
+
+
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                 [Page 8]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
 4.  Unknown Key-Share with Fingerprints
 
    A similar attack can create a session where there is confusion about
@@ -441,14 +462,6 @@ Internet-Draft                   SDP UKS                   November 2018
    incorrectly believe that is calling the attacker when it is in fact
    calling a second party.  The second party correctly believes that it
    is talking to the victim.
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                  [Page 8]
-
-Internet-Draft                   SDP UKS                   November 2018
-
 
    As with the attack on identity bindings, this can be used to cause
    two victims to both believe they are talking to the attacker when
@@ -470,6 +483,28 @@ Internet-Draft                   SDP UKS                   November 2018
    conditions.  It is intended to demonstrate what sort of attack is
    possible and what conditions are necessary to exploit this weakness
    in the protocol.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                 [Page 9]
+
+Internet-Draft                   SDP UKS                    January 2019
+
 
      Norma                   Mallory                 Patsy
      (fp=N)                   -----                  (fp=P)
@@ -498,14 +533,6 @@ Internet-Draft                   SDP UKS                   November 2018
    session is initiated between Norma and Patsy.  Signaling for both
    sessions is permitted to complete.
 
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                  [Page 9]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    Once signaling is complete on the session that is ostensibly between
    Mallory and Norma is complete.  Mallory begins forwarding DTLS and
    media packets sent to her by Norma to Patsy.  These packets denoted
@@ -526,6 +553,15 @@ Internet-Draft                   SDP UKS                   November 2018
    communicating with Mallory, when she is really communicating with
    Patsy.
 
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 10]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
    Though Patsy needs to believe that the second signaling session has
    been successfully established, Mallory has no real interest in seeing
    that session complete.  Mallory only needs to ensure that Patsy does
@@ -544,23 +580,14 @@ Internet-Draft                   SDP UKS                   November 2018
 
    This attack creates an asymmetry in the beliefs about the identity of
    peers.  However, this attack is only possible if the victim (Norma)
-   is willing to conduct two sessions concurrently, if the attacker
-   (Mallory) is on the network path between the victims, and if the same
-   certificate - and therefore SDP "fingerprint" attribute value - is
-   used in both sessions.
+   is willing to conduct two sessions nearly simultaneously, if the
+   attacker (Mallory) is on the network path between the victims, and if
+   the same certificate - and therefore SDP "fingerprint" attribute
+   value - is used in both sessions.
 
    Where ICE [ICE] is used, Mallory also needs to ensure that
    connectivity between Patsy and Norma succeed, either by forwarding
    checks or answering and generating the necessary messages.
-
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 10]
-
-Internet-Draft                   SDP UKS                   November 2018
-
 
 4.2.  Unique Session Identity Solution
 
@@ -582,6 +609,15 @@ Internet-Draft                   SDP UKS                   November 2018
 
    This solution relies on the unique identifier given to DTLS sessions
    using the SDP "tls-id" attribute [DTLS-SDP].  This field is already
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 11]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
    required to be unique.  Thus, no two offers or answers from the same
    client will have the same value.
 
@@ -597,7 +633,7 @@ Internet-Draft                   SDP UKS                   November 2018
    that an endpoint selects.  When used with SDP, the value includes the
    "tls-id" attribute from the SDP that the endpoint generated when
    negotiating the session.  This document only defines use of this
-   extensions for SDP; other methods of external session negotiation can
+   extension for SDP; other methods of external session negotiation can
    use this extension to include a unique session identifier.
 
    The "extension_data" for the "external_session_id" extension contains
@@ -610,14 +646,6 @@ Internet-Draft                   SDP UKS                   November 2018
 
    For SDP, the "session_id" field of the extension includes the value
    of the "tls-id" SDP attribute as defined in [DTLS-SDP] (that is, the
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 11]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    "tls-id-value" ABNF production).  The value of the "tls-id" attribute
    is encoded using ASCII [ASCII].
 
@@ -638,6 +666,14 @@ Internet-Draft                   SDP UKS                   November 2018
    received in their peer's session description.  Endpoints can perform
    string comparison by ASCII decoding the TLS extension value and
    comparing it to the SDP attribute value, or compare the encoded TLS
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 12]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
    extension octets with the encoded SDP attribute value.  An endpoint
    that receives a "external_session_id" extension that is not identical
    to the value that it expects MUST abort the connection with a fatal
@@ -665,15 +701,6 @@ Internet-Draft                   SDP UKS                   November 2018
    This kind of attack is prevented by systems that enable peer
    authentication such as WebRTC identity [WEBRTC-SEC] or SIP identity
    [SIP-ID].  However, session concatention remains possible at higher
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 12]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    layers: an attacker can establish two independent sessions and simply
    forward any data it receives from one into the other.
 
@@ -695,6 +722,14 @@ Internet-Draft                   SDP UKS                   November 2018
    within the same signaling session.  An attacker might concatenate
    only part of a session, choosing to terminate some connections (and
    optionally forward data) while arranging to have peers interact
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 13]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
    directly for other connections.  It is even possible to have
    different peers interact for each connection.  This means that the
    actual identity of the peer for one connection might differ from the
@@ -720,16 +755,6 @@ Internet-Draft                   SDP UKS                   November 2018
       assigned a code point of TBD; it is recommended and is marked as
       "Encrypted" in TLS 1.3.
 
-
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 13]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    o  The "external_session_id" extension defined in Section 4.3 has
       been assigned a code point of TBD; it is recommended and is marked
       as "Encrypted" in TLS 1.3.
@@ -752,6 +777,14 @@ Internet-Draft                   SDP UKS                   November 2018
               Layer Security (DTLS) and Transport Layer Security (TLS)",
               draft-ietf-mmusic-dtls-sdp-32 (work in progress), October
               2017.
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 14]
+
+Internet-Draft                   SDP UKS                    January 2019
+
 
    [DTLS-SRTP]
               Fischl, J., Tschofenig, H., and E. Rescorla, "Framework
@@ -777,15 +810,6 @@ Internet-Draft                   SDP UKS                   November 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 14]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -809,6 +833,15 @@ Internet-Draft                   SDP UKS                   November 2018
               RFC 3711, DOI 10.17487/RFC3711, March 2004,
               <https://www.rfc-editor.org/info/rfc3711>.
 
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 15]
+
+Internet-Draft                   SDP UKS                    January 2019
+
+
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
@@ -819,7 +852,7 @@ Internet-Draft                   SDP UKS                   November 2018
 
    [WEBRTC-SEC]
               Rescorla, E., "WebRTC Security Architecture", draft-ietf-
-              rtcweb-security-arch-16 (work in progress), October 2018.
+              rtcweb-security-arch-17 (work in progress), November 2018.
 
 8.2.  Informative References
 
@@ -831,16 +864,6 @@ Internet-Draft                   SDP UKS                   November 2018
    [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
-
-
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 15]
-
-Internet-Draft                   SDP UKS                   November 2018
-
 
    [EXPORTER]
               Rescorla, E., "Keying Material Exporters for Transport
@@ -863,6 +886,17 @@ Internet-Draft                   SDP UKS                   November 2018
               Control (3pcc) in the Session Initiation Protocol (SIP)",
               BCP 85, RFC 3725, DOI 10.17487/RFC3725, April 2004,
               <https://www.rfc-editor.org/info/rfc3725>.
+
+
+
+
+
+
+
+Thomson & Rescorla        Expires July 21, 2019                [Page 16]
+
+Internet-Draft                   SDP UKS                    January 2019
+
 
    [RTP]      Schulzrinne, H., Casner, S., Frederick, R., and V.
               Jacobson, "RTP: A Transport Protocol for Real-Time
@@ -890,14 +924,6 @@ Appendix A.  Acknowledgements
    discussions with Sam Scott, Hugo Krawczyk, and Richard Barnes.  A
    solution similar to the one presented here was first proposed by
    Karthik Bhargavan who provided valuable input on this document.
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 16]
-
-Internet-Draft                   SDP UKS                   November 2018
-
-
    Thyla van der Merwe assisted with a formal model of the solution.
    Adam Roach and Paul E.  Jones provided significant review and input.
 
@@ -923,30 +949,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Thomson & Rescorla        Expires May 16, 2019                 [Page 17]
+Thomson & Rescorla        Expires July 21, 2019                [Page 17]
