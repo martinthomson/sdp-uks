@@ -1,6 +1,60 @@
 [
 
   {
+    "url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/6",
+    "repository_url": "https://api.github.com/repos/martinthomson/sdp-uks",
+    "labels_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/6/labels{/name}",
+    "comments_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/6/comments",
+    "events_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/6/events",
+    "html_url": "https://github.com/martinthomson/sdp-uks/pull/6",
+    "id": 400083058,
+    "node_id": "MDExOlB1bGxSZXF1ZXN0MjQ1MzU1NTg1",
+    "number": 6,
+    "title": "Magnus' WGLC comments",
+    "user": {
+      "login": "martinthomson",
+      "id": 67641,
+      "node_id": "MDQ6VXNlcjY3NjQx",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/67641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/martinthomson",
+      "html_url": "https://github.com/martinthomson",
+      "followers_url": "https://api.github.com/users/martinthomson/followers",
+      "following_url": "https://api.github.com/users/martinthomson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/martinthomson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/martinthomson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/martinthomson/subscriptions",
+      "organizations_url": "https://api.github.com/users/martinthomson/orgs",
+      "repos_url": "https://api.github.com/users/martinthomson/repos",
+      "events_url": "https://api.github.com/users/martinthomson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/martinthomson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "closed",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2019-01-17T02:24:16Z",
+    "updated_at": "2019-01-21T22:44:09Z",
+    "closed_at": "2019-01-21T22:44:08Z",
+    "author_association": "OWNER",
+    "pull_request": {
+      "url": "https://api.github.com/repos/martinthomson/sdp-uks/pulls/6",
+      "html_url": "https://github.com/martinthomson/sdp-uks/pull/6",
+      "diff_url": "https://github.com/martinthomson/sdp-uks/pull/6.diff",
+      "patch_url": "https://github.com/martinthomson/sdp-uks/pull/6.patch"
+    },
+    "body": "@gloinul might be interested in these changes."
+  },
+  {
     "url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/5",
     "repository_url": "https://api.github.com/repos/martinthomson/sdp-uks",
     "labels_url": "https://api.github.com/repos/martinthomson/sdp-uks/issues/5/labels{/name}",
