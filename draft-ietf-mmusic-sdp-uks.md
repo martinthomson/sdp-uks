@@ -322,6 +322,13 @@ defined in {{!WEBRTC-SEC}}:
 external_id_hash = SHA256(b64decode(identity-assertion-value))
 ```
 
+Note:
+
+: The base64 is decoded to avoid capturing variations in padding.  The
+  base64-decoded identity assertion could include leading or trailing whitespace
+  octets.  WebRTC identity assertions are not canonicalized; all octets are
+  hashed.
+
 Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
 the full form.  The base64 encoding used in the Identity (or 'y') header field
 MUST be decoded then used as input to SHA-256.  This produces the 32 octet
