@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                        January 21, 2019
-Expires: July 25, 2019
+Intended status: Standards Track                          March 01, 2019
+Expires: September 2, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 25, 2019.
+   This Internet-Draft will expire on September 2, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 1]
+Thomson & Rescorla      Expires September 2, 2019               [Page 1]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 2]
+Thomson & Rescorla      Expires September 2, 2019               [Page 2]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    where the attacker binds their identity to the fingerprint of another
@@ -165,9 +165,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 3]
+Thomson & Rescorla      Expires September 2, 2019               [Page 3]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    The attacker obtains an identity assertion for an identity it
@@ -221,9 +221,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 4]
+Thomson & Rescorla      Expires September 2, 2019               [Page 4]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    was established in the past.  Whether this is possible depends on how
@@ -277,9 +277,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 5]
+Thomson & Rescorla      Expires September 2, 2019               [Page 5]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    for a secure protocol, nor would it be sufficient to prevent attack
@@ -333,9 +333,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 6]
+Thomson & Rescorla      Expires September 2, 2019               [Page 6]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    The attack requires that Mallory obtain an identity binding for their
@@ -389,9 +389,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 7]
+Thomson & Rescorla      Expires September 2, 2019               [Page 7]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    "external_id_hash = SHA256(b64decode(identity-assertion-value)) "
@@ -445,9 +445,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 8]
+Thomson & Rescorla      Expires September 2, 2019               [Page 8]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
 4.  Unknown Key-Share with Fingerprints
@@ -501,9 +501,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                 [Page 9]
+Thomson & Rescorla      Expires September 2, 2019               [Page 9]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
      Norma                   Mallory                 Patsy
@@ -557,9 +557,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 10]
+Thomson & Rescorla      Expires September 2, 2019              [Page 10]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    Though Patsy needs to believe that the second signaling session has
@@ -613,9 +613,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 11]
+Thomson & Rescorla      Expires September 2, 2019              [Page 11]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    required to be unique.  Thus, no two offers or answers from the same
@@ -669,9 +669,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 12]
+Thomson & Rescorla      Expires September 2, 2019              [Page 12]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    extension octets with the encoded SDP attribute value.  An endpoint
@@ -725,9 +725,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 13]
+Thomson & Rescorla      Expires September 2, 2019              [Page 13]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    directly for other connections.  It is even possible to have
@@ -781,9 +781,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 14]
+Thomson & Rescorla      Expires September 2, 2019              [Page 14]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    [DTLS-SRTP]
@@ -837,9 +837,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 15]
+Thomson & Rescorla      Expires September 2, 2019              [Page 15]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -852,7 +852,7 @@ Internet-Draft                   SDP UKS                    January 2019
 
    [WEBRTC-SEC]
               Rescorla, E., "WebRTC Security Architecture", draft-ietf-
-              rtcweb-security-arch-17 (work in progress), November 2018.
+              rtcweb-security-arch-18 (work in progress), February 2019.
 
 8.2.  Informative References
 
@@ -893,9 +893,9 @@ Internet-Draft                   SDP UKS                    January 2019
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 16]
+Thomson & Rescorla      Expires September 2, 2019              [Page 16]
 
-Internet-Draft                   SDP UKS                    January 2019
+Internet-Draft                   SDP UKS                      March 2019
 
 
    [RTP]      Schulzrinne, H., Casner, S., Frederick, R., and V.
@@ -932,7 +932,7 @@ Authors' Addresses
    Martin Thomson
    Mozilla
 
-   Email: martin.thomson@gmail.com
+   Email: mt@lowentropy.net
 
 
    Eric Rescorla
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla        Expires July 25, 2019                [Page 17]
+Thomson & Rescorla      Expires September 2, 2019              [Page 17]
