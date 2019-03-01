@@ -158,25 +158,25 @@ particular:
 1. An attacker can only modify the parts of the session signaling for a session
    that they are part of, which is limited to their own offers and answers.
 
-2. No entity will complete communications with a peer unless they are willing to
-   participate in a session with that peer.
+2. No entity will successfully establish a session with a peer unless they are
+   willing to participate in a session with that peer.
 
 The combination of these two constraints make the spectrum of possible attacks
 quite limited.  An attacker is only able to switch its own certificate
 fingerprint for a valid certificate that is acceptable to its peer.  Attacks
 therefore rely on joining two separate sessions into a single session.
 
-However, the second condition might not be necessary when using an identity
-binding such as those defined in {{WEBRTC}} or {{!SIP-ID}}.  When using an
-identity binding, the threat model assumes the possibility of attack by an
-entity with access to the signaling channel.  Removing this constraint makes
-attacks considerably more feasible.
+Systems that rely on strong identity bindings, such as those defined in
+{{WEBRTC}} or {{!SIP-ID}}, have a different threat model, which admits the
+possibility of attack by an entity with access to the signaling channel.
+Attacks under these conditions are more feasible as an attacker is assumed to be
+able to both observe and modify signaling messages.
 
 
 ## Interactions with Key Continuity {#continuity}
 
 Systems that use key continuity might be able to detect an unknown key-share
-attack if a session with either the attacker or the geniune peer (i.e., the
+attack if a session with either the attacker or the genuine peer (i.e., the
 victim whose fingerprint was copied by an attacker) was established in the past.
 Whether this is possible depends on how key continuity is implemented.
 
@@ -213,14 +213,19 @@ The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
 SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
 bound to the certificate fingerprint of an endpoint.  An attacker causes an
 identity binding to be created that binds an identity they control to the
-fingerprint of a victim.
+fingerprint of a first victim.
 
-An attacker can thereby cause a victim to believe that they are communicating
-with an attacker-controlled identity, when they are really talking to another
-entity of the attacker's choice.  The attacker only needs to create an identity
-assertion that covers a certificate fingerprint of their choosing.
+An attacker can thereby cause a second victim to believe that they are
+communicating with an attacker-controlled identity, when they are really talking
+to the first victim.  The attacker only needs to create an identity assertion
+that covers a certificate fingerprint of the first victim.
 
-The problem might appear to be caused by the fact that the entity that certifies
+A variation on the same technique can be used to cause both victims to both
+believe they are talking to the attacker when they are talking to each other.
+In this case, the attacker performs the identity misbinding once for each
+victim.
+
+The problem might appear to be caused by the fact that the authority that certifies
 the identity binding is not required to verify that the entity requesting the
 binding controls the keys associated with the fingerprints.  Both SIP and WebRTC
 identity providers are not required to perform this validation.  This is not an
@@ -241,9 +246,6 @@ in a TLS extension.  Endpoints then need only validate that the extension
 contains a hash of the identity binding they received in signaling.  If the
 identity binding is successfully validated, the identity of a peer is verified
 and bound to the session.
-
-The same technique can be used to cause two victims to both believe they are
-talking to the attacker when they are talking to each other.
 
 
 ## Example {#id-example}
@@ -373,15 +375,21 @@ EncryptedExtensions message.
 
 # Unknown Key-Share with Fingerprints {#fp}
 
-A similar attack can create a session where there is confusion about the
+An attack on DTLS-SRTP is possible because the identity of peers involved is not
+established prior to establishing the call.  Endpoints use certificate
+fingerprints as a proxy for authentication, but as long as fingerprints are used
+in multiple calls, they are vulnerable to attack.
+
+Even if the integrity session signaling can be relied upon, an attacker might
+still be able to create a session where there is confusion about the
 communicating endpoints by substituting the fingerprint of a communicating
 endpoint.
 
 An endpoint that is configured to reuse a certificate can be attacked if it is
 willing to initiate two calls at the same time, one of which is with an
 attacker.  The attacker can arrange for the victim to incorrectly believe that
-is calling the attacker when it is in fact calling a second party.  The second
-party correctly believes that it is talking to the victim.
+it is calling the attacker when it is in fact calling a second party.  The
+second party correctly believes that it is talking to the victim.
 
 As with the attack on identity bindings, this can be used to cause two victims
 to both believe they are talking to the attacker when they are talking to each
@@ -390,14 +398,14 @@ other.
 
 ## Example {#fp-example}
 
-In this example, two sessions are created with the same endpoint at the same
-time.  One of those sessions is initiated with the attacker, the second session
-is created toward another honest endpoint.  The attacker convinces the endpoint
-that their session has completed, and that the session with the other endpoint
-has succeeded.
+To mount this attack, two sessions need to be created with the same endpoint at
+almost precisely the same time.  One of those sessions is initiated with the
+attacker, the second session is created toward another honest endpoint.  The
+attacker convinces the endpoint that their session has completed, and that the
+session with the other endpoint has succeeded.
 
 In addition to the constraints described in {{limits}}, the attacker in this
-example also needs to the ability to view and drop packets between victims.
+example also needs the ability to view and drop packets between victims.
 That is, the attacker is on-path.
 
 The attack shown in {{implausible-attack}} depends on a somewhat implausible set
@@ -431,10 +439,10 @@ The first session is established with Mallory, who falsely uses Patsy's
 certificate fingerprint (denoted with 'fp=P').  A second session is initiated
 between Norma and Patsy.  Signaling for both sessions is permitted to complete.
 
-Once signaling is complete on the session that is ostensibly between Mallory and
-Norma is complete.  Mallory begins forwarding DTLS and media packets sent to her
-by Norma to Patsy.  These packets denoted 'DTLS1' because Norma associates these
-with the first signaling session ('signaling1').
+Once signaling is complete on a session, ostensibly between Mallory and Norma,
+is complete.  Mallory forwards DTLS and media packets sent to her by Norma to
+Patsy.  These packets are denoted 'DTLS1' because Norma associates these with
+the first signaling session ('signaling1').
 
 Mallory also intercepts packets from Patsy and forwards those to Norma at the
 transport address that Norma associates with Mallory.  These packets are denoted
@@ -450,12 +458,13 @@ communicating with Patsy.
 
 Though Patsy needs to believe that the second signaling session has been
 successfully established, Mallory has no real interest in seeing that session
-complete.  Mallory only needs to ensure that Patsy does not abandon the session
-prematurely.  For this reason, it might be necessary to permit the signaling
-from Patsy to reach Norma to allow Patsy to receive a call completion signal,
-such as a SIP ACK.  Once the second session completes, Mallory might cause DTLS
-packets sent by Norma to Patsy to be dropped, though these will likely be
-discarded by Patsy.
+also be established.  Mallory only needs to ensure that Patsy maintains the
+active session and does not abandon the session prematurely.  For this reason,
+it might be necessary to permit the signaling from Patsy to reach Norma to allow
+Patsy to receive a call setup completion signal, such as a SIP ACK.  Once the
+second session completes, Mallory might cause DTLS packets sent by Norma to
+Patsy to be dropped.  It is likely that these DTLS packets will be discarded by
+Patsy as Patsy will already have a successful DTLS connection established.
 
 For the attacked session to be sustained beyond the point that Norma detects
 errors in the second session, Mallory also needs to block any signaling that
@@ -475,19 +484,16 @@ answering and generating the necessary messages.
 
 ## Unique Session Identity Solution {#sess-id}
 
-An attack on DTLS-SRTP is possible because the identity of peers involved is not
-established prior to establishing the call.  Endpoints use certificate
-fingerprints as a proxy for authentication, but as long as fingerprints are used
-in multiple calls, they are vulnerable to attack.
-
 The solution to this problem is to assign a new identifier to communicating
 peers.  Each endpoint assigns their peer a unique identifier during call
 signaling.  The peer echoes that identifier in the TLS handshake, binding that
 identity into the session.  Including this new identity in the TLS handshake
 means that it will be covered by the TLS Finished message, which is necessary to
-authenticate it (see {{SIGMA}}).  Validating that peers use the correct
-identifier then means that the session is established between the correct two
-endpoints.
+authenticate it (see {{SIGMA}}).
+
+Successful validation that the identifier matches the expected value means that
+the connection corresponds to the signaled session and is therefore established
+between the correct two endpoints.
 
 This solution relies on the unique identifier given to DTLS sessions using the
 SDP `tls-id` attribute {{!DTLS-SDP=I-D.ietf-mmusic-dtls-sdp}}.  This field is
@@ -503,10 +509,10 @@ protection for its exchange as part of the TLS or DTLS handshake.
 ## The external_session_id TLS Extension {#external_session_id}
 
 The `external_session_id` TLS extension carries the unique identifier that an
-endpoint selects.  When used with SDP, the value includes the `tls-id` attribute
-from the SDP that the endpoint generated when negotiating the session.  This
-document only defines use of this extension for SDP; other methods of external
-session negotiation can use this extension to include a unique session
+endpoint selects.  When used with SDP, the value MUST include the `tls-id`
+attribute from the SDP that the endpoint generated when negotiating the session.
+This document only defines use of this extension for SDP; other methods of
+external session negotiation can use this extension to include a unique session
 identifier.
 
 The `extension_data` for the `external_session_id` extension contains a
@@ -557,28 +563,28 @@ EncryptedExtensions message.
 
 Use of session identifiers does not prevent an attacker from establishing two
 concurrent sessions with different peers and forwarding signaling from those
-peers to each other.  Concatenating two signaling sessions creates a situation
-where both peers believe that they are talking to the attacker when they are
-talking to each other.
-
-This kind of attack is prevented by systems that enable peer authentication such
-as WebRTC identity {{!WEBRTC-SEC}} or SIP identity {{?SIP-ID}}.  However,
-session concatention remains possible at higher layers: an attacker can
-establish two independent sessions and simply forward any data it receives from
-one into the other.
+peers to each other.  Concatenating two signaling sessions in this way creates
+two signaling sessions, with two session identifiers, but only the TLS
+connections from a single session are established as a result.  In doing so, the
+attacker creates a situation where both peers believe that they are talking to
+the attacker when they are talking to each other.
 
 In the absence of any higher-level concept of peer identity, the use of session
-identifiers does not prevent session concatenation.  The value to an attacker is
-limited unless information from the TLS connection is extracted and used with
-the signaling.  For instance, a key exporter {{?EXPORTER=RFC5705}} might be used
-to create a shared secret or unique identifier that is used in a secondary
-protocol.
+identifiers does not prevent session concatenation if the attacker is able to
+copy the session identifier from one signaling session to another.  This kind of
+attack is prevented by systems that enable peer authentication such as WebRTC
+identity {{!WEBRTC-SEC}} or SIP identity {{?SIP-ID}}.  However, session
+concatenation remains possible at higher layers: an attacker can establish two
+independent sessions and simply forward any data it receives from one into the
+other.
 
-If a secondary protocol uses the signaling channel with the assumption that the
-signaling and TLS peers are the same then that protocol is vulnerable to attack
-unless they also validate the identity of peers at both layers.  Use of the
-`external_session_id` does not guarantee that the identity of the peer at the
-TLS layer is the same as the identity of the signaling peer.
+Use of the `external_session_id` does not guarantee that the identity of the
+peer at the TLS layer is the same as the identity of the signaling peer.  The
+advantage an attacker gains by concatenating sessions is limited unless it is
+assumed that signaling and TLS peers are the same.  If a secondary protocol uses
+the signaling channel with the assumption that the signaling and TLS peers are
+the same then that protocol is vulnerable to attack unless they also validate
+the identity of peers at both layers.
 
 It is important to note that multiple connections can be created within the same
 signaling session.  An attacker might concatenate only part of a session,
@@ -590,9 +596,9 @@ another connection.
 
 Information extracted from a TLS connection therefore MUST NOT be used in a
 secondary protocol outside of that connection if that protocol relies on the
-signaling protocol having the same peers.  Similarly, data from one TLS
-connection MUST NOT be used in other TLS connections even if they are
-established as a result of the same signaling session.
+signaling protocol having the same peers.  Similarly, security-sensitive
+information from one TLS connection MUST NOT be used in other TLS connections
+even if they are established as a result of the same signaling session.
 
 
 # Security Considerations
