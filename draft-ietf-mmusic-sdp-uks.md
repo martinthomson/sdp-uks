@@ -202,9 +202,14 @@ is very similar to the 3PCC technique, except where the TLS peers are aware of
 the use of 3PCC.
 
 For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the
-signaling so that they can correctly generate (and check) the extension.  It is
-understood that this technique will prevent the use of 3PCC if peers are not
-able to access signaling.
+signaling so that they can correctly generate (and check) the extension.  Peers
+need access to any identity assertions present in signaling in order to perform
+the checks in {{external_id_hash}}.  To perform the checks in
+{{external_session_id}}, a 3PCC system needs to ensure that guarantee that peers
+use the same SDP `tls-id` attribute value.
+
+It is understood that this technique will prevent the use of 3PCC if peers are
+not able to access signaling or if SDP `tls-id` attributes cannot be matched.
 
 
 # Attack on Identity Bindings {#id}
