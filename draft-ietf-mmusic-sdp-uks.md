@@ -175,10 +175,12 @@ attacks considerably more feasible.
 
 ## Interactions with Key Continuity {#continuity}
 
-Systems that use key continuity might be able to detect an unknown key-share
-attack if a session with either the attacker or the geniune peer (i.e., the
-victim whose fingerprint was copied by an attacker) was established in the past.
-Whether this is possible depends on how key continuity is implemented.
+Systems that use key continuity (as defined in Section 15.1 of {{?ZRTP=RFC6189}}
+or as recommended in Section 7 of {{?FINGERPRINT}}) might be able to detect an
+unknown key-share attack if a session with either the attacker or the geniune
+peer (i.e., the victim whose fingerprint was copied by an attacker) was
+established in the past.  Whether this is possible depends on how key continuity
+is implemented.
 
 Implementations that maintain a single database of identities with an index on
 peer keys could discover that the identity saved for the peer key does not match
@@ -275,16 +277,16 @@ communicate with Norma; a second session with Mallory is presented to Norma.
 ~~~
 {: #identity-attack title="Example Attack on Identity Bindings"}
 
-The attack requires that Mallory obtain an identity binding for their own
-identity with the fingerprints presented by Patsy (P).  This false binding is
-then presented to Norma.
+The attack requires that Mallory obtain an identity binding for her own identity
+with the fingerprints presented by Patsy (P).  This false binding is then
+presented to Norma.
 
 Patsy could be similarly duped, but in this example, a correct binding between
 Norma's identity and fingerprint (N) is faithfully presented by Mallory.
 
 The resulting DTLS session is established directly between Norma and Patsy.
-Patsy correctly believes that they are communicating with Norma.  However, Norma
-incorrectly believes they are talking to Mallory.
+Patsy correctly believes that she is communicating with Norma.  However, Norma
+incorrectly believes she is talking to Mallory.
 
 In order for this attack to work without compromising signaling integrity, it is
 likely that the attacker also needs to subvert the session as described in
@@ -362,7 +364,7 @@ to indicate support for the extension.
 A peer that receives an `external_id_hash` extension that does not match the
 value of the identity binding from its peer MUST immediately fail the TLS
 handshake with an error.  This includes cases where the binding is absent, in
-which the extension MUST be present and empty.
+which case the extension MUST be present and empty.
 
 An `external_id_hash` extension that is any length other than 0 or 32 is invalid
 and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
@@ -474,8 +476,8 @@ network path between the victims, and if the same certificate - and therefore
 SDP `fingerprint` attribute value - is used in both sessions.
 
 Where ICE {{?ICE=RFC8445}} is used, Mallory also needs to ensure that
-connectivity between Patsy and Norma succeed, either by forwarding checks or
-answering and generating the necessary messages.
+connectivity checks between Patsy and Norma succeed, either by forwarding checks
+or answering and generating the necessary messages.
 
 
 ## Unique Session Identity Solution {#sess-id}
@@ -514,7 +516,7 @@ document only defines use of this extension for SDP; other methods of external
 session negotiation can use this extension to include a unique session
 identifier.
 
-The `extension_data` for the `external_session_id` extension contains a
+The `extension_data` for the `external_session_id` extension contains an
 ExternalSessionId struct, described below using the syntax defined in
 {{!TLS13}}:
 
