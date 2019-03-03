@@ -308,7 +308,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-03-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-03-03" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -333,10 +333,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">March 01, 2019</td>
+<td class="right">March 03, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: September 2, 2019</td>
+<td class="left">Expires: September 4, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -353,7 +353,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 2, 2019.</p>
+<p>This Internet-Draft will expire on September 4, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -552,10 +552,10 @@ ul.toc li {
 <p class="figure">Figure 2: Example Attack Scenario using Fingerprints</p>
 <p id="rfc.section.4.1.p.4">In this scenario, there are two sessions initiated at the same time by Norma.  Signaling is shown with single lines (&#8216;-&#8216;), DTLS and media with double lines (&#8216;=&#8217;).</p>
 <p id="rfc.section.4.1.p.5">The first session is established with Mallory, who falsely uses Patsy&#8217;s certificate fingerprint (denoted with &#8216;fp=P&#8217;).  A second session is initiated between Norma and Patsy.  Signaling for both sessions is permitted to complete.</p>
-<p id="rfc.section.4.1.p.6">Once signaling is complete on a session, ostensibly between Mallory and Norma, is complete.  Mallory forwards DTLS and media packets sent to her by Norma to Patsy.  These packets are denoted &#8216;DTLS1&#8217; because Norma associates these with the first signaling session (&#8216;signaling1&#8217;).</p>
+<p id="rfc.section.4.1.p.6">Once signaling is complete on the first session, a DTLS connection is established. Ostensibly, this connection is between Mallory and Norma but Mallory forwards DTLS and media packets sent to her by Norma to Patsy.  These packets are denoted &#8216;DTLS1&#8217; because Norma associates these with the first signaling session (&#8216;signaling1&#8217;).</p>
 <p id="rfc.section.4.1.p.7">Mallory also intercepts packets from Patsy and forwards those to Norma at the transport address that Norma associates with Mallory.  These packets are denoted &#8216;DTLS2&#8217; to indicate that Patsy associates these with the second signaling session (&#8216;signaling2&#8217;), however Norma will interpret these as being associated with the first signaling session (&#8216;signaling1&#8217;).</p>
 <p id="rfc.section.4.1.p.8">The second signaling exchange - &#8216;signaling2&#8217;, between Norma and Patsy - is permitted to continue to the point where Patsy believes that it has succeeded.  This ensures that Patsy believes that she is communicating with Norma.  In the end, Norma believes that she is communicating with Mallory, when she is really communicating with Patsy.</p>
-<p id="rfc.section.4.1.p.9">Though Patsy needs to believe that the second signaling session has been successfully established, Mallory has no real interest in seeing that session also be established.  Mallory only needs to ensure that Patsy maintains the active session and does not abandon the session prematurely.  For this reason, it might be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to receive a call setup completion signal, such as a SIP ACK.  Once the second session completes, Mallory might cause DTLS packets sent by Norma to Patsy to be dropped.  It is likely that these DTLS packets will be discarded by Patsy as Patsy will already have a successful DTLS connection established.</p>
+<p id="rfc.section.4.1.p.9">Though Patsy needs to believe that the second signaling session has been successfully established, Mallory has no real interest in seeing that session also be established.  Mallory only needs to ensure that Patsy maintains the active session and does not abandon the session prematurely.  For this reason, it might be necessary to permit the signaling from Patsy to reach Norma to allow Patsy to receive a call setup completion signal, such as a SIP ACK.  Once the second session is established, Mallory might cause DTLS packets sent by Norma to Patsy to be dropped.  It is likely that these DTLS packets will be discarded by Patsy as Patsy will already have a successful DTLS connection established.</p>
 <p id="rfc.section.4.1.p.10">For the attacked session to be sustained beyond the point that Norma detects errors in the second session, Mallory also needs to block any signaling that Norma might send to Patsy asking for the call to be abandoned.  Otherwise, Patsy might receive a notice that the call is failed and thereby abort the call.</p>
 <p id="rfc.section.4.1.p.11">This attack creates an asymmetry in the beliefs about the identity of peers.  However, this attack is only possible if the victim (Norma) is willing to conduct two sessions nearly simultaneously, if the attacker (Mallory) is on the network path between the victims, and if the same certificate - and therefore SDP <samp>fingerprint</samp> attribute value - is used in both sessions.</p>
 <p id="rfc.section.4.1.p.12">Where ICE <a href="#ICE" class="xref">[ICE]</a> is used, Mallory also needs to ensure that connectivity checks between Patsy and Norma succeed, either by forwarding checks or answering and generating the necessary messages.</p>

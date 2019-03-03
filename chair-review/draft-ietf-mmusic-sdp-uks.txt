@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                          March 01, 2019
-Expires: September 2, 2019
+Intended status: Standards Track                          March 03, 2019
+Expires: September 4, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 2, 2019.
+   This Internet-Draft will expire on September 4, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 1]
+Thomson & Rescorla      Expires September 4, 2019               [Page 1]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 2]
+Thomson & Rescorla      Expires September 4, 2019               [Page 2]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 3]
+Thomson & Rescorla      Expires September 4, 2019               [Page 3]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 4]
+Thomson & Rescorla      Expires September 4, 2019               [Page 4]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 5]
+Thomson & Rescorla      Expires September 4, 2019               [Page 5]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 6]
+Thomson & Rescorla      Expires September 4, 2019               [Page 6]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 7]
+Thomson & Rescorla      Expires September 4, 2019               [Page 7]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 8]
+Thomson & Rescorla      Expires September 4, 2019               [Page 8]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019               [Page 9]
+Thomson & Rescorla      Expires September 4, 2019               [Page 9]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -542,11 +542,11 @@ Internet-Draft                   SDP UKS                      March 2019
    session is initiated between Norma and Patsy.  Signaling for both
    sessions is permitted to complete.
 
-   Once signaling is complete on a session, ostensibly between Mallory
-   and Norma, is complete.  Mallory forwards DTLS and media packets sent
-   to her by Norma to Patsy.  These packets are denoted 'DTLS1' because
-   Norma associates these with the first signaling session
-   ('signaling1').
+   Once signaling is complete on the first session, a DTLS connection is
+   established.  Ostensibly, this connection is between Mallory and
+   Norma but Mallory forwards DTLS and media packets sent to her by
+   Norma to Patsy.  These packets are denoted 'DTLS1' because Norma
+   associates these with the first signaling session ('signaling1').
 
    Mallory also intercepts packets from Patsy and forwards those to
    Norma at the transport address that Norma associates with Mallory.
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 10]
+Thomson & Rescorla      Expires September 4, 2019              [Page 10]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -576,10 +576,10 @@ Internet-Draft                   SDP UKS                      March 2019
    prematurely.  For this reason, it might be necessary to permit the
    signaling from Patsy to reach Norma to allow Patsy to receive a call
    setup completion signal, such as a SIP ACK.  Once the second session
-   completes, Mallory might cause DTLS packets sent by Norma to Patsy to
-   be dropped.  It is likely that these DTLS packets will be discarded
-   by Patsy as Patsy will already have a successful DTLS connection
-   established.
+   is established, Mallory might cause DTLS packets sent by Norma to
+   Patsy to be dropped.  It is likely that these DTLS packets will be
+   discarded by Patsy as Patsy will already have a successful DTLS
+   connection established.
 
    For the attacked session to be sustained beyond the point that Norma
    detects errors in the second session, Mallory also needs to block any
@@ -613,7 +613,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 11]
+Thomson & Rescorla      Expires September 4, 2019              [Page 11]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 12]
+Thomson & Rescorla      Expires September 4, 2019              [Page 12]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 13]
+Thomson & Rescorla      Expires September 4, 2019              [Page 13]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -781,7 +781,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 14]
+Thomson & Rescorla      Expires September 4, 2019              [Page 14]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -837,7 +837,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 15]
+Thomson & Rescorla      Expires September 4, 2019              [Page 15]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -893,7 +893,7 @@ Internet-Draft                   SDP UKS                      March 2019
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 16]
+Thomson & Rescorla      Expires September 4, 2019              [Page 16]
 
 Internet-Draft                   SDP UKS                      March 2019
 
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires September 2, 2019              [Page 17]
+Thomson & Rescorla      Expires September 4, 2019              [Page 17]
