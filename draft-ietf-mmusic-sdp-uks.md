@@ -446,10 +446,11 @@ The first session is established with Mallory, who falsely uses Patsy's
 certificate fingerprint (denoted with 'fp=P').  A second session is initiated
 between Norma and Patsy.  Signaling for both sessions is permitted to complete.
 
-Once signaling is complete on a session, ostensibly between Mallory and Norma,
-is complete.  Mallory forwards DTLS and media packets sent to her by Norma to
-Patsy.  These packets are denoted 'DTLS1' because Norma associates these with
-the first signaling session ('signaling1').
+Once signaling is complete on the first session, a DTLS connection is
+established. Ostensibly, this connection is between Mallory and Norma but
+Mallory forwards DTLS and media packets sent to her by Norma to Patsy.  These
+packets are denoted 'DTLS1' because Norma associates these with the first
+signaling session ('signaling1').
 
 Mallory also intercepts packets from Patsy and forwards those to Norma at the
 transport address that Norma associates with Mallory.  These packets are denoted
@@ -469,7 +470,7 @@ also be established.  Mallory only needs to ensure that Patsy maintains the
 active session and does not abandon the session prematurely.  For this reason,
 it might be necessary to permit the signaling from Patsy to reach Norma to allow
 Patsy to receive a call setup completion signal, such as a SIP ACK.  Once the
-second session completes, Mallory might cause DTLS packets sent by Norma to
+second session is established, Mallory might cause DTLS packets sent by Norma to
 Patsy to be dropped.  It is likely that these DTLS packets will be discarded by
 Patsy as Patsy will already have a successful DTLS connection established.
 
