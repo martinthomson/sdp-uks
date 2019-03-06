@@ -308,7 +308,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-03-03" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-03-06" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -333,10 +333,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">March 03, 2019</td>
+<td class="right">March 06, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: September 4, 2019</td>
+<td class="left">Expires: September 7, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -353,7 +353,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 4, 2019.</p>
+<p>This Internet-Draft will expire on September 7, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -449,8 +449,9 @@ ul.toc li {
 <a href="#rfc.section.2.3">2.3.</a> <a href="#byebye-3pcc" id="byebye-3pcc">Third-Party Call Control</a>
 </h1>
 <p id="rfc.section.2.3.p.1">Third-party call control (3PCC) <a href="#RFC3725" class="xref">[RFC3725]</a> is a technique where a signaling peer establishes a call that is terminated by a different entity.  This attack is very similar to the 3PCC technique, except where the TLS peers are aware of the use of 3PCC.</p>
-<p id="rfc.section.2.3.p.2">For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the signaling so that they can correctly generate (and check) the extension.  Peers need access to any identity assertions present in signaling in order to perform the checks in <a href="#external_id_hash" class="xref">Section 3.2</a>.  To perform the checks in <a href="#external_session_id" class="xref">Section 4.3</a>, a 3PCC system needs to ensure that guarantee that peers use the same SDP <samp>tls-id</samp> attribute value.</p>
-<p id="rfc.section.2.3.p.3">It is understood that this technique will prevent the use of 3PCC if peers are not able to access signaling or if SDP <samp>tls-id</samp> attributes cannot be matched.</p>
+<p id="rfc.section.2.3.p.2">For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the signaling so that they can correctly generate (and check) the extension.  Peers need access to any identity assertions present in signaling in order to perform the checks in <a href="#external_id_hash" class="xref">Section 3.2</a>.  For a connection to be successfully established, a controller needs to forward all fields that contain identity assertions, including any fields outside of SDP that are used, such as the SIP Identity header field <a href="#SIP-ID" class="xref">[SIP-ID]</a>.  A controller that follows the best practices in RFC 3725 is expected to forward the necessary information contained in SDP, such as the WebRTC <samp>identity</samp> attribute, thus ensuring the necessary information is present.</p>
+<p id="rfc.section.2.3.p.3">To perform the checks in <a href="#external_session_id" class="xref">Section 4.3</a>, a 3PCC system needs to ensure that guarantee that peers use the same SDP <samp>tls-id</samp> attribute value.  A controller that follows the best practices in RFC 3725 will produce SDP with consistent <samp>tls-id</samp> values, but other forms of modification might not.</p>
+<p id="rfc.section.2.3.p.4">It is understood that this technique will prevent the use of 3PCC if peers have different views of the involved identities, or the value of SDP <samp>tls-id</samp> attributes.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#id" id="id">Attack on Identity Bindings</a>
 </h1>
@@ -464,27 +465,28 @@ ul.toc li {
 <a href="#rfc.section.3.1">3.1.</a> <a href="#id-example" id="id-example">Example</a>
 </h1>
 <p id="rfc.section.3.1.p.1">In the example shown in <a href="#identity-attack" class="xref">Figure 1</a>, it is assumed that the attacker also controls the signaling channel.</p>
-<p id="rfc.section.3.1.p.2">Mallory (the attacker) presents two victims, Norma and Patsy, with two separate sessions.  In the first session, Patsy is presented with the option to communicate with Norma; a second session with Mallory is presented to Norma.</p>
+<p id="rfc.section.3.1.p.2">Mallory (the attacker) presents two victims, Norma and Patsy, with two separate sessions.  In the first session, Norma is presented with the option to communicate with Mallory; a second session with Norma is presented to Patsy.</p>
 <div id="rfc.figure.1"></div>
 <div id="identity-attack"></div>
 <pre>
   Norma                   Mallory                   Patsy
   (fp=N)                   -----                    (fp=P)
     |                        |                        |
-    |                        |&lt;---- Signaling1 ------&gt;|
-    |                        |   Norma=N Patsy=P      |
-    |&lt;---- Signaling2 ------&gt;|                        |
+    |&lt;---- Signaling1 ------&gt;|                        |
     |   Norma=N Mallory=P    |                        |
+    |                        |&lt;---- Signaling2 ------&gt;|
+    |                        |   Norma=N Patsy=P      |
     |                                                 |
     |&lt;=================DTLS (fp=N,P)=================&gt;|
     |                                                 |
   (peer = Mallory!)                         (peer = Norma)
 </pre>
 <p class="figure">Figure 1: Example Attack on Identity Bindings</p>
-<p id="rfc.section.3.1.p.3">The attack requires that Mallory obtain an identity binding for her own identity with the fingerprints presented by Patsy (P).  This false binding is then presented to Norma.</p>
-<p id="rfc.section.3.1.p.4">Patsy could be similarly duped, but in this example, a correct binding between Norma&#8217;s identity and fingerprint (N) is faithfully presented by Mallory.</p>
-<p id="rfc.section.3.1.p.5">The resulting DTLS session is established directly between Norma and Patsy.  Patsy correctly believes that she is communicating with Norma.  However, Norma incorrectly believes she is talking to Mallory.</p>
-<p id="rfc.section.3.1.p.6">In order for this attack to work without compromising signaling integrity, it is likely that the attacker also needs to subvert the session as described in <a href="#fp" class="xref">Section 4</a>.  Endpoints can use the <samp>external_session_id</samp> extension (see <a href="#external_session_id" class="xref">Section 4.3</a>) in addition to this so that two calls between the same parties can&#8217;t be altered by an attacker.</p>
+<p id="rfc.section.3.1.p.3">The attack requires that Mallory obtain an identity binding for her own identity with the fingerprints presented by Patsy (P).  This false binding is then presented to Norma (Signaling1 in the figure).</p>
+<p id="rfc.section.3.1.p.4">Patsy could be similarly duped, but in this example, a correct binding between Norma&#8217;s identity and fingerprint (N) is faithfully presented by Mallory.  This session (Signaling2 in the figure) can be entirely legitimate.</p>
+<p id="rfc.section.3.1.p.5">A DTLS session is established directly between Norma and Patsy.  In order for this to happen Mallory can substitute transport-level information in the both sessions to facilitate this, though this is not necessary if Mallory is on the network path between Norma and Patsy.</p>
+<p id="rfc.section.3.1.p.6">As a result, Patsy correctly believes that she is communicating with Norma.  However, Norma incorrectly believes she is talking to Mallory.</p>
+<p id="rfc.section.3.1.p.7">In order for this attack to work without compromising signaling integrity, it is likely that the attacker also needs to subvert the session as described in <a href="#fp" class="xref">Section 4</a>.  Endpoints can use the <samp>external_session_id</samp> extension (see <a href="#external_session_id" class="xref">Section 4.3</a>) in addition to the <samp>external_id_hash</samp> (<a href="#external_id_hash" class="xref">Section 3.2</a>) so that two calls between the same parties can&#8217;t be altered by an attacker.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#external_id_hash" id="external_id_hash">The external_id_hash TLS Extension</a>
 </h1>
