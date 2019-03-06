@@ -237,11 +237,6 @@ communicating with an attacker-controlled identity, when they are really talking
 to the first victim.  The attacker only needs to create an identity assertion
 that covers a certificate fingerprint of the first victim.
 
-This attack works without compromising signaling integrity, unless the defenses
-described in {{fp}} are also employed.  However, the mechanism described in
-{{external_id_hash}} is the only one effective against an attacker that is able
-rewrite `tls-id` values.
-
 A variation on the same technique can be used to cause both victims to both
 believe they are talking to the attacker when they are talking to each other.
 In this case, the attacker performs the identity misbinding once for each
@@ -264,15 +259,16 @@ TLS extension is sufficient to implement this solution.
 
 Rather than include a complete identity binding - which could be
 sizeable - a collision- and pre-image-resistant hash of the binding is included
-in a TLS extension.  Endpoints then need only validate that the extension
-contains a hash of the identity binding they received in signaling.  If the
-identity binding is successfully validated, the identity of a peer is verified
-and bound to the session.
+in a TLS extension as described in {{external_id_hash}}.  Endpoints then need
+only validate that the extension contains a hash of the identity binding they
+received in signaling.  If the identity binding is successfully validated, the
+identity of a peer is verified and bound to the session.
 
-Endpoints MUST use the `external_session_id` extension (see
-{{external_session_id}}) in addition to the `external_id_hash`
-({{external_id_hash}}) so that two calls between the same parties can't be
-altered by an attacker.
+This form of unknown key-share attack is possible without compromising signaling
+integrity, unless the defenses described in {{fp}} are used.  Endpoints MUST use
+the `external_session_id` extension (see {{external_session_id}}) in addition to
+the `external_id_hash` ({{external_id_hash}}) so that two calls between the same
+parties can't be altered by an attacker.
 
 
 ## Example {#id-example}
@@ -584,6 +580,10 @@ this specification.
 
 In TLS 1.3, the `external_session_id` extension MUST be sent in the
 EncryptedExtensions message.
+
+This defense is not effective if an attacker can rewrite `tls-id` values in
+signaling.  Only the mechanism in `external_id_hash` is able to defend against
+an attacker that can compromise session integrity.
 
 
 # Consequences of Session Concatenation
