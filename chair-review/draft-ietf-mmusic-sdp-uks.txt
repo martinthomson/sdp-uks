@@ -373,9 +373,8 @@ Internet-Draft                   SDP UKS                      March 2019
 
    A DTLS session is established directly between Norma and Patsy.  In
    order for this to happen Mallory can substitute transport-level
-   information in the both sessions to facilitate this, though this is
-   not necessary if Mallory is on the network path between Norma and
-   Patsy.
+   information in both sessions to facilitate this, though this is not
+   necessary if Mallory is on the network path between Norma and Patsy.
 
    As a result, Patsy correctly believes that she is communicating with
    Norma.  However, Norma incorrectly believes she is talking to
@@ -385,7 +384,8 @@ Internet-Draft                   SDP UKS                      March 2019
    integrity, it is likely that the attacker also needs to subvert the
    session as described in Section 4.  Endpoints can use the
    "external_session_id" extension (see Section 4.3) in addition to the
-
+   "external_id_hash" (Section 3.2) so that two calls between the same
+   parties can't be altered by an attacker.
 
 
 
@@ -393,9 +393,6 @@ Thomson & Rescorla      Expires September 7, 2019               [Page 7]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   "external_id_hash" (Section 3.2) so that two calls between the same
-   parties can't be altered by an attacker.
 
 3.2.  The external_id_hash TLS Extension
 
@@ -442,6 +439,9 @@ Internet-Draft                   SDP UKS                      March 2019
 
    "external_id_hash = SHA256(b64decode(signed-identity-digest)) "
 
+   Note:  Should SHA-256 prove to be inadequate at some point in the
+      future (see [AGILITY]), a new TLS extension can be defined that
+      uses a different hash function.
 
 
 
@@ -449,10 +449,6 @@ Thomson & Rescorla      Expires September 7, 2019               [Page 8]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   Note:  Should SHA-256 prove to be inadequate at some point in the
-      future (see [AGILITY]), a new TLS extension can be defined that
-      uses a different hash function.
 
    Identity bindings in either form might be provided by only one peer.
    An endpoint that does not produce an identity binding MUST generate
@@ -498,6 +494,10 @@ Internet-Draft                   SDP UKS                      March 2019
    An endpoint that is configured to reuse a certificate can be attacked
    if it is willing to initiate two calls at the same time, one of which
    is with an attacker.  The attacker can arrange for the victim to
+   incorrectly believe that it is calling the attacker when it is in
+   fact calling a second party.  The second party correctly believes
+   that it is talking to the victim.
+
 
 
 
@@ -505,10 +505,6 @@ Thomson & Rescorla      Expires September 7, 2019               [Page 9]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   incorrectly believe that it is calling the attacker when it is in
-   fact calling a second party.  The second party correctly believes
-   that it is talking to the victim.
 
    As with the attack on identity bindings, this can be used to cause
    two victims to both believe they are talking to the attacker when
@@ -554,6 +550,10 @@ Internet-Draft                   SDP UKS                      March 2019
    by Norma.  Signaling is shown with single lines ('-'), DTLS and media
    with double lines ('=').
 
+   The first session is established with Mallory, who falsely uses
+   Patsy's certificate fingerprint (denoted with 'fp=P').  A second
+   session is initiated between Norma and Patsy.  Signaling for both
+   sessions is permitted to complete.
 
 
 
@@ -561,11 +561,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 10]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   The first session is established with Mallory, who falsely uses
-   Patsy's certificate fingerprint (denoted with 'fp=P').  A second
-   session is initiated between Norma and Patsy.  Signaling for both
-   sessions is permitted to complete.
 
    Once signaling is complete on the first session, a DTLS connection is
    established.  Ostensibly, this connection is between Mallory and
@@ -609,7 +604,12 @@ Internet-Draft                   SDP UKS                      March 2019
    peers.  However, this attack is only possible if the victim (Norma)
    is willing to conduct two sessions nearly simultaneously, if the
    attacker (Mallory) is on the network path between the victims, and if
+   the same certificate - and therefore SDP "fingerprint" attribute
+   value - is used in both sessions.
 
+   Where ICE [ICE] is used, Mallory also needs to ensure that
+   connectivity checks between Patsy and Norma succeed, either by
+   forwarding checks or answering and generating the necessary messages.
 
 
 
@@ -617,13 +617,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 11]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   the same certificate - and therefore SDP "fingerprint" attribute
-   value - is used in both sessions.
-
-   Where ICE [ICE] is used, Mallory also needs to ensure that
-   connectivity checks between Patsy and Norma succeed, either by
-   forwarding checks or answering and generating the necessary messages.
 
 4.2.  Unique Session Identity Solution
 
@@ -667,17 +660,19 @@ Internet-Draft                   SDP UKS                      March 2019
          opaque session_id<20..255>;
       } ExternalSessionId;
 
+   For SDP, the "session_id" field of the extension includes the value
+   of the "tls-id" SDP attribute as defined in [DTLS-SDP] (that is, the
+   "tls-id-value" ABNF production).  The value of the "tls-id" attribute
+   is encoded using ASCII [ASCII].
+
+
+
 
 
 Thomson & Rescorla      Expires September 7, 2019              [Page 12]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   For SDP, the "session_id" field of the extension includes the value
-   of the "tls-id" SDP attribute as defined in [DTLS-SDP] (that is, the
-   "tls-id-value" ABNF production).  The value of the "tls-id" attribute
-   is encoded using ASCII [ASCII].
 
    Where RTP and RTCP [RTP] are not multiplexed, it is possible that the
    two separate DTLS connections carrying RTP and RTCP can be switched.
@@ -722,6 +717,11 @@ Internet-Draft                   SDP UKS                      March 2019
    attacker creates a situation where both peers believe that they are
    talking to the attacker when they are talking to each other.
 
+   In the absence of any higher-level concept of peer identity, the use
+   of session identifiers does not prevent session concatenation if the
+   attacker is able to copy the session identifier from one signaling
+   session to another.  This kind of attack is prevented by systems that
+   enable peer authentication such as WebRTC identity [WEBRTC-SEC] or
 
 
 
@@ -730,11 +730,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 13]
 Internet-Draft                   SDP UKS                      March 2019
 
 
-   In the absence of any higher-level concept of peer identity, the use
-   of session identifiers does not prevent session concatenation if the
-   attacker is able to copy the session identifier from one signaling
-   session to another.  This kind of attack is prevented by systems that
-   enable peer authentication such as WebRTC identity [WEBRTC-SEC] or
    SIP identity [SIP-ID].  However, session concatenation remains
    possible at higher layers: an attacker can establish two independent
    sessions and simply forward any data it receives from one into the
@@ -778,6 +773,11 @@ Internet-Draft                   SDP UKS                      March 2019
       assigned a code point of TBD; it is recommended and is marked as
       "Encrypted" in TLS 1.3.
 
+   o  The "external_session_id" extension defined in Section 4.3 has
+      been assigned a code point of TBD; it is recommended and is marked
+      as "Encrypted" in TLS 1.3.
+
+
 
 
 
@@ -785,10 +785,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 14]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   o  The "external_session_id" extension defined in Section 4.3 has
-      been assigned a code point of TBD; it is recommended and is marked
-      as "Encrypted" in TLS 1.3.
 
 8.  References
 
@@ -833,6 +829,10 @@ Internet-Draft                   SDP UKS                      March 2019
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
 
 
 
@@ -841,10 +841,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 15]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [SDP]      Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
               Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
@@ -888,7 +884,11 @@ Internet-Draft                   SDP UKS                      March 2019
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
-
+   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", RFC 8445,
+              DOI 10.17487/RFC8445, July 2018,
+              <https://www.rfc-editor.org/info/rfc8445>.
 
 
 
@@ -897,12 +897,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 16]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
-              Connectivity Establishment (ICE): A Protocol for Network
-              Address Translator (NAT) Traversal", RFC 8445,
-              DOI 10.17487/RFC8445, July 2018,
-              <https://www.rfc-editor.org/info/rfc8445>.
 
    [JSON]     Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -946,6 +940,12 @@ Appendix A.  Acknowledgements
    discussions with Sam Scott, Hugo Krawczyk, and Richard Barnes.  A
    solution similar to the one presented here was first proposed by
    Karthik Bhargavan who provided valuable input on this document.
+   Thyla van der Merwe assisted with a formal model of the solution.
+   Adam Roach and Paul E.  Jones provided significant review and input.
+
+
+
+
 
 
 
@@ -953,9 +953,6 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 17]
 
 Internet-Draft                   SDP UKS                      March 2019
 
-
-   Thyla van der Merwe assisted with a formal model of the solution.
-   Adam Roach and Paul E.  Jones provided significant review and input.
 
 Authors' Addresses
 
@@ -969,6 +966,9 @@ Authors' Addresses
    Mozilla
 
    Email: ekr@rftm.com
+
+
+
 
 
 
