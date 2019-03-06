@@ -206,12 +206,22 @@ the use of 3PCC.
 For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the
 signaling so that they can correctly generate (and check) the extension.  Peers
 need access to any identity assertions present in signaling in order to perform
-the checks in {{external_id_hash}}.  To perform the checks in
-{{external_session_id}}, a 3PCC system needs to ensure that guarantee that peers
-use the same SDP `tls-id` attribute value.
+the checks in {{external_id_hash}}.  For a connection to be successfully
+established, a controller needs to forward all fields that contain identity
+assertions, including any fields outside of SDP that are used, such as the SIP
+Identity header field {{?SIP-ID}}.  A controller that follows the best practices
+in RFC 3725 is expected to forward the necessary information contained in SDP,
+such as the WebRTC `identity` attribute, thus ensuring the necessary information
+is present.
 
-It is understood that this technique will prevent the use of 3PCC if peers are
-not able to access signaling or if SDP `tls-id` attributes cannot be matched.
+To perform the checks in {{external_session_id}}, a 3PCC system needs to ensure
+that guarantee that peers use the same SDP `tls-id` attribute value.  A
+controller that follows the best practices in RFC 3725 will produce SDP with
+consistent `tls-id` values, but other forms of modification might not.
+
+It is understood that this technique will prevent the use of 3PCC if peers have
+different views of the involved identities, or the value of SDP `tls-id`
+attributes.
 
 
 # Attack on Identity Bindings {#id}
