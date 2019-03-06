@@ -271,17 +271,17 @@ In the example shown in {{identity-attack}}, it is assumed that the attacker
 also controls the signaling channel.
 
 Mallory (the attacker) presents two victims, Norma and Patsy, with two separate
-sessions.  In the first session, Patsy is presented with the option to
-communicate with Norma; a second session with Mallory is presented to Norma.
+sessions.  In the first session, Norma is presented with the option to
+communicate with Mallory; a second session with Norma is presented to Patsy.
 
 ~~~
   Norma                   Mallory                   Patsy
   (fp=N)                   -----                    (fp=P)
     |                        |                        |
-    |                        |<---- Signaling1 ------>|
-    |                        |   Norma=N Patsy=P      |
-    |<---- Signaling2 ------>|                        |
+    |<---- Signaling1 ------>|                        |
     |   Norma=N Mallory=P    |                        |
+    |                        |<---- Signaling2 ------>|
+    |                        |   Norma=N Patsy=P      |
     |                                                 |
     |<=================DTLS (fp=N,P)=================>|
     |                                                 |
@@ -291,20 +291,26 @@ communicate with Norma; a second session with Mallory is presented to Norma.
 
 The attack requires that Mallory obtain an identity binding for her own identity
 with the fingerprints presented by Patsy (P).  This false binding is then
-presented to Norma.
+presented to Norma (Signaling1 in the figure).
 
 Patsy could be similarly duped, but in this example, a correct binding between
-Norma's identity and fingerprint (N) is faithfully presented by Mallory.
+Norma's identity and fingerprint (N) is faithfully presented by Mallory.  This
+session (Signaling2 in the figure) can be entirely legitimate.
 
-The resulting DTLS session is established directly between Norma and Patsy.
-Patsy correctly believes that she is communicating with Norma.  However, Norma
-incorrectly believes she is talking to Mallory.
+A DTLS session is established directly between Norma and Patsy.  In order for
+this to happen Mallory can substitute transport-level information in the both
+sessions to facilitate this, though this is not necessary if Mallory is on the
+network path between Norma and Patsy.
+
+As a result, Patsy correctly believes that she is communicating with Norma.
+However, Norma incorrectly believes she is talking to Mallory.
 
 In order for this attack to work without compromising signaling integrity, it is
 likely that the attacker also needs to subvert the session as described in
 {{fp}}.  Endpoints can use the `external_session_id` extension (see
-{{external_session_id}}) in addition to this so that two calls between the same parties
-can't be altered by an attacker.
+{{external_session_id}}) in addition to the `external_id_hash`
+({{external_id_hash}}) so that two calls between the same parties can't be
+altered by an attacker.
 
 
 ## The external_id_hash TLS Extension {#external_id_hash}
