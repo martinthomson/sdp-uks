@@ -324,11 +324,11 @@ Internet-Draft                   SDP UKS                      March 2019
 
    Rather than include a complete identity binding - which could be
    sizeable - a collision- and pre-image-resistant hash of the binding
-   is included in a TLS extension.  Endpoints then need only validate
-   that the extension contains a hash of the identity binding they
-   received in signaling.  If the identity binding is successfully
-   validated, the identity of a peer is verified and bound to the
-   session.
+   is included in a TLS extension as described in Section 3.2.
+   Endpoints then need only validate that the extension contains a hash
+   of the identity binding they received in signaling.  If the identity
+   binding is successfully validated, the identity of a peer is verified
+   and bound to the session.
 
 
 
@@ -337,6 +337,13 @@ Thomson & Rescorla      Expires September 7, 2019               [Page 6]
 
 Internet-Draft                   SDP UKS                      March 2019
 
+
+   This form of unknown key-share attack is possible without
+   compromising signaling integrity, unless the defenses described in
+   Section 4 are used.  Endpoints MUST use the "external_session_id"
+   extension (see Section 4.3) in addition to the "external_id_hash"
+   (Section 3.2) so that two calls between the same parties can't be
+   altered by an attacker.
 
 3.1.  Example
 
@@ -379,13 +386,6 @@ Internet-Draft                   SDP UKS                      March 2019
    As a result, Patsy correctly believes that she is communicating with
    Norma.  However, Norma incorrectly believes she is talking to
    Mallory.
-
-   In order for this attack to work without compromising signaling
-   integrity, it is likely that the attacker also needs to subvert the
-   session as described in Section 4.  Endpoints can use the
-   "external_session_id" extension (see Section 4.3) in addition to the
-   "external_id_hash" (Section 3.2) so that two calls between the same
-   parties can't be altered by an attacker.
 
 
 
@@ -706,6 +706,11 @@ Internet-Draft                   SDP UKS                      March 2019
    In TLS 1.3, the "external_session_id" extension MUST be sent in the
    EncryptedExtensions message.
 
+   This defense is not effective if an attacker can rewrite "tls-id"
+   values in signaling.  Only the mechanism in "external_id_hash" is
+   able to defend against an attacker that can compromise session
+   integrity.
+
 5.  Consequences of Session Concatenation
 
    Use of session identifiers does not prevent an attacker from
@@ -717,11 +722,6 @@ Internet-Draft                   SDP UKS                      March 2019
    attacker creates a situation where both peers believe that they are
    talking to the attacker when they are talking to each other.
 
-   In the absence of any higher-level concept of peer identity, the use
-   of session identifiers does not prevent session concatenation if the
-   attacker is able to copy the session identifier from one signaling
-   session to another.  This kind of attack is prevented by systems that
-   enable peer authentication such as WebRTC identity [WEBRTC-SEC] or
 
 
 
@@ -730,6 +730,11 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 13]
 Internet-Draft                   SDP UKS                      March 2019
 
 
+   In the absence of any higher-level concept of peer identity, the use
+   of session identifiers does not prevent session concatenation if the
+   attacker is able to copy the session identifier from one signaling
+   session to another.  This kind of attack is prevented by systems that
+   enable peer authentication such as WebRTC identity [WEBRTC-SEC] or
    SIP identity [SIP-ID].  However, session concatenation remains
    possible at higher layers: an attacker can establish two independent
    sessions and simply forward any data it receives from one into the
@@ -773,11 +778,6 @@ Internet-Draft                   SDP UKS                      March 2019
       assigned a code point of TBD; it is recommended and is marked as
       "Encrypted" in TLS 1.3.
 
-   o  The "external_session_id" extension defined in Section 4.3 has
-      been assigned a code point of TBD; it is recommended and is marked
-      as "Encrypted" in TLS 1.3.
-
-
 
 
 
@@ -785,6 +785,10 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 14]
 
 Internet-Draft                   SDP UKS                      March 2019
 
+
+   o  The "external_session_id" extension defined in Section 4.3 has
+      been assigned a code point of TBD; it is recommended and is marked
+      as "Encrypted" in TLS 1.3.
 
 8.  References
 
@@ -829,10 +833,6 @@ Internet-Draft                   SDP UKS                      March 2019
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
 
 
 
@@ -841,6 +841,10 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 15]
 
 Internet-Draft                   SDP UKS                      March 2019
 
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [SDP]      Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
               Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
@@ -884,11 +888,7 @@ Internet-Draft                   SDP UKS                      March 2019
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
-   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
-              Connectivity Establishment (ICE): A Protocol for Network
-              Address Translator (NAT) Traversal", RFC 8445,
-              DOI 10.17487/RFC8445, July 2018,
-              <https://www.rfc-editor.org/info/rfc8445>.
+
 
 
 
@@ -897,6 +897,12 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 16]
 
 Internet-Draft                   SDP UKS                      March 2019
 
+
+   [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", RFC 8445,
+              DOI 10.17487/RFC8445, July 2018,
+              <https://www.rfc-editor.org/info/rfc8445>.
 
    [JSON]     Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -940,12 +946,6 @@ Appendix A.  Acknowledgements
    discussions with Sam Scott, Hugo Krawczyk, and Richard Barnes.  A
    solution similar to the one presented here was first proposed by
    Karthik Bhargavan who provided valuable input on this document.
-   Thyla van der Merwe assisted with a formal model of the solution.
-   Adam Roach and Paul E.  Jones provided significant review and input.
-
-
-
-
 
 
 
@@ -953,6 +953,9 @@ Thomson & Rescorla      Expires September 7, 2019              [Page 17]
 
 Internet-Draft                   SDP UKS                      March 2019
 
+
+   Thyla van der Merwe assisted with a formal model of the solution.
+   Adam Roach and Paul E.  Jones provided significant review and input.
 
 Authors' Addresses
 
@@ -966,9 +969,6 @@ Authors' Addresses
    Mozilla
 
    Email: ekr@rftm.com
-
-
-
 
 
 
