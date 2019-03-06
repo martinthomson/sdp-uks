@@ -269,7 +269,7 @@ described in {{fp}} are also employed.  However, the mechanism described in
 {{external_id_hash}} is the only one effective against an attacker that is able
 rewrite `tls-id` values.
 
-Endpoints SHOULD use the `external_session_id` extension (see
+Endpoints MUST use the `external_session_id` extension (see
 {{external_session_id}}) in addition to the `external_id_hash`
 ({{external_id_hash}}) so that two calls between the same parties can't be
 altered by an attacker.
