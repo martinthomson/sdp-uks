@@ -264,6 +264,16 @@ contains a hash of the identity binding they received in signaling.  If the
 identity binding is successfully validated, the identity of a peer is verified
 and bound to the session.
 
+This attack works without compromising signaling integrity, unless the defenses
+described in {{fp}} are also employed.  However, the mechanism described in
+{{external_id_hash}} is the only one effective against an attacker that is able
+rewrite `tls-id` values.
+
+Endpoints SHOULD use the `external_session_id` extension (see
+{{external_session_id}}) in addition to the `external_id_hash`
+({{external_id_hash}}) so that two calls between the same parties can't be
+altered by an attacker.
+
 
 ## Example {#id-example}
 
@@ -304,13 +314,6 @@ network path between Norma and Patsy.
 
 As a result, Patsy correctly believes that she is communicating with Norma.
 However, Norma incorrectly believes she is talking to Mallory.
-
-In order for this attack to work without compromising signaling integrity, it is
-likely that the attacker also needs to subvert the session as described in
-{{fp}}.  Endpoints can use the `external_session_id` extension (see
-{{external_session_id}}) in addition to the `external_id_hash`
-({{external_id_hash}}) so that two calls between the same parties can't be
-altered by an attacker.
 
 
 ## The external_id_hash TLS Extension {#external_id_hash}
