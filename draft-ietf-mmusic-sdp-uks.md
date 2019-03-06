@@ -298,7 +298,7 @@ Norma's identity and fingerprint (N) is faithfully presented by Mallory.  This
 session (Signaling2 in the figure) can be entirely legitimate.
 
 A DTLS session is established directly between Norma and Patsy.  In order for
-this to happen Mallory can substitute transport-level information in the both
+this to happen Mallory can substitute transport-level information in both
 sessions to facilitate this, though this is not necessary if Mallory is on the
 network path between Norma and Patsy.
 
