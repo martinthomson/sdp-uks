@@ -203,21 +203,19 @@ peer establishes a call that is terminated by a different entity.  This attack
 is very similar to the 3PCC technique, except where the TLS peers are aware of
 the use of 3PCC.
 
-For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the
-signaling so that they can correctly generate (and check) the extension.  Peers
-need access to any identity assertions present in signaling in order to perform
-the checks in {{external_id_hash}}.  For a connection to be successfully
-established, a controller needs to forward all fields that contain identity
-assertions, including any fields outside of SDP that are used, such as the SIP
-Identity header field {{?SIP-ID}}.  A controller that follows the best practices
-in RFC 3725 is expected to forward the necessary information contained in SDP,
-such as the WebRTC `identity` attribute, thus ensuring the necessary information
-is present.
+3PCC as described in RFC 3725 is incompatible with SIP identity {{?SIP-ID}} as
+SIP Identity relies on creating a binding between SIP requests and SDP.  The
+controller is the only entity that generates SIP requests in RFC 3725.
+Therefore, in a 3PCC context, only the use of the `fingerprint` attribute
+without additional bindings or WebRTC identity {{?WEBRTC-SEC}} is possible.
 
-To perform the checks in {{external_session_id}}, a 3PCC system needs to ensure
-that guarantee that peers use the same SDP `tls-id` attribute value.  A
-controller that follows the best practices in RFC 3725 will produce SDP with
-consistent `tls-id` values, but other forms of modification might not.
+For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the
+signaling so that they can correctly generate and check the TLS extensions.  For
+a connection to be successfully established, a 3PCC controller needs to either
+forward SDP without modification, or to avoid modifications to `fingerprint`,
+`tls-id`, and `identity` attributes.  A controller that follows the best
+practices in RFC 3725 is expected to forward SDP without modification, thus
+ensuring the integrity of these attributes.
 
 It is understood that this technique will prevent the use of 3PCC if peers have
 different views of the involved identities, or the value of SDP `tls-id`
