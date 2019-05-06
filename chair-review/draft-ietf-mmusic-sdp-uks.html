@@ -78,13 +78,14 @@ table.header td, table#rfc\.headerblock td {
   line-height: 100%;
   margin: 10px 0 32px;
 }
-#rfc\.abstract+p, #rfc\.abstract p {
+#rfc\.abstract+p, #rfc\.abstract+p code, #rfc\.abstract+p samp, #rfc\.abstract+p tt {
   font-size: 20px;
   line-height: 28px;
 }
 
 samp, tt, code, pre, span.tt {
-  font: 13.5px Consolas, monospace;
+  font-size: 13.5px;
+  font-family: Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -303,12 +304,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.19.1 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.22.2 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-03-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-05-06" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -333,10 +334,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">March 06, 2019</td>
+<td class="right">May 06, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: September 7, 2019</td>
+<td class="left">Expires: November 7, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -353,7 +354,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 7, 2019.</p>
+<p>This Internet-Draft will expire on November 7, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -449,8 +450,8 @@ ul.toc li {
 <a href="#rfc.section.2.3">2.3.</a> <a href="#byebye-3pcc" id="byebye-3pcc">Third-Party Call Control</a>
 </h1>
 <p id="rfc.section.2.3.p.1">Third-party call control (3PCC) <a href="#RFC3725" class="xref">[RFC3725]</a> is a technique where a signaling peer establishes a call that is terminated by a different entity.  This attack is very similar to the 3PCC technique, except where the TLS peers are aware of the use of 3PCC.</p>
-<p id="rfc.section.2.3.p.2">For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the signaling so that they can correctly generate (and check) the extension.  Peers need access to any identity assertions present in signaling in order to perform the checks in <a href="#external_id_hash" class="xref">Section 3.2</a>.  For a connection to be successfully established, a controller needs to forward all fields that contain identity assertions, including any fields outside of SDP that are used, such as the SIP Identity header field <a href="#SIP-ID" class="xref">[SIP-ID]</a>.  A controller that follows the best practices in RFC 3725 is expected to forward the necessary information contained in SDP, such as the WebRTC <samp>identity</samp> attribute, thus ensuring the necessary information is present.</p>
-<p id="rfc.section.2.3.p.3">To perform the checks in <a href="#external_session_id" class="xref">Section 4.3</a>, a 3PCC system needs to ensure that guarantee that peers use the same SDP <samp>tls-id</samp> attribute value.  A controller that follows the best practices in RFC 3725 will produce SDP with consistent <samp>tls-id</samp> values, but other forms of modification might not.</p>
+<p id="rfc.section.2.3.p.2">3PCC as described in RFC 3725 is incompatible with SIP identity <a href="#SIP-ID" class="xref">[SIP-ID]</a> as SIP Identity relies on creating a binding between SIP requests and SDP.  The controller is the only entity that generates SIP requests in RFC 3725.  Therefore, in a 3PCC context, only the use of the <samp>fingerprint</samp> attribute without additional bindings or WebRTC identity <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a> is possible.</p>
+<p id="rfc.section.2.3.p.3">For 3PCC to work with the proposed mechanisms, TLS peers need to be aware of the signaling so that they can correctly generate and check the TLS extensions.  For a connection to be successfully established, a 3PCC controller needs to either forward SDP without modification, or to avoid modifications to <samp>fingerprint</samp>, <samp>tls-id</samp>, and <samp>identity</samp> attributes.  A controller that follows the best practices in RFC 3725 is expected to forward SDP without modification, thus ensuring the integrity of these attributes.</p>
 <p id="rfc.section.2.3.p.4">It is understood that this technique will prevent the use of 3PCC if peers have different views of the involved identities, or the value of SDP <samp>tls-id</samp> attributes.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#id" id="id">Attack on Identity Bindings</a>
