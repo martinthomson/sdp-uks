@@ -309,7 +309,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-05-07" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-05-08" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -334,10 +334,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">May 07, 2019</td>
+<td class="right">May 08, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: November 8, 2019</td>
+<td class="left">Expires: November 9, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -354,7 +354,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 8, 2019.</p>
+<p>This Internet-Draft will expire on November 9, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -484,7 +484,7 @@ ul.toc li {
   (peer = Mallory!)                         (peer = Norma)
 </pre>
 <p class="figure">Figure 1: Example Attack on Identity Bindings</p>
-<p id="rfc.section.3.1.p.3">The attack requires that Mallory obtain an identity binding for her own identity with the fingerprints presented by Patsy (P).  This false binding is then presented to Norma (Signaling1 in the figure).</p>
+<p id="rfc.section.3.1.p.3">The attack requires that Mallory obtain an identity binding for her own identity with the fingerprints presented by Patsy (P), which Mallory might have obtained previously.  This false binding is then presented to Norma (Signaling1 in the figure).</p>
 <p id="rfc.section.3.1.p.4">Patsy could be similarly duped, but in this example, a correct binding between Norma&#8217;s identity and fingerprint (N) is faithfully presented by Mallory.  This session (Signaling2 in the figure) can be entirely legitimate.</p>
 <p id="rfc.section.3.1.p.5">A DTLS session is established directly between Norma and Patsy.  In order for this to happen Mallory can substitute transport-level information in both sessions to facilitate this, though this is not necessary if Mallory is on the network path between Norma and Patsy.</p>
 <p id="rfc.section.3.1.p.6">As a result, Patsy correctly believes that she is communicating with Norma.  However, Norma incorrectly believes she is talking to Mallory.</p>
@@ -507,7 +507,7 @@ ul.toc li {
 <dt>Note:</dt>
 <dd style="margin-left: 8">The base64 is decoded to avoid capturing variations in padding.  The base64-decoded identity assertion could include leading or trailing whitespace octets.  WebRTC identity assertions are not canonicalized; all octets are hashed.</dd>
 </dl>
-<p id="rfc.section.3.2.p.7">Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into the full form.  The base64 encoding used in the Identity (or &#8216;y&#8217;) header field MUST be decoded then used as input to SHA-256.  This produces the 32 octet <samp>binding_hash</samp> value used for creating or validating the extension.  In pseudocode, using the <samp>signed-identity-digest</samp> field from the <samp>Identity</samp> grammar defined <a href="#SIP-ID" class="xref">[SIP-ID]</a>:</p>
+<p id="rfc.section.3.2.p.7">Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into the full form.  The base64 encoding used in the SIP Identity (or &#8216;y&#8217;) header field MUST be decoded then used as input to SHA-256.  This produces the 32 octet <samp>binding_hash</samp> value used for creating or validating the extension.  In pseudocode, using the <samp>signed-identity-digest</samp> field from the <samp>Identity</samp> grammar defined <a href="#SIP-ID" class="xref">[SIP-ID]</a>:</p>
 <p><samp>external_id_hash = SHA256(b64decode(signed-identity-digest)) </samp></p>
 <p></p>
 
