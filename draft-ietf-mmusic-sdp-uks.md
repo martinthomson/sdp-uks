@@ -294,8 +294,9 @@ communicate with Mallory; a second session with Norma is presented to Patsy.
 {: #identity-attack title="Example Attack on Identity Bindings"}
 
 The attack requires that Mallory obtain an identity binding for her own identity
-with the fingerprints presented by Patsy (P).  This false binding is then
-presented to Norma (Signaling1 in the figure).
+with the fingerprints presented by Patsy (P), which Mallory might have obtained
+previously.  This false binding is then presented to Norma (Signaling1 in the
+figure).
 
 Patsy could be similarly duped, but in this example, a correct binding between
 Norma's identity and fingerprint (N) is faithfully presented by Mallory.  This
@@ -352,8 +353,8 @@ Note:
   hashed.
 
 Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
-the full form.  The base64 encoding used in the Identity (or 'y') header field
-MUST be decoded then used as input to SHA-256.  This produces the 32 octet
+the full form.  The base64 encoding used in the SIP Identity (or 'y') header
+field MUST be decoded then used as input to SHA-256.  This produces the 32 octet
 `binding_hash` value used for creating or validating the extension.  In
 pseudocode, using the `signed-identity-digest` field from the `Identity` grammar
 defined {{!SIP-ID}}:
