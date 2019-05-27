@@ -309,7 +309,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-05-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-05-27" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Simple mitigation techniques are defined for each." />
 
@@ -334,10 +334,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">May 08, 2019</td>
+<td class="right">May 27, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: November 9, 2019</td>
+<td class="left">Expires: November 28, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -354,7 +354,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 9, 2019.</p>
+<p>This Internet-Draft will expire on November 28, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -416,7 +416,7 @@ ul.toc li {
 <p id="rfc.section.1.p.3">WebRTC identity (see Section 7 of <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>) and SIP identity <a href="#SIP-ID" class="xref">[SIP-ID]</a> both provide a mechanism that binds an external identity to the certificate fingerprints from a session description.  However, this binding is not integrity-protected and therefore vulnerable to an identity misbinding attack - or unknown key-share (UKS) attack - where the attacker binds their identity to the fingerprint of another entity.  A successful attack leads to the creation of sessions where peers are confused about the identify of the participants.</p>
 <p id="rfc.section.1.p.4">This document describes a TLS extension that can be used in combination with these identity bindings to prevent this attack.</p>
 <p id="rfc.section.1.p.5">A similar attack is possible with the use of certificate fingerprints alone.  Though attacks in this setting are likely infeasible in existing deployments due to the narrow conditions necessary (see <a href="#limits" class="xref">Section 2.1</a>), this document also describes mitigations for this attack.</p>
-<p id="rfc.section.1.p.6">The mechanisms defined in this document are intended to strengthen the protocol by preventing the use of unknown key shares in combination with other protocol or implementation vulnerabilities.</p>
+<p id="rfc.section.1.p.6">The mechanisms defined in this document are intended to strengthen the protocol by preventing the use of unknown key shares in combination with other protocol or implementation vulnerabilities.  RFC 8122 <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> is updated by this document to recommend the use of these mechanisms.</p>
 <p id="rfc.section.1.p.7">This document assumes that signaling is integrity protected.  However, as Section 7 of <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> explains, many deployments that use SDP do not guarantee integrity of session signaling and so are vulnerable to other attacks.  <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> offers key continuity mechanisms as a potential means of reducing exposure to attack in the absence of integrity protection.  <a href="#continuity" class="xref">Section 2.2</a> provides some analysis of the effect of key continuity in relation to the described attacks.</p>
 <p id="rfc.section.1.p.8">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
 <h1 id="rfc.section.2">
@@ -500,7 +500,7 @@ ul.toc li {
 </pre>
 <p id="rfc.section.3.2.p.3">A WebRTC identity assertion is provided as a JSON <a href="#JSON" class="xref">[JSON]</a> object that is encoded into a JSON text.  The resulting string is then encoded using UTF-8 <a href="#UTF8" class="xref">[UTF8]</a>.  The content of the <samp>external_id_hash</samp> extension are produced by hashing the resulting octets with SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  This produces the 32 octets of the <samp>binding_hash</samp> parameter, which is the sole contents of the extension.</p>
 <p id="rfc.section.3.2.p.4">The SDP <samp>identity</samp> attribute includes the base64 <a href="#BASE64" class="xref">[BASE64]</a> encoding of the UTF-8 encoding of the same JSON text.  The <samp>external_id_hash</samp> extension is validated by performing base64 decoding on the value of the SDP <samp>identity</samp> attribute, hashing the resulting octets using SHA-256, and comparing the results with the content of the extension.  In pseudocode form, using the <samp>identity-assertion-value</samp> field from the <samp>identity</samp> attribute grammar as defined in <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>:</p>
-<p><samp>external_id_hash = SHA256(b64decode(identity-assertion-value)) </samp></p>
+<p><samp>external_id_hash = SHA-256(b64decode(identity-assertion-value)) </samp></p>
 <p></p>
 
 <dl>
@@ -508,7 +508,7 @@ ul.toc li {
 <dd style="margin-left: 8">The base64 is decoded to avoid capturing variations in padding.  The base64-decoded identity assertion could include leading or trailing whitespace octets.  WebRTC identity assertions are not canonicalized; all octets are hashed.</dd>
 </dl>
 <p id="rfc.section.3.2.p.7">Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into the full form.  The base64 encoding used in the SIP Identity (or &#8216;y&#8217;) header field MUST be decoded then used as input to SHA-256.  This produces the 32 octet <samp>binding_hash</samp> value used for creating or validating the extension.  In pseudocode, using the <samp>signed-identity-digest</samp> field from the <samp>Identity</samp> grammar defined <a href="#SIP-ID" class="xref">[SIP-ID]</a>:</p>
-<p><samp>external_id_hash = SHA256(b64decode(signed-identity-digest)) </samp></p>
+<p><samp>external_id_hash = SHA-256(b64decode(signed-identity-digest)) </samp></p>
 <p></p>
 
 <dl>
@@ -605,7 +605,7 @@ ul.toc li {
 <p></p>
 
 <ul>
-<li>The <samp>external_id_hash</samp> extension defined in <a href="#external_id_hash" class="xref">Section 3.2</a> has been assigned a code point of TBD; it is recommended and is marked as &#8220;Encrypted&#8221; in TLS 1.3.</li>
+<li>The <samp>external_id_hash</samp> extension defined in <a href="#external_id_hash" class="xref">Section 3.2</a> has been assigned a code point of TBD; it is recommended and is marked as &#8220;CH, EE&#8221; in TLS 1.3.</li>
 <li>The <samp>external_session_id</samp> extension defined in <a href="#external_session_id" class="xref">Section 4.3</a> has been assigned a code point of TBD; it is recommended and is marked as &#8220;Encrypted&#8221; in TLS 1.3.</li>
 </ul>
 <h1 id="rfc.references">
@@ -661,7 +661,7 @@ ul.toc li {
 <tr>
 <td class="reference"><b id="SHA">[SHA]</b></td>
 <td class="top">
-<a>Dang, Q.</a>, "<a>Secure Hash Standard</a>", National Institute of Standards and Technology report, DOI 10.6028/nist.fips.180-4, July 2015.</td>
+<a>Eastlake 3rd, D.</a> and <a>T. Hansen</a>, "<a href="https://tools.ietf.org/html/rfc6234">US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)</a>", RFC 6234, DOI 10.17487/RFC6234, May 2011.</td>
 </tr>
 <tr>
 <td class="reference"><b id="SIP-ID">[SIP-ID]</b></td>
@@ -794,3 +794,4 @@ ul.toc li {
 
 </body>
 </html>
+

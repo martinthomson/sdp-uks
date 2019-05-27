@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                            May 08, 2019
-Expires: November 9, 2019
+Intended status: Standards Track                            May 27, 2019
+Expires: November 28, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 9, 2019.
+   This Internet-Draft will expire on November 28, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 1]
+Thomson & Rescorla      Expires November 28, 2019               [Page 1]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 2]
+Thomson & Rescorla      Expires November 28, 2019               [Page 2]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -130,6 +130,8 @@ Internet-Draft                   SDP UKS                        May 2019
    The mechanisms defined in this document are intended to strengthen
    the protocol by preventing the use of unknown key shares in
    combination with other protocol or implementation vulnerabilities.
+   RFC 8122 [FINGERPRINT] is updated by this document to recommend the
+   use of these mechanisms.
 
    This document assumes that signaling is integrity protected.
    However, as Section 7 of [FINGERPRINT] explains, many deployments
@@ -160,15 +162,16 @@ Internet-Draft                   SDP UKS                        May 2019
 
    When the identity of communicating peers is established by higher-
    layer signaling constructs, such as those in SIP identity [SIP-ID] or
-   WebRTC [WEBRTC-SEC], this allows an attacker to bind their own
-   identity to a session with any other entity.
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 3]
+Thomson & Rescorla      Expires November 28, 2019               [Page 3]
 
 Internet-Draft                   SDP UKS                        May 2019
 
+
+   WebRTC [WEBRTC-SEC], this allows an attacker to bind their own
+   identity to a session with any other entity.
 
    The attacker obtains an identity assertion for an identity it
    controls, but binds that to the fingerprint of one peer.  The
@@ -218,10 +221,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-
-
-
-Thomson & Rescorla      Expires November 9, 2019                [Page 4]
+Thomson & Rescorla      Expires November 28, 2019               [Page 4]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 5]
+Thomson & Rescorla      Expires November 28, 2019               [Page 5]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 6]
+Thomson & Rescorla      Expires November 28, 2019               [Page 6]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 7]
+Thomson & Rescorla      Expires November 28, 2019               [Page 7]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -422,7 +422,7 @@ Internet-Draft                   SDP UKS                        May 2019
    pseudocode form, using the "identity-assertion-value" field from the
    "identity" attribute grammar as defined in [WEBRTC-SEC]:
 
-   "external_id_hash = SHA256(b64decode(identity-assertion-value)) "
+   "external_id_hash = SHA-256(b64decode(identity-assertion-value)) "
 
    Note:  The base64 is decoded to avoid capturing variations in
       padding.  The base64-decoded identity assertion could include
@@ -437,7 +437,7 @@ Internet-Draft                   SDP UKS                        May 2019
    "signed-identity-digest" field from the "Identity" grammar defined
    [SIP-ID]:
 
-   "external_id_hash = SHA256(b64decode(signed-identity-digest)) "
+   "external_id_hash = SHA-256(b64decode(signed-identity-digest)) "
 
    Note:  Should SHA-256 prove to be inadequate at some point in the
       future (see [AGILITY]), a new TLS extension can be defined that
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 8]
+Thomson & Rescorla      Expires November 28, 2019               [Page 8]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019                [Page 9]
+Thomson & Rescorla      Expires November 28, 2019               [Page 9]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 10]
+Thomson & Rescorla      Expires November 28, 2019              [Page 10]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -613,7 +613,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 11]
+Thomson & Rescorla      Expires November 28, 2019              [Page 11]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 12]
+Thomson & Rescorla      Expires November 28, 2019              [Page 12]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 13]
+Thomson & Rescorla      Expires November 28, 2019              [Page 13]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -776,12 +776,12 @@ Internet-Draft                   SDP UKS                        May 2019
 
    o  The "external_id_hash" extension defined in Section 3.2 has been
       assigned a code point of TBD; it is recommended and is marked as
-      "Encrypted" in TLS 1.3.
+      "CH, EE" in TLS 1.3.
 
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 14]
+Thomson & Rescorla      Expires November 28, 2019              [Page 14]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -837,7 +837,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 15]
+Thomson & Rescorla      Expires November 28, 2019              [Page 15]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -850,9 +850,10 @@ Internet-Draft                   SDP UKS                        May 2019
               Description Protocol", RFC 4566, DOI 10.17487/RFC4566,
               July 2006, <https://www.rfc-editor.org/info/rfc4566>.
 
-   [SHA]      Dang, Q., "Secure Hash Standard", National Institute of
-              Standards and Technology report,
-              DOI 10.6028/nist.fips.180-4, July 2015.
+   [SHA]      Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
+              (SHA and SHA-based HMAC and HKDF)", RFC 6234,
+              DOI 10.17487/RFC6234, May 2011,
+              <https://www.rfc-editor.org/info/rfc6234>.
 
    [SIP-ID]   Peterson, J., Jennings, C., Rescorla, E., and C. Wendt,
               "Authenticated Identity Management in the Session
@@ -892,8 +893,7 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-
-Thomson & Rescorla      Expires November 9, 2019               [Page 16]
+Thomson & Rescorla      Expires November 28, 2019              [Page 16]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -949,7 +949,7 @@ Appendix A.  Acknowledgements
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 17]
+Thomson & Rescorla      Expires November 28, 2019              [Page 17]
 
 Internet-Draft                   SDP UKS                        May 2019
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires November 9, 2019               [Page 18]
+Thomson & Rescorla      Expires November 28, 2019              [Page 18]
