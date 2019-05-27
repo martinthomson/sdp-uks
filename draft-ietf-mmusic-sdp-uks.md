@@ -99,7 +99,8 @@ describes mitigations for this attack.
 
 The mechanisms defined in this document are intended to strengthen the protocol
 by preventing the use of unknown key shares in combination with other protocol
-or implementation vulnerabilities.
+or implementation vulnerabilities.  RFC 8122 {{!FINGERPRINT}} is updated by this
+document to recommend the use of these mechanisms.
 
 This document assumes that signaling is integrity protected.  However, as
 Section 7 of {{!FINGERPRINT}} explains, many deployments that use SDP do not
@@ -330,8 +331,8 @@ A WebRTC identity assertion is provided as a JSON {{?JSON=RFC8259}} object that
 is encoded into a JSON text.  The resulting string is then encoded using UTF-8
 {{!UTF8=RFC3629}}.  The content of the `external_id_hash` extension are produced
 by hashing the resulting octets with SHA-256
-{{!SHA=DOI.10.6028/NIST.FIPS.180-4}}.  This produces the 32 octets of the
-`binding_hash` parameter, which is the sole contents of the extension.
+{{!SHA=RFC6234}}.  This produces the 32 octets of the `binding_hash` parameter,
+which is the sole contents of the extension.
 
 The SDP `identity` attribute includes the base64 {{?BASE64=RFC4648}} encoding of
 the UTF-8 encoding of the same JSON text.  The `external_id_hash` extension is
@@ -342,7 +343,7 @@ with the content of the extension.  In pseudocode form, using the
 defined in {{!WEBRTC-SEC}}:
 
 ```
-external_id_hash = SHA256(b64decode(identity-assertion-value))
+external_id_hash = SHA-256(b64decode(identity-assertion-value))
 ```
 
 Note:
@@ -360,7 +361,7 @@ pseudocode, using the `signed-identity-digest` field from the `Identity` grammar
 defined {{!SIP-ID}}:
 
 ```
-external_id_hash = SHA256(b64decode(signed-identity-digest))
+external_id_hash = SHA-256(b64decode(signed-identity-digest))
 ```
 
 Note:
@@ -638,7 +639,7 @@ This document registers two extensions in the TLS "ExtensionType Values"
 registry established in {{!TLS13}}:
 
 * The `external_id_hash` extension defined in {{external_id_hash}} has been
-  assigned a code point of TBD; it is recommended and is marked as "Encrypted"
+  assigned a code point of TBD; it is recommended and is marked as "CH, EE"
   in TLS 1.3.
 
 * The `external_session_id` extension defined in {{external_session_id}} has
