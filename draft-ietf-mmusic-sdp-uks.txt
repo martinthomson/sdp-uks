@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                            May 27, 2019
-Expires: November 28, 2019
+Intended status: Standards Track                           June 05, 2019
+Expires: December 7, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 28, 2019.
+   This Internet-Draft will expire on December 7, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 1]
+Thomson & Rescorla      Expires December 7, 2019                [Page 1]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -109,14 +109,14 @@ Table of Contents
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 2]
+Thomson & Rescorla      Expires December 7, 2019                [Page 2]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    where the attacker binds their identity to the fingerprint of another
    entity.  A successful attack leads to the creation of sessions where
-   peers are confused about the identify of the participants.
+   peers are confused about the identity of the participants.
 
    This document describes a TLS extension that can be used in
    combination with these identity bindings to prevent this attack.
@@ -165,9 +165,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 3]
+Thomson & Rescorla      Expires December 7, 2019                [Page 3]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    WebRTC [WEBRTC-SEC], this allows an attacker to bind their own
@@ -221,9 +221,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 4]
+Thomson & Rescorla      Expires December 7, 2019                [Page 4]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
 2.2.  Interactions with Key Continuity
@@ -277,9 +277,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 5]
+Thomson & Rescorla      Expires December 7, 2019                [Page 5]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
 3.  Attack on Identity Bindings
@@ -333,9 +333,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 6]
+Thomson & Rescorla      Expires December 7, 2019                [Page 6]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    (Section 3.2) so that two calls between the same parties can't be
@@ -389,9 +389,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 7]
+Thomson & Rescorla      Expires December 7, 2019                [Page 7]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
 3.2.  The external_id_hash TLS Extension
@@ -445,9 +445,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 8]
+Thomson & Rescorla      Expires December 7, 2019                [Page 8]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    Identity bindings in either form might be provided by only one peer.
@@ -501,9 +501,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019               [Page 9]
+Thomson & Rescorla      Expires December 7, 2019                [Page 9]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    As with the attack on identity bindings, this can be used to cause
@@ -557,9 +557,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 10]
+Thomson & Rescorla      Expires December 7, 2019               [Page 10]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    Once signaling is complete on the first session, a DTLS connection is
@@ -613,9 +613,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 11]
+Thomson & Rescorla      Expires December 7, 2019               [Page 11]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
 4.2.  Unique Session Identity Solution
@@ -669,14 +669,14 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 12]
+Thomson & Rescorla      Expires December 7, 2019               [Page 12]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    Where RTP and RTCP [RTP] are not multiplexed, it is possible that the
    two separate DTLS connections carrying RTP and RTCP can be switched.
-   This is considered benign since these protocols are usually
+   This is considered benign since these protocols are designed to be
    distinguishable.  RTP/RTCP multiplexing is advised to address this
    problem.
 
@@ -725,9 +725,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 13]
+Thomson & Rescorla      Expires December 7, 2019               [Page 13]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    In the absence of any higher-level concept of peer identity, the use
@@ -781,9 +781,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 14]
+Thomson & Rescorla      Expires December 7, 2019               [Page 14]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    o  The "external_session_id" extension defined in Section 4.3 has
@@ -837,9 +837,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 15]
+Thomson & Rescorla      Expires December 7, 2019               [Page 15]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -893,9 +893,9 @@ Internet-Draft                   SDP UKS                        May 2019
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 16]
+Thomson & Rescorla      Expires December 7, 2019               [Page 16]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    [ICE]      Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
@@ -949,9 +949,9 @@ Appendix A.  Acknowledgements
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 17]
+Thomson & Rescorla      Expires December 7, 2019               [Page 17]
 
-Internet-Draft                   SDP UKS                        May 2019
+Internet-Draft                   SDP UKS                       June 2019
 
 
    Thyla van der Merwe assisted with a formal model of the solution.
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires November 28, 2019              [Page 18]
+Thomson & Rescorla      Expires December 7, 2019               [Page 18]
