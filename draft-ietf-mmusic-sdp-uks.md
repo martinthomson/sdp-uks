@@ -87,7 +87,7 @@ However, this binding is not integrity-protected and therefore vulnerable to an
 identity misbinding attack - or unknown key-share (UKS) attack - where the
 attacker binds their identity to the fingerprint of another entity.  A
 successful attack leads to the creation of sessions where peers are confused
-about the identify of the participants.
+about the identity of the participants.
 
 This document describes a TLS extension that can be used in combination with
 these identity bindings to prevent this attack.
@@ -555,8 +555,8 @@ attribute is encoded using ASCII {{!ASCII=RFC0020}}.
 
 Where RTP and RTCP {{?RTP=RFC3550}} are not multiplexed, it is possible that the
 two separate DTLS connections carrying RTP and RTCP can be switched.  This is
-considered benign since these protocols are usually distinguishable.  RTP/RTCP
-multiplexing is advised to address this problem.
+considered benign since these protocols are designed to be distinguishable.
+RTP/RTCP multiplexing is advised to address this problem.
 
 The `external_session_id` extension is included in a ClientHello and either
 ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions
