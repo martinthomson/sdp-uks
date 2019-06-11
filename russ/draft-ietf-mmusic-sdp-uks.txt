@@ -22,7 +22,7 @@ Abstract
    Communications (WebRTC) and SIP identity.  These attacks are
    difficult to mount, but they cause a victim to be mislead about the
    identity of a communicating peer.  Mitigation techniques are defined
-   for each that implementations of RFC 8122 are encouraged to deploy.
+   that implementations of RFC 8122 are encouraged to deploy.
 
 Status of This Memo
 
