@@ -139,6 +139,12 @@ that has its fingerprint copied by the attack correctly believes that it is
 communicating with the other victim; however, the other victim incorrectly
 believes that it is communicating with the attacker.
 
+An unknown key-share attack does not result in the attacker having access to any
+confidential information exchanged between victims.  However, the failure in
+mutual authentication can enable other attacks.  A victim might send information
+to the wrong entity as a result.  Where information is interpreted in context,
+misrepresenting that context could lead to the information being misinterpreted.
+
 A similar attack can be mounted without any communications established based on
 the SDP `fingerprint` attribute {{!FINGERPRINT}}.
 
@@ -309,7 +315,9 @@ sessions to facilitate this, though this is not necessary if Mallory is on the
 network path between Norma and Patsy.
 
 As a result, Patsy correctly believes that she is communicating with Norma.
-However, Norma incorrectly believes she is talking to Mallory.
+However, Norma incorrectly believes she is talking to Mallory.  As stated in
+{{uks}}, Mallory cannot access media, but Norma might send information to Patsy
+that is Norma might not intend or that Patsy might misinterpret.
 
 
 ## The external_id_hash TLS Extension {#external_id_hash}
@@ -477,7 +485,9 @@ The second signaling exchange - 'signaling2', between Norma and Patsy - is
 permitted to continue to the point where Patsy believes that it has succeeded.
 This ensures that Patsy believes that she is communicating with Norma.  In the
 end, Norma believes that she is communicating with Mallory, when she is really
-communicating with Patsy.
+communicating with Patsy.  Just like the example in {{id-example}}, Mallory
+cannot access media, but Norma might send information to Patsy that is Norma
+might not intend or that Patsy might misinterpret.
 
 Though Patsy needs to believe that the second signaling session has been
 successfully established, Mallory has no real interest in seeing that session
