@@ -61,7 +61,7 @@ Transport Layer Security for the Secure Real-Time Transport Protocol
 identity bindings used in Web Real-Time Communications (WebRTC) and SIP
 identity.  These attacks are difficult to mount, but they cause a victim to be
 mislead about the identity of a communicating peer.  Mitigation techniques are
-defined for each that implementations of RFC 8122 are encouraged to deploy.
+defined that implementations of RFC 8122 are encouraged to deploy.
 
 
 --- middle
