@@ -247,11 +247,12 @@ believe they are talking to the attacker when they are talking to each other.
 In this case, the attacker performs the identity misbinding once for each
 victim.
 
-The problem might appear to be caused by the fact that the authority that certifies
-the identity binding is not required to verify that the entity requesting the
-binding controls the keys associated with the fingerprints.  Both SIP and WebRTC
-identity providers are not required to perform this validation.  This is not an
-issue because verifying control of the associated keys is not a necessary
+The problem might appear to be caused by the fact that the authority that
+certifies the identity binding is not required to verify that the entity
+requesting the binding controls the keys associated with the fingerprints.
+Neither SIP nor WebRTC identity providers are not required to perform this
+validation.  However, validation of keys by the identity provided is not
+relevant because verifying control of the associated keys is not a necessary
 condition for a secure protocol, nor would it be sufficient to prevent attack
 {{SIGMA}}.
 
