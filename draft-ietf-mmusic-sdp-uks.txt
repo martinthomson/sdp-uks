@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                           June 05, 2019
-Expires: December 7, 2019
+Intended status: Standards Track                           June 20, 2019
+Expires: December 22, 2019
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 7, 2019.
+   This Internet-Draft will expire on December 22, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 1]
+Thomson & Rescorla      Expires December 22, 2019               [Page 1]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 2]
+Thomson & Rescorla      Expires December 22, 2019               [Page 2]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 3]
+Thomson & Rescorla      Expires December 22, 2019               [Page 3]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 4]
+Thomson & Rescorla      Expires December 22, 2019               [Page 4]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 5]
+Thomson & Rescorla      Expires December 22, 2019               [Page 5]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 6]
+Thomson & Rescorla      Expires December 22, 2019               [Page 6]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 7]
+Thomson & Rescorla      Expires December 22, 2019               [Page 7]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 8]
+Thomson & Rescorla      Expires December 22, 2019               [Page 8]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019                [Page 9]
+Thomson & Rescorla      Expires December 22, 2019               [Page 9]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 10]
+Thomson & Rescorla      Expires December 22, 2019              [Page 10]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -613,7 +613,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 11]
+Thomson & Rescorla      Expires December 22, 2019              [Page 11]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 12]
+Thomson & Rescorla      Expires December 22, 2019              [Page 12]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 13]
+Thomson & Rescorla      Expires December 22, 2019              [Page 13]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -781,14 +781,14 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 14]
+Thomson & Rescorla      Expires December 22, 2019              [Page 14]
 
 Internet-Draft                   SDP UKS                       June 2019
 
 
    o  The "external_session_id" extension defined in Section 4.3 has
       been assigned a code point of TBD; it is recommended and is marked
-      as "Encrypted" in TLS 1.3.
+      as "CH, EE" in TLS 1.3.
 
 8.  References
 
@@ -837,7 +837,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 15]
+Thomson & Rescorla      Expires December 22, 2019              [Page 15]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -893,7 +893,7 @@ Internet-Draft                   SDP UKS                       June 2019
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 16]
+Thomson & Rescorla      Expires December 22, 2019              [Page 16]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -949,7 +949,7 @@ Appendix A.  Acknowledgements
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 17]
+Thomson & Rescorla      Expires December 22, 2019              [Page 17]
 
 Internet-Draft                   SDP UKS                       June 2019
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires December 7, 2019               [Page 18]
+Thomson & Rescorla      Expires December 22, 2019              [Page 18]
