@@ -644,7 +644,7 @@ registry established in {{!TLS13}}:
 
 * The `external_session_id` extension defined in {{external_session_id}} has
   been assigned a code point of TBD; it is recommended and is marked as
-  "Encrypted" in TLS 1.3.
+  "CH, EE" in TLS 1.3.
 
 
 --- back
