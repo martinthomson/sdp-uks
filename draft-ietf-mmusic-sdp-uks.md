@@ -60,8 +60,8 @@ Transport Layer Security for the Secure Real-Time Transport Protocol
 (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the
 identity bindings used in Web Real-Time Communications (WebRTC) and SIP
 identity.  These attacks are difficult to mount, but they cause a victim to be
-mislead about the identity of a communicating peer.  Simple mitigation
-techniques are defined for each.
+mislead about the identity of a communicating peer.  Mitigation techniques are
+defined that implementations of RFC 8122 are encouraged to deploy.
 
 
 --- middle
@@ -138,6 +138,12 @@ TLS connection to be established where two endpoints communicate.  The victim
 that has its fingerprint copied by the attack correctly believes that it is
 communicating with the other victim; however, the other victim incorrectly
 believes that it is communicating with the attacker.
+
+An unknown key-share attack does not result in the attacker having access to any
+confidential information exchanged between victims.  However, the failure in
+mutual authentication can enable other attacks.  A victim might send information
+to the wrong entity as a result.  Where information is interpreted in context,
+misrepresenting that context could lead to the information being misinterpreted.
 
 A similar attack can be mounted without any communications established based on
 the SDP `fingerprint` attribute {{!FINGERPRINT}}.
@@ -241,11 +247,12 @@ believe they are talking to the attacker when they are talking to each other.
 In this case, the attacker performs the identity misbinding once for each
 victim.
 
-The problem might appear to be caused by the fact that the authority that certifies
-the identity binding is not required to verify that the entity requesting the
-binding controls the keys associated with the fingerprints.  Both SIP and WebRTC
-identity providers are not required to perform this validation.  This is not an
-issue because verifying control of the associated keys is not a necessary
+The problem might appear to be caused by the fact that the authority that
+certifies the identity binding is not required to verify that the entity
+requesting the binding controls the keys associated with the fingerprints.
+Neither SIP nor WebRTC identity providers are not required to perform this
+validation.  However, validation of keys by the identity provided is not
+relevant because verifying control of the associated keys is not a necessary
 condition for a secure protocol, nor would it be sufficient to prevent attack
 {{SIGMA}}.
 
@@ -309,7 +316,9 @@ sessions to facilitate this, though this is not necessary if Mallory is on the
 network path between Norma and Patsy.
 
 As a result, Patsy correctly believes that she is communicating with Norma.
-However, Norma incorrectly believes she is talking to Mallory.
+However, Norma incorrectly believes she is talking to Mallory.  As stated in
+{{uks}}, Mallory cannot access media, but Norma might send information to Patsy
+that is Norma might not intend or that Patsy might misinterpret.
 
 
 ## The external_id_hash TLS Extension {#external_id_hash}
@@ -477,7 +486,9 @@ The second signaling exchange - 'signaling2', between Norma and Patsy - is
 permitted to continue to the point where Patsy believes that it has succeeded.
 This ensures that Patsy believes that she is communicating with Norma.  In the
 end, Norma believes that she is communicating with Mallory, when she is really
-communicating with Patsy.
+communicating with Patsy.  Just like the example in {{id-example}}, Mallory
+cannot access media, but Norma might send information to Patsy that is Norma
+might not intend or that Patsy might misinterpret.
 
 Though Patsy needs to believe that the second signaling session has been
 successfully established, Mallory has no real interest in seeing that session
