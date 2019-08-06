@@ -163,7 +163,7 @@ signaling integrity limits the capabilities of an attacker in several ways.  In
 particular:
 
 1. An attacker can only modify the parts of the session signaling that they are
-   responsible for producing, primarily their own offers and answers.
+   responsible for producing, namely their own offers and answers.
 
 2. No entity will successfully establish a session with a peer unless they are
    willing to participate in a session with that peer.
@@ -171,13 +171,15 @@ particular:
 The combination of these two constraints make the spectrum of possible attacks
 quite limited.  An attacker is only able to switch its own certificate
 fingerprint for a valid certificate that is acceptable to its peer.  Attacks
-therefore rely on joining two separate sessions into a single session.
+therefore rely on joining two separate sessions into a single session. {{fp}}
+describes an attack on SDP signaling under these constraints.
 
 Systems that rely on strong identity bindings, such as those defined in
 {{WEBRTC}} or {{!SIP-ID}}, have a different threat model, which admits the
 possibility of attack by an entity with access to the signaling channel.
 Attacks under these conditions are more feasible as an attacker is assumed to be
-able to both observe and modify signaling messages.
+able to both observe and modify signaling messages.  {{id}} describes an attack
+that assumes this threat model.
 
 
 ## Interactions with Key Continuity {#continuity}
