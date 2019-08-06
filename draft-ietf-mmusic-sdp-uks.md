@@ -449,8 +449,8 @@ other.
 To mount this attack, two sessions need to be created with the same endpoint at
 almost precisely the same time.  One of those sessions is initiated with the
 attacker, the second session is created toward another honest endpoint.  The
-attacker convinces the endpoint that their session has completed, and that the
-session with the other endpoint has succeeded.
+attacker convinces the endpoint that their session with the attacker has ended
+or failed, and that the session with the other endpoint has succeeded.
 
 In addition to the constraints described in {{limits}}, the attacker in this
 example also needs the ability to view and drop packets between victims.
