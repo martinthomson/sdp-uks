@@ -336,12 +336,12 @@ Section 3 of {{!TLS13}}:
    } ExternalIdentityHash;
 ~~~
 
-A WebRTC identity assertion is provided as a JSON {{?JSON=RFC8259}} object that
-is encoded into a JSON text.  The resulting string is then encoded using UTF-8
-{{!UTF8=RFC3629}}.  The content of the `external_id_hash` extension are produced
-by hashing the resulting octets with SHA-256 {{!SHA=RFC6234}}.  This produces
-the 32 octets of the `binding_hash` parameter, which is the sole contents of the
-extension.
+A WebRTC identity assertion is provided as a JSON {{!JSON=RFC8259}} object that
+is encoded into a JSON text.  The JSON test is encoded using UTF-8
+{{!UTF8=RFC3629}} as described by Section 8.1 of {{!JSON}}.  The content of the
+`external_id_hash` extension is produced by hashing the resulting octets with
+SHA-256 {{!SHA=RFC6234}}.  This produces the 32 octets of the `binding_hash`
+parameter, which is the sole contents of the extension.
 
 The SDP `identity` attribute includes the base64 {{?BASE64=RFC4648}} encoding of
 the UTF-8 encoding of the same JSON text.  The `external_id_hash` extension is
