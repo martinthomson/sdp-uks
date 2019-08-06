@@ -324,7 +324,8 @@ that is Norma might not intend or that Patsy might misinterpret.
 ## The external_id_hash TLS Extension {#external_id_hash}
 
 The `external_id_hash` TLS extension carries a hash of the identity assertion
-that communicating peers have exchanged.
+that the endpoint sending the extension has asserted to its peer.  Both peers
+include a hash of their own identity assertion.
 
 The `extension_data` for the `external_id_hash` extension contains a
 `ExternalIdentityHash` struct, described below using the syntax defined in
@@ -336,14 +337,14 @@ Section 3 of {{!TLS13}}:
    } ExternalIdentityHash;
 ~~~
 
-A WebRTC identity assertion is provided as a JSON {{!JSON=RFC8259}} object that
-is encoded into a JSON text.  The JSON test is encoded using UTF-8
-{{!UTF8=RFC3629}} as described by Section 8.1 of {{!JSON}}.  The content of the
-`external_id_hash` extension is produced by hashing the resulting octets with
-SHA-256 {{!SHA=RFC6234}}.  This produces the 32 octets of the `binding_hash`
-parameter, which is the sole contents of the extension.
+A WebRTC identity assertion (Section 7 of {{!WEBRTC-SEC}}) is provided as a JSON
+{{!JSON=RFC8259}} object that is encoded into a JSON text.  The JSON test is
+encoded using UTF-8 {{!UTF8=RFC3629}} as described by Section 8.1 of {{!JSON}}.
+The content of the `external_id_hash` extension is produced by hashing the
+resulting octets with SHA-256 {{!SHA=RFC6234}}.  This produces the 32 octets of
+the `binding_hash` parameter, which is the sole contents of the extension.
 
-The SDP `identity` attribute includes the base64 {{?BASE64=RFC4648}} encoding of
+The SDP `identity` attribute includes the base64 {{!BASE64=RFC4648}} encoding of
 the UTF-8 encoding of the same JSON text.  The `external_id_hash` extension is
 validated by performing base64 decoding on the value of the SDP `identity`
 attribute, hashing the resulting octets using SHA-256, and comparing the results
@@ -357,17 +358,17 @@ external_id_hash = SHA-256(b64decode(identity-assertion-value))
 
 Note:
 
-: The base64 is decoded to avoid capturing variations in padding.  The
-  base64-decoded identity assertion could include leading or trailing whitespace
-  octets.  WebRTC identity assertions are not canonicalized; all octets are
-  hashed.
+: The base64 of the SDP `identity` attribute is decoded to avoid capturing
+  variations in padding.  The base64-decoded identity assertion could include
+  leading or trailing whitespace octets.  WebRTC identity assertions are not
+  canonicalized; all octets are hashed.
 
-Where a PASSPoRT is used, the compact form of the PASSPoRT MUST be expanded into
-the full form.  The base64 encoding used in the SIP Identity (or 'y') header
-field MUST be decoded then used as input to SHA-256.  This produces the 32 octet
-`binding_hash` value used for creating or validating the extension.  In
-pseudocode, using the `signed-identity-digest` field from the `Identity` grammar
-defined {{!SIP-ID}}:
+Where a PASSPoRT {{!PASSPoRT}} is used, the compact form of the PASSPoRT MUST be
+expanded into the full form.  The base64 encoding used in the SIP Identity (or
+'y') header field MUST be decoded then used as input to SHA-256.  This produces
+the 32 octet `binding_hash` value used for creating or validating the extension.
+In pseudocode, using the `signed-identity-digest` field from the `Identity`
+grammar defined {{!SIP-ID}}:
 
 ```
 external_id_hash = SHA-256(b64decode(signed-identity-digest))
@@ -375,9 +376,9 @@ external_id_hash = SHA-256(b64decode(signed-identity-digest))
 
 Note:
 
-: Should SHA-256 prove to be inadequate at some point in the future (see
-  {{?AGILITY=RFC7696}}), a new TLS extension can be defined that uses a
-  different hash function.
+: For both types of identity assertion, if SHA-256 should prove to be inadequate
+  at some point in the future (see {{?AGILITY=RFC7696}}), a new TLS extension
+  can be defined that uses a different hash function.
 
 Identity bindings in either form might be provided by only one peer.  An
 endpoint that does not produce an identity binding MUST generate an empty
