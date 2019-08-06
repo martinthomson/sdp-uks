@@ -250,7 +250,7 @@ victim.
 The problem might appear to be caused by the fact that the authority that
 certifies the identity binding is not required to verify that the entity
 requesting the binding controls the keys associated with the fingerprints.
-Neither SIP nor WebRTC identity providers are not required to perform this
+SIP and WebRTC identity providers are not required to perform this
 validation.  However, validation of keys by the identity provided is not
 relevant because verifying control of the associated keys is not a necessary
 condition for a secure protocol, nor would it be sufficient to prevent attack
