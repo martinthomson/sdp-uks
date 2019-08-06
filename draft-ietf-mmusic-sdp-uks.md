@@ -428,7 +428,7 @@ established prior to establishing the call.  Endpoints use certificate
 fingerprints as a proxy for authentication, but as long as fingerprints are used
 in multiple calls, they are vulnerable to attack.
 
-Even if the integrity session signaling can be relied upon, an attacker might
+Even if the integrity of session signaling can be relied upon, an attacker might
 still be able to create a session where there is confusion about the
 communicating endpoints by substituting the fingerprint of a communicating
 endpoint.
