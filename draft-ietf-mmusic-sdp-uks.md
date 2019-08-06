@@ -236,10 +236,10 @@ ensuring the integrity of these attributes.
 # Attack on Identity Bindings {#id}
 
 The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
-SIP PASSPoRT using in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are
-bound to the certificate fingerprint of an endpoint.  An attacker causes an
-identity binding to be created that binds an identity they control to the
-fingerprint of a first victim.
+SIP PASSPoRT used in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are bound
+to the certificate fingerprint of an endpoint.  An attacker causes an identity
+binding to be created that binds an identity they control to the fingerprint of
+a first victim.
 
 An attacker can thereby cause a second victim to believe that they are
 communicating with an attacker-controlled identity, when they are really talking
