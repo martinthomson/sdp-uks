@@ -366,14 +366,13 @@ handshake with a illegal_parameter alert.  The absence of an identity binding
 does not relax this requirement; if a peer provided no identity binding, a
 zero-length extension MUST be present to be considered valid.
 
+Implementations written prior to the definition of the extensions in this
+document will not support this extension for some time.  A peer that receives an
+identity binding but does not receive an `external_id_hash` extension MAY accept
+a TLS connection rather than fail a connection where the extension is absent.
+
 An `external_id_hash` extension that is any length other than 0 or 32 is invalid
 and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
-
-A peer that receives an identity binding, but does not receive an
-`external_id_hash` extension MAY choose to generate a fatal illegal_parameter
-alert, though it is expected that implementations written prior to the
-definition of the extensions in this document will not support both for some
-time.
 
 In TLS 1.3, the `external_id_hash` extension MUST be sent in the
 EncryptedExtensions message.
