@@ -233,7 +233,7 @@ practices in RFC 3725 is expected to forward SDP without modification, thus
 ensuring the integrity of these attributes.
 
 
-# Attack on Identity Bindings {#id}
+# Unknown Key-Share with Identity Bindings {#id}
 
 The identity assertions used for WebRTC (Section 7 of {{!WEBRTC-SEC}}) and the
 SIP PASSPoRT used in SIP identity ({{!SIP-ID}}, {{!PASSPoRT=RFC8225}}) are bound
