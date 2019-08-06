@@ -134,9 +134,9 @@ with any other entity.
 
 The attacker obtains an identity assertion for an identity it controls, but
 binds that to the fingerprint of one peer.  The attacker is then able to cause a
-TLS connection to be established where two endpoints communicate.  The victim
-that has its fingerprint copied by the attack correctly believes that it is
-communicating with the other victim; however, the other victim incorrectly
+TLS connection to be established where two victim endpoints communicate.  The
+victim that has its fingerprint copied by the attack correctly believes that it
+is communicating with the other victim; however, the other victim incorrectly
 believes that it is communicating with the attacker.
 
 An unknown key-share attack does not result in the attacker having access to any
