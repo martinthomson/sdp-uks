@@ -362,8 +362,9 @@ extension.
 
 A peer that receives an `external_id_hash` extension that does not match the
 value of the identity binding from its peer MUST immediately fail the TLS
-handshake with a illegal_parameter alert.  This includes cases where the binding
-is absent, in which case the extension MUST be present and empty.
+handshake with a illegal_parameter alert.  The absence of an identity binding
+does not relax this requirement; if a peer provided no identity binding, a
+zero-length extension MUST be present to be considered valid.
 
 An `external_id_hash` extension that is any length other than 0 or 32 is invalid
 and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
@@ -405,6 +406,7 @@ Note:
   variations in padding.  The base64-decoded identity assertion could include
   leading or trailing whitespace octets.  WebRTC identity assertions are not
   canonicalized; all octets are hashed.
+
 
 ### Calculating external_id_hash for PASSPoRT
 
