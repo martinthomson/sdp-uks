@@ -275,10 +275,11 @@ received in signaling.  If the identity binding is successfully validated, the
 identity of a peer is verified and bound to the session.
 
 This form of unknown key-share attack is possible without compromising signaling
-integrity, unless the defenses described in {{fp}} are used.  Endpoints MUST use
-the `external_session_id` extension (see {{external_session_id}}) in addition to
-the `external_id_hash` ({{external_id_hash}}) so that two calls between the same
-parties can't be altered by an attacker.
+integrity, unless the defenses described in {{fp}} are used.  In order to
+prevent both forms of attack, endpoints MUST use the `external_session_id`
+extension (see {{external_session_id}}) in addition to the `external_id_hash`
+({{external_id_hash}}) so that two calls between the same parties can't be
+altered by an attacker.
 
 
 ## Example {#id-example}
