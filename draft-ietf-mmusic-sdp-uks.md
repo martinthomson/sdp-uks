@@ -371,6 +371,10 @@ document will not support this extension for some time.  A peer that receives an
 identity binding but does not receive an `external_id_hash` extension MAY accept
 a TLS connection rather than fail a connection where the extension is absent.
 
+Any validation performed of the `external_id_hash` extension is done in addition
+to the validation required by {{!FINGERPRINT}} and any identity assertion
+definition.
+
 An `external_id_hash` extension that is any length other than 0 or 32 is invalid
 and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
 
@@ -602,7 +606,10 @@ the TLS extension value and comparing it to the SDP attribute value, or compare
 the encoded TLS extension octets with the encoded SDP attribute value.  An
 endpoint that receives a `external_session_id` extension that is not identical
 to the value that it expects MUST abort the connection with a fatal
-`handshake_failure` alert.
+`illegal_parameter` alert.
+
+Any validation performed of the `external_session_id` extension is done in
+addition to the validation required by {{!FINGERPRINT}}.
 
 An endpoint that is communicating with a peer that does not support this
 extension will receive a ClientHello, ServerHello or EncryptedExtensions that
