@@ -342,6 +342,44 @@ Section 3 of {{!TLS13}}:
    } ExternalIdentityHash;
 ~~~
 
+Where an identity assertion has been asserted by a peer, this extension includes
+a SHA-256 hash of the assertion.  An empty value is used to indicates support for
+the extension.
+
+Note:
+
+: For both types of identity assertion, if SHA-256 should prove to be inadequate
+  at some point in the future (see {{?AGILITY=RFC7696}}), a new TLS extension
+  can be defined that uses a different hash function.
+
+Identity bindings might be provided by only one peer.  An endpoint that does not
+produce an identity binding MUST generate an empty `external_id_hash` extension
+in its ClientHello.  An empty extension has a zero-length binding_hash field.
+This allows its peer to include a hash of its identity binding.  An endpoint
+without an identity binding MUST include an empty `external_id_hash` extension
+in its ServerHello or EncryptedExtensions message, to indicate support for the
+extension.
+
+A peer that receives an `external_id_hash` extension that does not match the
+value of the identity binding from its peer MUST immediately fail the TLS
+handshake with a illegal_parameter alert.  This includes cases where the binding
+is absent, in which case the extension MUST be present and empty.
+
+An `external_id_hash` extension that is any length other than 0 or 32 is invalid
+and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
+
+A peer that receives an identity binding, but does not receive an
+`external_id_hash` extension MAY choose to generate a fatal illegal_parameter
+alert, though it is expected that implementations written prior to the
+definition of the extensions in this document will not support both for some
+time.
+
+In TLS 1.3, the `external_id_hash` extension MUST be sent in the
+EncryptedExtensions message.
+
+
+### Calculating external_id_hash for WebRTC Identity
+
 A WebRTC identity assertion (Section 7 of {{!WEBRTC-SEC}}) is provided as a JSON
 {{!JSON=RFC8259}} object that is encoded into a JSON text.  The JSON test is
 encoded using UTF-8 {{!UTF8=RFC3629}} as described by Section 8.1 of {{!JSON}}.
@@ -368,47 +406,18 @@ Note:
   leading or trailing whitespace octets.  WebRTC identity assertions are not
   canonicalized; all octets are hashed.
 
-Where a PASSPoRT {{!PASSPoRT}} is used, the compact form of the PASSPoRT MUST be
-expanded into the full form.  The base64 encoding used in the SIP Identity (or
-'y') header field MUST be decoded then used as input to SHA-256.  This produces
-the 32 octet `binding_hash` value used for creating or validating the extension.
-In pseudocode, using the `signed-identity-digest` field from the `Identity`
-grammar defined {{!SIP-ID}}:
+### Calculating external_id_hash for PASSPoRT
+
+Where the compact form of PASSPoRT {{!PASSPoRT}} is used, it MUST be expanded
+into the full form.  The base64 encoding used in the SIP Identity (or 'y')
+header field MUST be decoded then used as input to SHA-256.  This produces the
+32 octet `binding_hash` value used for creating or validating the extension.  In
+pseudocode, using the `signed-identity-digest` field from the `Identity` grammar
+defined {{!SIP-ID}}:
 
 ```
 external_id_hash = SHA-256(b64decode(signed-identity-digest))
 ```
-
-Note:
-
-: For both types of identity assertion, if SHA-256 should prove to be inadequate
-  at some point in the future (see {{?AGILITY=RFC7696}}), a new TLS extension
-  can be defined that uses a different hash function.
-
-Identity bindings in either form might be provided by only one peer.  An
-endpoint that does not produce an identity binding MUST generate an empty
-`external_id_hash` extension in its ClientHello.  An empty extension has a
-zero-length binding_hash field.  This allows its peer to include a hash of its
-identity binding.  An endpoint without an identity binding MUST include an empty
-`external_id_hash` extension in its ServerHello or EncryptedExtensions message,
-to indicate support for the extension.
-
-A peer that receives an `external_id_hash` extension that does not match the
-value of the identity binding from its peer MUST immediately fail the TLS
-handshake with a illegal_parameter alert.  This includes cases where the binding
-is absent, in which case the extension MUST be present and empty.
-
-An `external_id_hash` extension that is any length other than 0 or 32 is invalid
-and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
-
-A peer that receives an identity binding, but does not receive an
-`external_id_hash` extension MAY choose to generate a fatal illegal_parameter
-alert, though it is expected that implementations written prior to the
-definition of the extensions in this document will not support both for some
-time.
-
-In TLS 1.3, the `external_id_hash` extension MUST be sent in the
-EncryptedExtensions message.
 
 
 # Unknown Key-Share with Fingerprints {#fp}
