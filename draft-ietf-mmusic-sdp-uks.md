@@ -530,7 +530,7 @@ This attack creates an asymmetry in the beliefs about the identity of peers.
 However, this attack is only possible if the victim (Norma) is willing to
 conduct two sessions nearly simultaneously, if the attacker (Mallory) is on the
 network path between the victims, and if the same certificate - and therefore
-SDP `fingerprint` attribute value - is used in both sessions.
+SDP `fingerprint` attribute value - is used by Norma for both sessions.
 
 Where ICE {{?ICE=RFC8445}} is used, Mallory also needs to ensure that
 connectivity checks between Patsy and Norma succeed, either by forwarding checks
