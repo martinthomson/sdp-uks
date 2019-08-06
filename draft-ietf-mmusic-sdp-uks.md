@@ -243,7 +243,7 @@ a first victim.
 
 An attacker can thereby cause a second victim to believe that they are
 communicating with an attacker-controlled identity, when they are really talking
-to the first victim.  The attacker only needs to create an identity assertion
+to the first victim.  The attacker does this by creating an identity assertion
 that covers a certificate fingerprint of the first victim.
 
 A variation on the same technique can be used to cause both victims to both
