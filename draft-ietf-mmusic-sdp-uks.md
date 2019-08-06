@@ -457,7 +457,7 @@ participate in the attacked session.
 
 In addition to the constraints described in {{limits}}, the attacker in this
 example also needs the ability to view and drop packets between victims.
-That is, the attacker is on-path.
+That is, the attacker is on-path for media.
 
 The attack shown in {{implausible-attack}} depends on a somewhat implausible set
 of conditions.  It is intended to demonstrate what sort of attack is possible
