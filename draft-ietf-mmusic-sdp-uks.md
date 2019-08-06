@@ -517,8 +517,9 @@ active session and does not abandon the session prematurely.  For this reason,
 it might be necessary to permit the signaling from Patsy to reach Norma to allow
 Patsy to receive a call setup completion signal, such as a SIP ACK.  Once the
 second session is established, Mallory might cause DTLS packets sent by Norma to
-Patsy to be dropped.  It is likely that these DTLS packets will be discarded by
-Patsy as Patsy will already have a successful DTLS connection established.
+Patsy to be dropped.  However, if Mallory allows DTLS packets to pass, it is
+likely that Patsy will discard them as Patsy will already have a successful DTLS
+connection established.
 
 For the attacked session to be sustained beyond the point that Norma detects
 errors in the second session, Mallory also needs to block any signaling that
