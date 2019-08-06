@@ -145,8 +145,8 @@ mutual authentication can enable other attacks.  A victim might send information
 to the wrong entity as a result.  Where information is interpreted in context,
 misrepresenting that context could lead to the information being misinterpreted.
 
-A similar attack can be mounted without any communications established based on
-the SDP `fingerprint` attribute {{!FINGERPRINT}}.
+A similar attack can be mounted based solely on the SDP `fingerprint` attribute
+{{!FINGERPRINT}} without compromising the integrity of the signaling channel.
 
 This attack is an aspect of SDP-based protocols that the technique known as
 third-party call control (3PCC) {{?RFC3725}} relies on.  3PCC exploits the
