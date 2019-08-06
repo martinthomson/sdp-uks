@@ -625,7 +625,7 @@ signaling.  Only the mechanism in `external_id_hash` is able to defend against
 an attacker that can compromise session integrity.
 
 
-# Consequences of Session Concatenation
+# Session Concatenation {#concat}
 
 Use of session identifiers does not prevent an attacker from establishing two
 concurrent sessions with different peers and forwarding signaling from those
@@ -660,16 +660,26 @@ possible to have different peers interact for each connection.  This means that
 the actual identity of the peer for one connection might differ from the peer on
 another connection.
 
-Information extracted from a TLS connection therefore MUST NOT be used in a
-secondary protocol outside of that connection if that protocol relies on the
-signaling protocol having the same peers.  Similarly, security-sensitive
-information from one TLS connection MUST NOT be used in other TLS connections
-even if they are established as a result of the same signaling session.
+Critically, information about the identity of TLS peers provides no assurances
+about the identity of signaling peers and do not transfer between TLS
+connections in the same session.  Information extracted from a TLS connection
+therefore MUST NOT be used in a secondary protocol outside of that connection if
+that protocol assumes that the signaling protocol has the same peers.
+Similarly, security-sensitive information from one TLS connection MUST NOT be
+used in other TLS connections even if they are established as a result of the
+same signaling session.
 
 
 # Security Considerations
 
-This entire document contains security considerations.
+The mitigations in this document, when combined with identity assertions, ensure
+that there is no opportunity to misrepresent the identity of TLS peers.  This
+assurance is provided even if an attacker can modify signaling messages.
+
+Without identity assertions, the mitigations in this document prevent the
+session splicing attack described in {{fp}}.  Defense against session
+concatenation ({{concat}}) additionally requires protocol peers are not able to
+claim the certificate fingerprints of other entities.
 
 
 # IANA Considerations
