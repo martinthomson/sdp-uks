@@ -162,8 +162,8 @@ The use of TLS with SDP depends on the integrity of session signaling.  Assuming
 signaling integrity limits the capabilities of an attacker in several ways.  In
 particular:
 
-1. An attacker can only modify the parts of the session signaling for a session
-   that they are part of, which is limited to their own offers and answers.
+1. An attacker can only modify the parts of the session signaling that they are
+   responsible for producing, primarily their own offers and answers.
 
 2. No entity will successfully establish a session with a peer unless they are
    willing to participate in a session with that peer.
