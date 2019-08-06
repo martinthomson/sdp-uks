@@ -449,8 +449,11 @@ other.
 To mount this attack, two sessions need to be created with the same endpoint at
 almost precisely the same time.  One of those sessions is initiated with the
 attacker, the second session is created toward another honest endpoint.  The
-attacker convinces the endpoint that their session with the attacker has ended
-or failed, and that the session with the other endpoint has succeeded.
+attacker convinces the first endpoint that their session with the attacker has
+been successfully established, but media is exchanged with the other honest
+endpoint.  The attacker permits the session with the other honest endpoint to
+complete only to the extent necessary to convince the other honest endpoint to
+participate in the attacked session.
 
 In addition to the constraints described in {{limits}}, the attacker in this
 example also needs the ability to view and drop packets between victims.
