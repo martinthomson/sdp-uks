@@ -208,11 +208,11 @@ silently save a new key.
 ## Third-Party Call Control {#byebye-3pcc}
 
 Third-party call control (3PCC) {{?RFC3725}} is a technique where a signaling
-peer establishes a call that is terminated by a different entity.  This attack
-is very similar in effect to some 3PCC practices, so use of 3PCC could appear to
-be an attack.  However, 3PCC that follows RFC 3725 guidance is unaffected, and
-peers that are aware of changes made by a 3PCC controller can correctly
-distinguish actions of a 3PCC controller from attack.
+peer establishes a call that is terminated by a different entity.  An unknown
+key-share attack is very similar in effect to some 3PCC practices, so use of
+3PCC could appear to be an attack.  However, 3PCC that follows RFC 3725 guidance
+is unaffected, and peers that are aware of changes made by a 3PCC controller can
+correctly distinguish actions of a 3PCC controller from attack.
 
 3PCC as described in RFC 3725 is incompatible with SIP identity {{?SIP-ID}} as
 SIP Identity relies on creating a binding between SIP requests and SDP.  The
