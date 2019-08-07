@@ -591,10 +591,10 @@ two separate DTLS connections carrying RTP and RTCP can be switched.  This is
 considered benign since these protocols are designed to be distinguishable.
 RTP/RTCP multiplexing is advised to address this problem.
 
-The `external_session_id` extension is included in a ClientHello and either
-ServerHello (for TLS and DTLS versions less than 1.3) or EncryptedExtensions
-(for TLS 1.3).  In TLS 1.3, the `external_session_id` extension MUST NOT be
-included in a ServerHello.
+The `external_session_id` extension is included in a ClientHello and - if the
+extension is present in the ClientHello - either ServerHello (for TLS and DTLS
+versions less than 1.3) or EncryptedExtensions (for TLS 1.3).  In TLS 1.3, the
+`external_session_id` extension MUST NOT be included in a ServerHello.
 
 Endpoints MUST check that the `session_id` parameter in the extension that they
 receive includes the `tls-id` attribute value that they received in their peer's
