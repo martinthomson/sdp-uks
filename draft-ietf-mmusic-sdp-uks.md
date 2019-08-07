@@ -354,11 +354,8 @@ Note:
 
 Identity bindings might be provided by only one peer.  An endpoint that does not
 produce an identity binding MUST generate an empty `external_id_hash` extension
-in its ClientHello.  An empty extension has a zero-length binding_hash field.
-This allows its peer to include a hash of its identity binding.  An endpoint
-without an identity binding MUST include an empty `external_id_hash` extension
-in its ServerHello or EncryptedExtensions message, to indicate support for the
-extension.
+in its ClientHello or - if a client provides the extension - in ServerHello or
+EncryptedExtensions.  An empty extension has a zero-length binding_hash field.
 
 A peer that receives an `external_id_hash` extension that does not match the
 value of the identity binding from its peer MUST immediately fail the TLS
