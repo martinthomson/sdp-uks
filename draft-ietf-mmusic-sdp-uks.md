@@ -375,7 +375,7 @@ definition.
 An `external_id_hash` extension that is any length other than 0 or 32 is invalid
 and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
 
-In TLS 1.3, the `external_id_hash` extension MUST be sent in the
+In TLS 1.3, an `external_id_hash` extension sent by a server MUST be sent in the
 EncryptedExtensions message.
 
 
@@ -594,8 +594,7 @@ SRTP {{?SRTP=RFC3711}} provides key separation.  Using RTP/RTCP multiplexing
 
 The `external_session_id` extension is included in a ClientHello and - if the
 extension is present in the ClientHello - either ServerHello (for TLS and DTLS
-versions less than 1.3) or EncryptedExtensions (for TLS 1.3).  In TLS 1.3, the
-`external_session_id` extension MUST NOT be included in a ServerHello.
+versions less than 1.3) or EncryptedExtensions (for TLS 1.3).
 
 Endpoints MUST check that the `session_id` parameter in the extension that they
 receive includes the `tls-id` attribute value that they received in their peer's
@@ -615,8 +614,8 @@ does not include this extension.  An endpoint MAY choose to continue a session
 without this extension in order to interoperate with peers that do not implement
 this specification.
 
-In TLS 1.3, the `external_session_id` extension MUST be sent in the
-EncryptedExtensions message.
+In TLS 1.3, an `external_session_id` extension sent by a server MUST be sent in
+the EncryptedExtensions message.
 
 This defense is not effective if an attacker can rewrite `tls-id` values in
 signaling.  Only the mechanism in `external_id_hash` is able to defend against
