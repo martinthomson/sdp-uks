@@ -311,7 +311,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-08-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-08-07" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Mitigation techniques are defined that implementations of RFC 8122 are encouraged to deploy." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Mitigation techniques are defined that implementations of RFC 8122 are encouraged to deploy." />
 
@@ -336,10 +336,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">August 06, 2019</td>
+<td class="right">August 07, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: February 7, 2020</td>
+<td class="left">Expires: February 8, 2020</td>
 <td class="right"></td>
 </tr>
 
@@ -356,7 +356,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 7, 2020.</p>
+<p>This Internet-Draft will expire on February 8, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -505,14 +505,14 @@ ul.toc li {
       opaque binding_hash&lt;0..32&gt;;
    } ExternalIdentityHash;
 </pre>
-<p id="rfc.section.3.2.p.3">Where an identity assertion has been asserted by a peer, this extension includes a SHA-256 hash of the assertion.  An empty value is used to indicates support for the extension.</p>
+<p id="rfc.section.3.2.p.3">Where an identity assertion has been asserted by a peer, this extension includes a SHA-256 hash of the assertion.  An empty value is used to indicate support for the extension.</p>
 <p></p>
 
 <dl>
 <dt>Note:</dt>
 <dd style="margin-left: 8">For both types of identity assertion, if SHA-256 should prove to be inadequate at some point in the future (see <a href="#AGILITY" class="xref">[AGILITY]</a>), a new TLS extension can be defined that uses a different hash function.</dd>
 </dl>
-<p id="rfc.section.3.2.p.5">Identity bindings might be provided by only one peer.  An endpoint that does not produce an identity binding MUST generate an empty <samp>external_id_hash</samp> extension in its ClientHello.  An empty extension has a zero-length binding_hash field.  This allows its peer to include a hash of its identity binding.  An endpoint without an identity binding MUST include an empty <samp>external_id_hash</samp> extension in its ServerHello or EncryptedExtensions message, to indicate support for the extension.</p>
+<p id="rfc.section.3.2.p.5">Identity bindings might be provided by only one peer.  An endpoint that does not produce an identity binding MUST generate an empty <samp>external_id_hash</samp> extension in its ClientHello or - if a client provides the extension - in ServerHello or EncryptedExtensions.  An empty extension has a zero-length binding_hash field.</p>
 <p id="rfc.section.3.2.p.6">A peer that receives an <samp>external_id_hash</samp> extension that does not match the value of the identity binding from its peer MUST immediately fail the TLS handshake with a illegal_parameter alert.  The absence of an identity binding does not relax this requirement; if a peer provided no identity binding, a zero-length extension MUST be present to be considered valid.</p>
 <p id="rfc.section.3.2.p.7">Implementations written prior to the definition of the extensions in this document will not support this extension for some time.  A peer that receives an identity binding but does not receive an <samp>external_id_hash</samp> extension MAY accept a TLS connection rather than fail a connection where the extension is absent.</p>
 <p id="rfc.section.3.2.p.8">Any validation performed of the <samp>external_id_hash</samp> extension is done in addition to the validation required by <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> and any identity assertion definition.</p>
@@ -521,7 +521,7 @@ ul.toc li {
 <h1 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#calculating-externalidhash-for-webrtc-identity" id="calculating-externalidhash-for-webrtc-identity">Calculating external_id_hash for WebRTC Identity</a>
 </h1>
-<p id="rfc.section.3.2.1.p.1">A WebRTC identity assertion (Section 7 of <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>) is provided as a JSON <a href="#JSON" class="xref">[JSON]</a> object that is encoded into a JSON text.  The JSON test is encoded using UTF-8 <a href="#UTF8" class="xref">[UTF8]</a> as described by Section 8.1 of <a href="#JSON" class="xref">[JSON]</a>.  The content of the <samp>external_id_hash</samp> extension is produced by hashing the resulting octets with SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  This produces the 32 octets of the <samp>binding_hash</samp> parameter, which is the sole contents of the extension.</p>
+<p id="rfc.section.3.2.1.p.1">A WebRTC identity assertion (Section 7 of <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>) is provided as a JSON <a href="#JSON" class="xref">[JSON]</a> object that is encoded into a JSON text.  The JSON text is encoded using UTF-8 <a href="#UTF8" class="xref">[UTF8]</a> as described by Section 8.1 of <a href="#JSON" class="xref">[JSON]</a>.  The content of the <samp>external_id_hash</samp> extension is produced by hashing the resulting octets with SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  This produces the 32 octets of the <samp>binding_hash</samp> parameter, which is the sole contents of the extension.</p>
 <p id="rfc.section.3.2.1.p.2">The SDP <samp>identity</samp> attribute includes the base64 <a href="#BASE64" class="xref">[BASE64]</a> encoding of the UTF-8 encoding of the same JSON text.  The <samp>external_id_hash</samp> extension is validated by performing base64 decoding on the value of the SDP <samp>identity</samp> attribute, hashing the resulting octets using SHA-256, and comparing the results with the content of the extension.  In pseudocode form, using the <samp>identity-assertion-value</samp> field from the <samp>identity</samp> attribute grammar as defined in <a href="#WEBRTC-SEC" class="xref">[WEBRTC-SEC]</a>:</p>
 <p><samp>external_id_hash = SHA-256(b64decode(identity-assertion-value)) </samp></p>
 <p></p>
