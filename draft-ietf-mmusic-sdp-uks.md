@@ -588,8 +588,9 @@ attribute is encoded using ASCII {{!ASCII=RFC0020}}.
 
 Where RTP and RTCP {{?RTP=RFC3550}} are not multiplexed, it is possible that the
 two separate DTLS connections carrying RTP and RTCP can be switched.  This is
-considered benign since these protocols are designed to be distinguishable.
-RTP/RTCP multiplexing is advised to address this problem.
+considered benign since these protocols are designed to be distinguishable as
+SRTP {{?SRTP=RFC3711}} provides key separation.  Using RTP/RTCP multiplexing
+{{?RTCP-MUX=RFC5761}} further avoids this problem.
 
 The `external_session_id` extension is included in a ClientHello and - if the
 extension is present in the ClientHello - either ServerHello (for TLS and DTLS
