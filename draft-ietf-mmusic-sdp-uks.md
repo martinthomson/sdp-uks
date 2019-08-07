@@ -647,8 +647,9 @@ advantage an attacker gains by concatenating sessions is limited unless data is
 exchanged on the assumption that signaling and TLS peers are the same.  If a
 secondary protocol uses the signaling channel with the assumption that the
 signaling and TLS peers are the same then that protocol is vulnerable to attack.
-Such a signaling system, while out of scope for this document, requires that the
-signaling layer is authenticated and bound to any TLS connections.
+A signaling system that can defend against session concatenation, while out of
+scope for this document, requires that the signaling layer is authenticated and
+bound to any TLS connections.
 
 It is important to note that multiple connections can be created within the same
 signaling session.  An attacker might concatenate only part of a session,
