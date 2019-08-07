@@ -343,7 +343,7 @@ Section 3 of {{!TLS13}}:
 ~~~
 
 Where an identity assertion has been asserted by a peer, this extension includes
-a SHA-256 hash of the assertion.  An empty value is used to indicates support for
+a SHA-256 hash of the assertion.  An empty value is used to indicate support for
 the extension.
 
 Note:
