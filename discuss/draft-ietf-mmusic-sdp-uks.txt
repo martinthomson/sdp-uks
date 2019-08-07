@@ -468,8 +468,8 @@ Internet-Draft                   SDP UKS                     August 2019
    is invalid and MUST cause the receiving endpoint to generate a fatal
    "decode_error" alert.
 
-   In TLS 1.3, the "external_id_hash" extension MUST be sent in the
-   EncryptedExtensions message.
+   In TLS 1.3, an "external_id_hash" extension sent by a server MUST be
+   sent in the EncryptedExtensions message.
 
 3.2.1.  Calculating external_id_hash for WebRTC Identity
 
@@ -720,8 +720,8 @@ Internet-Draft                   SDP UKS                     August 2019
    The "external_session_id" extension is included in a ClientHello and
    - if the extension is present in the ClientHello - either ServerHello
    (for TLS and DTLS versions less than 1.3) or EncryptedExtensions (for
-   TLS 1.3).  In TLS 1.3, the "external_session_id" extension MUST NOT
-   be included in a ServerHello.
+   TLS 1.3).
+
 
 
 
@@ -750,8 +750,8 @@ Internet-Draft                   SDP UKS                     August 2019
    order to interoperate with peers that do not implement this
    specification.
 
-   In TLS 1.3, the "external_session_id" extension MUST be sent in the
-   EncryptedExtensions message.
+   In TLS 1.3, an "external_session_id" extension sent by a server MUST
+   be sent in the EncryptedExtensions message.
 
    This defense is not effective if an attacker can rewrite "tls-id"
    values in signaling.  Only the mechanism in "external_id_hash" is
@@ -792,10 +792,10 @@ Internet-Draft                   SDP UKS                     August 2019
    sessions is limited unless data is exchanged on the assumption that
    signaling and TLS peers are the same.  If a secondary protocol uses
    the signaling channel with the assumption that the signaling and TLS
-   peers are the same then that protocol is vulnerable to attack.  Such
-   a signaling system, while out of scope for this document, requires
-   that the signaling layer is authenticated and bound to any TLS
-   connections.
+   peers are the same then that protocol is vulnerable to attack.  A
+   signaling system that can defend against session concatenation, while
+   out of scope for this document, requires that the signaling layer is
+   authenticated and bound to any TLS connections.
 
    It is important to note that multiple connections can be created
    within the same signaling session.  An attacker might concatenate
