@@ -678,8 +678,8 @@ assurance is provided even if an attacker can modify signaling messages.
 
 Without identity assertions, the mitigations in this document prevent the
 session splicing attack described in {{fp}}.  Defense against session
-concatenation ({{concat}}) additionally requires protocol peers are not able to
-claim the certificate fingerprints of other entities.
+concatenation ({{concat}}) additionally requires that protocol peers are not
+able to claim the certificate fingerprints of other entities.
 
 
 # IANA Considerations
