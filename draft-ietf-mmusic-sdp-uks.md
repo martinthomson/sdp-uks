@@ -372,8 +372,9 @@ Any validation performed of the `external_id_hash` extension is done in addition
 to the validation required by {{!FINGERPRINT}} and any identity assertion
 definition.
 
-An `external_id_hash` extension that is any length other than 0 or 32 is invalid
-and MUST cause the receiving endpoint to generate a fatal `decode_error` alert.
+An `external_id_hash` extension with a `binding_hash` field that is any length
+other than 0 or 32 is invalid and MUST cause the receiving endpoint to generate
+a fatal `decode_error` alert.
 
 In TLS 1.3, an `external_id_hash` extension sent by a server MUST be sent in the
 EncryptedExtensions message.
