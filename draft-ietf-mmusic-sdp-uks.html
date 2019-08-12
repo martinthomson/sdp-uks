@@ -311,7 +311,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M. and E. Rescorla" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-mmusic-sdp-uks-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-08-09" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-08-12" />
   <meta name="dct.abstract" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Mitigation techniques are defined that implementations of RFC 8122 are encouraged to deploy." />
   <meta name="description" content="This document describes unknown key-share attacks on the use of Datagram Transport Layer Security for the Secure Real-Time Transport Protocol (DTLS-SRTP). Similar attacks are described on the use of DTLS-SRTP with the identity bindings used in Web Real-Time Communications (WebRTC) and SIP identity.  These attacks are difficult to mount, but they cause a victim to be mislead about the identity of a communicating peer.  Mitigation techniques are defined that implementations of RFC 8122 are encouraged to deploy." />
 
@@ -336,10 +336,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">August 09, 2019</td>
+<td class="right">August 12, 2019</td>
 </tr>
 <tr>
-<td class="left">Expires: February 10, 2020</td>
+<td class="left">Expires: February 13, 2020</td>
 <td class="right"></td>
 </tr>
 
@@ -356,7 +356,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 10, 2020.</p>
+<p>This Internet-Draft will expire on February 13, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -516,7 +516,7 @@ ul.toc li {
 <p id="rfc.section.3.2.p.6">A peer that receives an <samp>external_id_hash</samp> extension that does not match the value of the identity binding from its peer MUST immediately fail the TLS handshake with a illegal_parameter alert.  The absence of an identity binding does not relax this requirement; if a peer provided no identity binding, a zero-length extension MUST be present to be considered valid.</p>
 <p id="rfc.section.3.2.p.7">Implementations written prior to the definition of the extensions in this document will not support this extension for some time.  A peer that receives an identity binding but does not receive an <samp>external_id_hash</samp> extension MAY accept a TLS connection rather than fail a connection where the extension is absent.</p>
 <p id="rfc.section.3.2.p.8">Any validation performed of the <samp>external_id_hash</samp> extension is done in addition to the validation required by <a href="#FINGERPRINT" class="xref">[FINGERPRINT]</a> and any identity assertion definition.</p>
-<p id="rfc.section.3.2.p.9">An <samp>external_id_hash</samp> extension that is any length other than 0 or 32 is invalid and MUST cause the receiving endpoint to generate a fatal <samp>decode_error</samp> alert.</p>
+<p id="rfc.section.3.2.p.9">An <samp>external_id_hash</samp> extension with a <samp>binding_hash</samp> field that is any length other than 0 or 32 is invalid and MUST cause the receiving endpoint to generate a fatal <samp>decode_error</samp> alert.</p>
 <p id="rfc.section.3.2.p.10">In TLS 1.3, an <samp>external_id_hash</samp> extension sent by a server MUST be sent in the EncryptedExtensions message.</p>
 <h1 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#calculating-externalidhash-for-webrtc-identity" id="calculating-externalidhash-for-webrtc-identity">Calculating external_id_hash for WebRTC Identity</a>
@@ -614,7 +614,7 @@ ul.toc li {
 <a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
 <p id="rfc.section.6.p.1">The mitigations in this document, when combined with identity assertions, ensure that there is no opportunity to misrepresent the identity of TLS peers.  This assurance is provided even if an attacker can modify signaling messages.</p>
-<p id="rfc.section.6.p.2">Without identity assertions, the mitigations in this document prevent the session splicing attack described in <a href="#fp" class="xref">Section 4</a>.  Defense against session concatenation (<a href="#concat" class="xref">Section 5</a>) additionally requires protocol peers are not able to claim the certificate fingerprints of other entities.</p>
+<p id="rfc.section.6.p.2">Without identity assertions, the mitigations in this document prevent the session splicing attack described in <a href="#fp" class="xref">Section 4</a>.  Defense against session concatenation (<a href="#concat" class="xref">Section 5</a>) additionally requires that protocol peers are not able to claim the certificate fingerprints of other entities.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>

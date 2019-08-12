@@ -5,8 +5,8 @@
 Network Working Group                                         M. Thomson
 Internet-Draft                                               E. Rescorla
 Updates: 8122 (if approved)                                      Mozilla
-Intended status: Standards Track                         August 09, 2019
-Expires: February 10, 2020
+Intended status: Standards Track                         August 12, 2019
+Expires: February 13, 2020
 
 
  Unknown Key Share Attacks on uses of TLS with the Session Description
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 10, 2020.
+   This Internet-Draft will expire on February 13, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 1]
+Thomson & Rescorla      Expires February 13, 2020               [Page 1]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 2]
+Thomson & Rescorla      Expires February 13, 2020               [Page 2]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -165,7 +165,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 3]
+Thomson & Rescorla      Expires February 13, 2020               [Page 3]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 4]
+Thomson & Rescorla      Expires February 13, 2020               [Page 4]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -277,7 +277,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 5]
+Thomson & Rescorla      Expires February 13, 2020               [Page 5]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -333,7 +333,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 6]
+Thomson & Rescorla      Expires February 13, 2020               [Page 6]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -389,7 +389,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 7]
+Thomson & Rescorla      Expires February 13, 2020               [Page 7]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -445,7 +445,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 8]
+Thomson & Rescorla      Expires February 13, 2020               [Page 8]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -464,9 +464,9 @@ Internet-Draft                   SDP UKS                     August 2019
    in addition to the validation required by [FINGERPRINT] and any
    identity assertion definition.
 
-   An "external_id_hash" extension that is any length other than 0 or 32
-   is invalid and MUST cause the receiving endpoint to generate a fatal
-   "decode_error" alert.
+   An "external_id_hash" extension with a "binding_hash" field that is
+   any length other than 0 or 32 is invalid and MUST cause the receiving
+   endpoint to generate a fatal "decode_error" alert.
 
    In TLS 1.3, an "external_id_hash" extension sent by a server MUST be
    sent in the EncryptedExtensions message.
@@ -501,7 +501,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020               [Page 9]
+Thomson & Rescorla      Expires February 13, 2020               [Page 9]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -557,7 +557,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 10]
+Thomson & Rescorla      Expires February 13, 2020              [Page 10]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -613,7 +613,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 11]
+Thomson & Rescorla      Expires February 13, 2020              [Page 11]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -669,7 +669,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 12]
+Thomson & Rescorla      Expires February 13, 2020              [Page 12]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -725,7 +725,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 13]
+Thomson & Rescorla      Expires February 13, 2020              [Page 13]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -781,7 +781,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 14]
+Thomson & Rescorla      Expires February 13, 2020              [Page 14]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -825,7 +825,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
    Without identity assertions, the mitigations in this document prevent
    the session splicing attack described in Section 4.  Defense against
-   session concatenation (Section 5) additionally requires protocol
+   session concatenation (Section 5) additionally requires that protocol
    peers are not able to claim the certificate fingerprints of other
    entities.
 
@@ -837,7 +837,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 15]
+Thomson & Rescorla      Expires February 13, 2020              [Page 15]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -893,7 +893,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 16]
+Thomson & Rescorla      Expires February 13, 2020              [Page 16]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -949,7 +949,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 17]
+Thomson & Rescorla      Expires February 13, 2020              [Page 17]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -1005,7 +1005,7 @@ Internet-Draft                   SDP UKS                     August 2019
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 18]
+Thomson & Rescorla      Expires February 13, 2020              [Page 18]
 
 Internet-Draft                   SDP UKS                     August 2019
 
@@ -1061,4 +1061,4 @@ Authors' Addresses
 
 
 
-Thomson & Rescorla      Expires February 10, 2020              [Page 19]
+Thomson & Rescorla      Expires February 13, 2020              [Page 19]
